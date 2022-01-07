@@ -1,0 +1,62 @@
+//
+//  AuthFlowController.swift
+//  Flow
+//
+//  Created by Hanna Chen on 2022/1/3.
+//
+
+import UIKit
+
+protocol AuthFlowControllerDelegate: AnyObject {
+    func authFlowControllerDidFinish(_ flowController: UIViewController)
+}
+
+class AuthFlowController: UIViewController {
+    // MARK: - Properties
+
+    weak var delegate: AuthFlowControllerDelegate?
+    private let navigation: CustomNavigationController
+
+    // MARK: - Lifecycle
+
+    init(navigation: CustomNavigationController = CustomNavigationController()) {
+        self.navigation = navigation
+        navigation.navigationBar.prefersLargeTitles = true
+
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    // MARK: - Methods
+
+    func start() {
+        add(child: navigation)
+        showSignIn()
+    }
+
+    // MARK: - Private
+
+    private func showSignIn() {
+        let signInVC = SignInViewController()
+        signInVC.delegate = self
+        navigation.pushViewController(signInVC, animated: true)
+    }
+}
+
+extension AuthFlowController: SignInViewControllerDelegate {
+    func signInDidComplete(_ controller: SignInViewController) {
+        remove(child: controller)
+        delegate?.authFlowControllerDidFinish(self)
+    }
+
+    func navigateToRegister() {
+        let registerVC = RegisterViewController()
+        navigation.pushViewController(registerVC, animated: true)
+    }
+
+    func navigateToHelp() {
+    }
+}
