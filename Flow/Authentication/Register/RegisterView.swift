@@ -18,12 +18,15 @@ class RegisterView: AuthView {
 
     let addPhotoButton: UIButton = {
         let button = UIButton(type: .custom)
+
         let icon = UIImage(systemName: "camera.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 16))
         button.setImage(icon, for: .normal)
+
         button.layer.borderWidth = 1
         button.layer.cornerRadius = 150 / 2
         button.layer.borderColor = UIColor.systemGray.cgColor
         button.layer.masksToBounds = true
+
         return button
     }()
 
@@ -75,19 +78,21 @@ class RegisterView: AuthView {
             confirmPasswordTextField,
             fullNameTextField,
             usernameTextField,
+            authButton,
         ]
         stackSubviews.forEach { view in
             inputStack.addArrangedSubview(view)
-            view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                view.heightAnchor.constraint(equalToConstant: 40),
-                view.widthAnchor.constraint(equalTo: inputStack.widthAnchor),
-            ])
+            view.heightAnchor.constraint(equalToConstant: 40).isActive = true
         }
+
+        inputStack.setCustomSpacing(50, after: usernameTextField)
+        inputStack.setCustomSpacing(20, after: authButton)
+
+        inputStack.addArrangedSubview(goSignInButton)
     }
 
     private func addSubviews() {
-        [addPhotoButton, inputStack, authButton, goSignInButton].forEach { view in
+        [addPhotoButton, inputStack].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             addSubview(view)
         }
@@ -99,15 +104,10 @@ class RegisterView: AuthView {
             addPhotoButton.centerXAnchor.constraint(equalTo: centerXAnchor),
             addPhotoButton.heightAnchor.constraint(equalToConstant: 150),
             addPhotoButton.widthAnchor.constraint(equalToConstant: 150),
+
             inputStack.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 20),
             inputStack.leftAnchor.constraint(equalTo: leftAnchor, constant: 40),
             inputStack.rightAnchor.constraint(equalTo: rightAnchor, constant: -40),
-            authButton.topAnchor.constraint(equalTo: inputStack.bottomAnchor, constant: 50),
-            authButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            authButton.widthAnchor.constraint(equalTo: inputStack.widthAnchor),
-            authButton.heightAnchor.constraint(equalToConstant: 40),
-            goSignInButton.topAnchor.constraint(equalTo: authButton.bottomAnchor, constant: 20),
-            goSignInButton.centerXAnchor.constraint(equalTo: centerXAnchor),
         ])
     }
 }

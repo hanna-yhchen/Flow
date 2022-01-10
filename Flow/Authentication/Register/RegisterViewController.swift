@@ -30,7 +30,22 @@ class RegisterViewController: UIViewController {
     }
 
     override func loadView() {
-        self.view = contentView
+        let scrollView = UIScrollView()
+        scrollView.addSubview(contentView)
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+
+        let scrollContentLayoutGuide = scrollView.contentLayoutGuide
+        NSLayoutConstraint.activate([
+            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            contentView.heightAnchor.constraint(equalToConstant: 700),
+            scrollContentLayoutGuide.topAnchor.constraint(equalTo: contentView.topAnchor),
+            scrollContentLayoutGuide.leftAnchor.constraint(equalTo: contentView.leftAnchor),
+            scrollContentLayoutGuide.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            scrollContentLayoutGuide.rightAnchor.constraint(equalTo: contentView.rightAnchor),
+        ])
+
+        self.view = scrollView
+        view.backgroundColor = .systemBackground
         navigationItem.title = "Register"
 
         contentView.inputStack.arrangedSubviews.forEach { textField in

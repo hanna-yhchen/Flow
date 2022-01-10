@@ -11,6 +11,7 @@ class AppFlowController: UIViewController {
     func start() {
         // TODO: Check Authentication State
         startLogin()
+        //startMain()
     }
 
     private func startLogin() {

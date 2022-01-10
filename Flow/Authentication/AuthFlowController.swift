@@ -42,9 +42,11 @@ class AuthFlowController: UIViewController {
     private func showSignIn() {
         let signInVC = SignInViewController()
         signInVC.delegate = self
-        navigation.pushViewController(signInVC, animated: true)
+        navigation.show(signInVC, sender: self)
     }
 }
+
+// MARK: - SignInViewControllerDelegate
 
 extension AuthFlowController: SignInViewControllerDelegate {
     func signInDidComplete(_ controller: SignInViewController) {
