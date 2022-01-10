@@ -25,6 +25,12 @@
 		B54612B9278675B500C87339 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612B8278675B500C87339 /* RegisterView.swift */; };
 		B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612BA278675BC00C87339 /* RegisterViewModel.swift */; };
 		B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612C22787227A00C87339 /* PasswordTextField.swift */; };
+		B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F04278923A1008B805E /* HomeFlowController.swift */; };
+		B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F06278923B6008B805E /* SearchFlowController.swift */; };
+		B54D8F09278923C9008B805E /* PostFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F08278923C9008B805E /* PostFlowController.swift */; };
+		B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0A278923F0008B805E /* ChatFlowController.swift */; };
+		B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0C278923F9008B805E /* ProfileFlowController.swift */; };
+		B54D8F1427893601008B805E /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F1327893601008B805E /* FeedViewController.swift */; };
 		B5EAF1572787E037004C429E /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1562787E037004C429E /* CustomNavigationController.swift */; };
 		B5EAF1592787E7DE004C429E /* UIButton+TextColorOnTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1582787E7DE004C429E /* UIButton+TextColorOnTap.swift */; };
 		B5EAF15B2787E99B004C429E /* AuthNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF15A2787E99B004C429E /* AuthNavigationButton.swift */; };
@@ -53,6 +59,12 @@
 		B54612B8278675B500C87339 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B54612BA278675BC00C87339 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		B54612C22787227A00C87339 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		B54D8F04278923A1008B805E /* HomeFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowController.swift; sourceTree = "<group>"; };
+		B54D8F06278923B6008B805E /* SearchFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowController.swift; sourceTree = "<group>"; };
+		B54D8F08278923C9008B805E /* PostFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFlowController.swift; sourceTree = "<group>"; };
+		B54D8F0A278923F0008B805E /* ChatFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowController.swift; sourceTree = "<group>"; };
+		B54D8F0C278923F9008B805E /* ProfileFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFlowController.swift; sourceTree = "<group>"; };
+		B54D8F1327893601008B805E /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
 		B5EAF1562787E037004C429E /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		B5EAF1582787E7DE004C429E /* UIButton+TextColorOnTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+TextColorOnTap.swift"; sourceTree = "<group>"; };
 		B5EAF15A2787E99B004C429E /* AuthNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationButton.swift; sourceTree = "<group>"; };
@@ -94,10 +106,10 @@
 				B54612A027832C6F00C87339 /* Authentication */,
 				B54612AD278434BA00C87339 /* Main */,
 				B54612992782F67D00C87339 /* Extensions */,
+				B5CEF3FB278BDC2B004E5783 /* Shared */,
 				B54612812782C65100C87339 /* Assets.xcassets */,
 				B54612832782C65100C87339 /* LaunchScreen.storyboard */,
 				B54612862782C65100C87339 /* Info.plist */,
-				B5EAF1562787E037004C429E /* CustomNavigationController.swift */,
 			);
 			path = Flow;
 			sourceTree = "<group>";
@@ -118,7 +130,7 @@
 			children = (
 				B546129A2782FE7300C87339 /* AuthFlowController.swift */,
 				B54612C1278676EA00C87339 /* SignIn */,
-				B54612C0278676DB00C87339 /* SignUp */,
+				B54612C0278676DB00C87339 /* Register */,
 				B54612BC278675C900C87339 /* Reusable */,
 			);
 			path = Authentication;
@@ -138,6 +150,11 @@
 			isa = PBXGroup;
 			children = (
 				B546129C2782FE7A00C87339 /* MainFlowController.swift */,
+				B54D8F0E278924A8008B805E /* Home */,
+				B54D8F0F278924AD008B805E /* Search */,
+				B54D8F10278924B1008B805E /* Post */,
+				B54D8F11278924B5008B805E /* Chat */,
+				B54D8F122789268E008B805E /* Profile */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -154,14 +171,14 @@
 			path = Reusable;
 			sourceTree = "<group>";
 		};
-		B54612C0278676DB00C87339 /* SignUp */ = {
+		B54612C0278676DB00C87339 /* Register */ = {
 			isa = PBXGroup;
 			children = (
 				B54612B6278674EE00C87339 /* RegisterViewController.swift */,
 				B54612B8278675B500C87339 /* RegisterView.swift */,
 				B54612BA278675BC00C87339 /* RegisterViewModel.swift */,
 			);
-			path = SignUp;
+			path = Register;
 			sourceTree = "<group>";
 		};
 		B54612C1278676EA00C87339 /* SignIn */ = {
@@ -172,6 +189,55 @@
 				B54612A62783F17A00C87339 /* SignInViewModel.swift */,
 			);
 			path = SignIn;
+			sourceTree = "<group>";
+		};
+		B54D8F0E278924A8008B805E /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				B54D8F04278923A1008B805E /* HomeFlowController.swift */,
+				B54D8F1327893601008B805E /* FeedViewController.swift */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
+		B54D8F0F278924AD008B805E /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				B54D8F06278923B6008B805E /* SearchFlowController.swift */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		B54D8F10278924B1008B805E /* Post */ = {
+			isa = PBXGroup;
+			children = (
+				B54D8F08278923C9008B805E /* PostFlowController.swift */,
+			);
+			path = Post;
+			sourceTree = "<group>";
+		};
+		B54D8F11278924B5008B805E /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				B54D8F0A278923F0008B805E /* ChatFlowController.swift */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		B54D8F122789268E008B805E /* Profile */ = {
+			isa = PBXGroup;
+			children = (
+				B54D8F0C278923F9008B805E /* ProfileFlowController.swift */,
+			);
+			path = Profile;
+			sourceTree = "<group>";
+		};
+		B5CEF3FB278BDC2B004E5783 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				B5EAF1562787E037004C429E /* CustomNavigationController.swift */,
+			);
+			path = Shared;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -265,7 +331,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */,
 				B546129D2782FE7A00C87339 /* MainFlowController.swift in Sources */,
+				B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */,
 				B5EAF15D278821C7004C429E /* AuthButton.swift in Sources */,
 				B5EAF15B2787E99B004C429E /* AuthNavigationButton.swift in Sources */,
 				B54612A927840E9700C87339 /* AuthTextField.swift in Sources */,
@@ -277,14 +345,18 @@
 				B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */,
 				B54612982782F4F100C87339 /* UIViewController+CustomContainer.swift in Sources */,
 				B54612A72783F17A00C87339 /* SignInViewModel.swift in Sources */,
+				B54D8F1427893601008B805E /* FeedViewController.swift in Sources */,
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
 				B5EAF15F27882438004C429E /* AuthView.swift in Sources */,
 				B54612A227833CC000C87339 /* SignInView.swift in Sources */,
 				B5EAF1592787E7DE004C429E /* UIButton+TextColorOnTap.swift in Sources */,
+				B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */,
 				B54612B7278674EE00C87339 /* RegisterViewController.swift in Sources */,
 				B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */,
 				B5EAF1572787E037004C429E /* CustomNavigationController.swift in Sources */,
+				B54D8F09278923C9008B805E /* PostFlowController.swift in Sources */,
+				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
 				B546129F27832C6100C87339 /* SignInViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -431,6 +503,7 @@
 				INFOPLIST_FILE = Flow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -458,6 +531,7 @@
 				INFOPLIST_FILE = Flow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
