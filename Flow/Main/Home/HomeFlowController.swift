@@ -16,7 +16,6 @@ class HomeFlowController: UIViewController {
 
     init(navigation: CustomNavigationController = CustomNavigationController()) {
         self.navigation = navigation
-        navigation.navigationBar.prefersLargeTitles = true
 
         super.init(nibName: nil, bundle: nil)
         add(child: navigation)

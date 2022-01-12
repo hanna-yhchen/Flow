@@ -16,7 +16,7 @@ class FeedViewController: UIViewController {
 
     weak var delegate: FeedViewControllerDelegate?
     private let contentView = UIView()
-    private let viewModel = RegisterViewModel()
+    // private let viewModel = FeedViewModel()
     private var subscriptions = Set<AnyCancellable>()
 
     // MARK: - Lifecycle

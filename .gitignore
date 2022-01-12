@@ -97,3 +97,13 @@ iOSInjectionProject/
 
 ### SwiftLint ###
 .swiftlint.yml
+
+### Firebase ###
+GoogleService-Info.plist
+.idea
+**/node_modules/*
+**/.firebaserc
+
+### Firebase Patch ###
+.runtimeconfig.json
+.firebase/

@@ -14,6 +14,7 @@ class CustomNavigationController: UINavigationController {
         let backIndicator = UIImage(systemName: "chevron.backward.circle")
         navigationBar.backIndicatorImage = backIndicator
         navigationBar.backIndicatorTransitionMaskImage = backIndicator
+        navigationBar.prefersLargeTitles = true
     }
 
     required init?(coder aDecoder: NSCoder) {

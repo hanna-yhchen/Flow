@@ -28,7 +28,7 @@ class MainFlowController: UIViewController {
             PostFlowController(),
             withIconName: "plus.app",
             selectedIconName: "plus.app.fill",
-            pointSize: 24
+            pointSize: 20
         )
         let chatFlowController = flowController(
             ChatFlowController(),
@@ -50,10 +50,16 @@ class MainFlowController: UIViewController {
             profileFlowController,
         ]
         mainTabController.view.backgroundColor = .systemBackground
+
+        let appearance = UITabBarAppearance()
+        appearance.configureWithDefaultBackground()
+        mainTabController.tabBar.standardAppearance = appearance
+        mainTabController.tabBar.scrollEdgeAppearance = appearance
+
         add(child: mainTabController)
     }
 
-    func flowController<T: UIViewController>(_ controller: T, withIconName iconName: String, selectedIconName: String, pointSize: CGFloat = 20) -> T {
+    func flowController<T: UIViewController>(_ controller: T, withIconName iconName: String, selectedIconName: String, pointSize: CGFloat = 16) -> T {
         let icon = UIImage(
             systemName: iconName,
             withConfiguration: UIImage.SymbolConfiguration(pointSize: pointSize)
