@@ -62,7 +62,7 @@ class RegisterView: AuthView {
         super.init(authButtonTitle: "Register")
         configureStackView()
         addSubviews()
-        setupConstraints()
+        addConstraints()
     }
 
     required init?(coder: NSCoder) {
@@ -98,7 +98,7 @@ class RegisterView: AuthView {
         }
     }
 
-    private func setupConstraints() {
+    private func addConstraints() {
         NSLayoutConstraint.activate([
             addPhotoButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             addPhotoButton.centerXAnchor.constraint(equalTo: centerXAnchor),

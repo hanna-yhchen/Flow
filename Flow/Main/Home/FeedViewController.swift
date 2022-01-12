@@ -24,10 +24,8 @@ class FeedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        print("Here is Feed View!")
-
-        setupTargets()
-        setupBindings()
+        configureTargets()
+        configureBindings()
     }
 
     override func loadView() {
@@ -35,9 +33,9 @@ class FeedViewController: UIViewController {
         navigationItem.title = "Hello!"
     }
 
-    private func setupTargets() {
+    private func configureTargets() {
     }
 
-    private func setupBindings() {
+    private func configureBindings() {
     }
 }

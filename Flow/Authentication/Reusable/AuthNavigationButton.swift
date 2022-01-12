@@ -20,7 +20,7 @@ class AuthNavigationButton: UIButton {
             aString[range].foregroundColor = .accentText
         }
 
-        setupConfiguration(withAttributedTitle: aString)
+        configure(withAttributedTitle: aString)
     }
 
     convenience init(destinationText: String) {
@@ -30,10 +30,10 @@ class AuthNavigationButton: UIButton {
         aString.font = .systemFont(ofSize: 14)
         aString.foregroundColor = .accentText
 
-        setupConfiguration(withAttributedTitle: aString)
+        configure(withAttributedTitle: aString)
     }
 
-    private func setupConfiguration(withAttributedTitle title: AttributedString) {
+    private func configure(withAttributedTitle title: AttributedString) {
         var config = UIButton.Configuration.plain()
 
         config.attributedTitle = title

@@ -25,8 +25,8 @@ class RegisterViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupTargets()
-        setupBindings()
+        configureTargets()
+        configureBindings()
     }
 
     override func loadView() {
@@ -53,13 +53,13 @@ class RegisterViewController: UIViewController {
         }
     }
 
-    private func setupTargets() {
+    private func configureTargets() {
         contentView.addPhotoButton.addTarget(self, action: #selector(addPhoto), for: .touchUpInside)
         contentView.authButton.addTarget(self, action: #selector(register), for: .touchUpInside)
         contentView.goSignInButton.addTarget(self, action: #selector(goSignIn), for: .touchUpInside)
     }
 
-    private func setupBindings() {
+    private func configureBindings() {
         contentView.emailTextField.textPublisher
             .receive(on: RunLoop.main)
             .assign(to: \.email, on: viewModel)

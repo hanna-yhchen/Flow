@@ -27,8 +27,8 @@ class SignInViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupTargets()
-        setupBindings()
+        configureTargets()
+        configureBindings()
     }
 
     override func loadView() {
@@ -41,14 +41,14 @@ class SignInViewController: UIViewController {
         }
     }
 
-    // MARK: - Setup
+    // MARK: - Configuration
 
-    private func setupTargets() {
+    private func configureTargets() {
         contentView.authButton.addTarget(self, action: #selector(signIn), for: .touchUpInside)
         contentView.goRegisterButton.addTarget(self, action: #selector(goRegister), for: .touchUpInside)
     }
 
-    private func setupBindings() {
+    private func configureBindings() {
         contentView.emailTextField.textPublisher
             .receive(on: RunLoop.main)
             .assign(to: \.email, on: viewModel)
