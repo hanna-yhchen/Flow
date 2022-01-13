@@ -77,90 +77,70 @@ class SearchViewController: UIViewController {
 
     // swiftlint:disable operator_usage_whitespace
     private func makeLayout() -> UICollectionViewLayout {
-        // First group: Trailing Main with pair
-        let mainItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(2/3),
-                heightDimension: .fractionalHeight(1/1)
-            )
-        )
-        mainItem.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+        let fullWidth = view.bounds.width
+        let smallItemLength = (fullWidth - 2) / 3
+        let largeItemLength = fullWidth - smallItemLength - 1
 
-        let pairItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/1),
-                heightDimension: .fractionalHeight(1/2)
-            )
+        let smallItemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(smallItemLength),
+            heightDimension: .absolute(smallItemLength)
         )
-        pairItem.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
+        let largeItemSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(largeItemLength),
+            heightDimension: .absolute(largeItemLength)
+        )
+        let verticalPairSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(smallItemLength),
+            heightDimension: .absolute(largeItemLength)
+        )
+        let groupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(fullWidth),
+            heightDimension: .absolute(largeItemLength)
+        )
 
-        let pairGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/3),
-                heightDimension: .fractionalHeight(1/1)
-            ),
-            subitem: pairItem,
+        let largeItem = NSCollectionLayoutItem(layoutSize: largeItemSize)
+        let smallItem = NSCollectionLayoutItem(layoutSize: smallItemSize)
+        let verticalPair = NSCollectionLayoutGroup.vertical(
+            layoutSize: verticalPairSize,
+            subitem: smallItem,
             count: 2
         )
+        verticalPair.interItemSpacing = .fixed(1)
 
-        let trailingMainWithPairGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/1),
-                heightDimension: .fractionalWidth(2/3)
-            ),
-            subitems: [pairGroup, mainItem]
+        let trailingLargeWithPairGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [verticalPair, largeItem]
         )
+        trailingLargeWithPairGroup.interItemSpacing = .fixed(1)
 
-        // Second & Fourth group: 3*2 grid
-
-        let gridItem = NSCollectionLayoutItem(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/3),
-                heightDimension: .fractionalHeight(1/1)
-            )
-        )
-        gridItem.contentInsets = NSDirectionalEdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 1)
-
-        let rowGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/1),
-                heightDimension: .fractionalHeight(1/2)
-            ),
-            subitem: gridItem,
+        let triplePairGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitem: verticalPair,
             count: 3
         )
-        let gridGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/1),
-                heightDimension: .fractionalWidth(2/3)
-            ),
-            subitem: rowGroup,
-            count: 2
-        )
+        triplePairGroup.interItemSpacing = .fixed(1)
 
-        // Third group: Trailing Main with pair
-        let leadingMainWithPairGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/1),
-                heightDimension: .fractionalWidth(2/3)
-            ),
-            subitems: [mainItem, pairGroup]
+        let leadingLargeWithPairGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: groupSize,
+            subitems: [largeItem, verticalPair]
         )
+        leadingLargeWithPairGroup.interItemSpacing = .fixed(1)
 
         let nestedGroup = NSCollectionLayoutGroup.vertical(
             layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1/1),
-                heightDimension: .fractionalWidth(8/3)),
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .absolute(4 * (largeItemLength +  1))
+            ),
             subitems: [
-                trailingMainWithPairGroup,
-                gridGroup,
-                leadingMainWithPairGroup,
-                gridGroup,
+                trailingLargeWithPairGroup,
+                triplePairGroup,
+                leadingLargeWithPairGroup,
+                triplePairGroup,
             ]
         )
+        nestedGroup.interItemSpacing = .fixed(1)
 
         let section = NSCollectionLayoutSection(group: nestedGroup)
-
         let layout = UICollectionViewCompositionalLayout(section: section)
         return layout
     }
