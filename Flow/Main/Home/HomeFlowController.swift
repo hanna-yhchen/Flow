@@ -18,10 +18,11 @@ class HomeFlowController: UIViewController {
     init(barButtonDelegate: BarButtonDelegate, navigation: CustomNavigationController = CustomNavigationController()) {
         self.barButtonDelegate = barButtonDelegate
         self.navigation = navigation
+        navigation.navigationBar.prefersLargeTitles = false
 
         super.init(nibName: nil, bundle: nil)
         add(child: navigation)
-        showFeed()
+        showHome()
     }
 
     required init?(coder: NSCoder) {
@@ -30,11 +31,11 @@ class HomeFlowController: UIViewController {
 
     // MARK: - Private
 
-    private func showFeed() {
-        let feedVC = FeedViewController()
-        feedVC.delegate = self
-        barButtonDelegate?.configureBarButtons(in: feedVC)
-        navigation.show(feedVC, sender: self)
+    private func showHome() {
+        let homeVC = HomeViewController()
+        homeVC.delegate = self
+        barButtonDelegate?.configureBarButtons(in: homeVC)
+        navigation.show(homeVC, sender: self)
     }
 }
 

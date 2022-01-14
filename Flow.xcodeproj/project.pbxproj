@@ -16,6 +16,9 @@
 		B53F2EFB278ECBE00038B2C3 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2EFA278ECBE00038B2C3 /* Comment.swift */; };
 		B53F2EFD278ED4D80038B2C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53F2EFC278ED4D80038B2C3 /* GoogleService-Info.plist */; };
 		B53F2F0527900C1E0038B2C3 /* FlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2F0427900C1E0038B2C3 /* FlowController.swift */; };
+		B53F2F0727910AA40038B2C3 /* HomeCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2F0627910AA40038B2C3 /* HomeCollectionView.swift */; };
+		B53F2F0B279160020038B2C3 /* StoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2F0A279160020038B2C3 /* StoryCell.swift */; };
+		B53F2F0E279163EF0038B2C3 /* StoryItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2F0D279163EF0038B2C3 /* StoryItem.swift */; };
 		B54612792782C65000C87339 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612782782C65000C87339 /* AppDelegate.swift */; };
 		B546127B2782C65000C87339 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B546127A2782C65000C87339 /* SceneDelegate.swift */; };
 		B54612822782C65100C87339 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B54612812782C65100C87339 /* Assets.xcassets */; };
@@ -39,7 +42,7 @@
 		B54D8F09278923C9008B805E /* PostFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F08278923C9008B805E /* PostFlowController.swift */; };
 		B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0A278923F0008B805E /* ChatFlowController.swift */; };
 		B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0C278923F9008B805E /* ProfileFlowController.swift */; };
-		B54D8F1427893601008B805E /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F1327893601008B805E /* FeedViewController.swift */; };
+		B54D8F1427893601008B805E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F1327893601008B805E /* HomeViewController.swift */; };
 		B5EAF1572787E037004C429E /* CustomNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1562787E037004C429E /* CustomNavigationController.swift */; };
 		B5EAF1592787E7DE004C429E /* UIButton+TextColorOnTap.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1582787E7DE004C429E /* UIButton+TextColorOnTap.swift */; };
 		B5EAF15B2787E99B004C429E /* AuthNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF15A2787E99B004C429E /* AuthNavigationButton.swift */; };
@@ -57,6 +60,9 @@
 		B53F2EFA278ECBE00038B2C3 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		B53F2EFC278ED4D80038B2C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B53F2F0427900C1E0038B2C3 /* FlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowController.swift; sourceTree = "<group>"; };
+		B53F2F0627910AA40038B2C3 /* HomeCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionView.swift; sourceTree = "<group>"; };
+		B53F2F0A279160020038B2C3 /* StoryCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryCell.swift; sourceTree = "<group>"; };
+		B53F2F0D279163EF0038B2C3 /* StoryItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoryItem.swift; sourceTree = "<group>"; };
 		B54612752782C65000C87339 /* Flow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54612782782C65000C87339 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B546127A2782C65000C87339 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -82,7 +88,7 @@
 		B54D8F08278923C9008B805E /* PostFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFlowController.swift; sourceTree = "<group>"; };
 		B54D8F0A278923F0008B805E /* ChatFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowController.swift; sourceTree = "<group>"; };
 		B54D8F0C278923F9008B805E /* ProfileFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFlowController.swift; sourceTree = "<group>"; };
-		B54D8F1327893601008B805E /* FeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedViewController.swift; sourceTree = "<group>"; };
+		B54D8F1327893601008B805E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B5EAF1562787E037004C429E /* CustomNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomNavigationController.swift; sourceTree = "<group>"; };
 		B5EAF1582787E7DE004C429E /* UIButton+TextColorOnTap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+TextColorOnTap.swift"; sourceTree = "<group>"; };
 		B5EAF15A2787E99B004C429E /* AuthNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationButton.swift; sourceTree = "<group>"; };
@@ -104,7 +110,7 @@
 		B52DAECB278E9C9F0002D930 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
-				B52DAEC3278DD3470002D930 /* ImageCell.swift */,
+				B53F2F0C2791600E0038B2C3 /* Views */,
 				B52DAECD278E9CF00002D930 /* Models */,
 			);
 			path = Reusable;
@@ -125,10 +131,20 @@
 			isa = PBXGroup;
 			children = (
 				B52DAEC5278E53D10002D930 /* ImageItem.swift */,
+				B53F2F0D279163EF0038B2C3 /* StoryItem.swift */,
 				B52DAEC9278E99A70002D930 /* Post.swift */,
 				B53F2EFA278ECBE00038B2C3 /* Comment.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		B53F2F0C2791600E0038B2C3 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B53F2F0A279160020038B2C3 /* StoryCell.swift */,
+				B52DAEC3278DD3470002D930 /* ImageCell.swift */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B546126C2782C65000C87339 = {
@@ -242,7 +258,8 @@
 			isa = PBXGroup;
 			children = (
 				B54D8F04278923A1008B805E /* HomeFlowController.swift */,
-				B54D8F1327893601008B805E /* FeedViewController.swift */,
+				B54D8F1327893601008B805E /* HomeViewController.swift */,
+				B53F2F0627910AA40038B2C3 /* HomeCollectionView.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -383,6 +400,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B53F2F0E279163EF0038B2C3 /* StoryItem.swift in Sources */,
 				B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */,
 				B546129D2782FE7A00C87339 /* MainFlowController.swift in Sources */,
 				B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */,
@@ -400,12 +418,13 @@
 				B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */,
 				B54612982782F4F100C87339 /* UIViewController+CustomContainer.swift in Sources */,
 				B54612A72783F17A00C87339 /* SignInViewModel.swift in Sources */,
-				B54D8F1427893601008B805E /* FeedViewController.swift in Sources */,
+				B54D8F1427893601008B805E /* HomeViewController.swift in Sources */,
 				B52DAEC4278DD3470002D930 /* ImageCell.swift in Sources */,
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
 				B5EAF15F27882438004C429E /* AuthView.swift in Sources */,
 				B54612A227833CC000C87339 /* SignInView.swift in Sources */,
+				B53F2F0727910AA40038B2C3 /* HomeCollectionView.swift in Sources */,
 				B5EAF1592787E7DE004C429E /* UIButton+TextColorOnTap.swift in Sources */,
 				B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */,
 				B54612B7278674EE00C87339 /* RegisterViewController.swift in Sources */,
@@ -414,6 +433,7 @@
 				B52DAEC6278E53D10002D930 /* ImageItem.swift in Sources */,
 				B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */,
 				B5EAF1572787E037004C429E /* CustomNavigationController.swift in Sources */,
+				B53F2F0B279160020038B2C3 /* StoryCell.swift in Sources */,
 				B54D8F09278923C9008B805E /* PostFlowController.swift in Sources */,
 				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
 				B546129F27832C6100C87339 /* SignInViewController.swift in Sources */,
