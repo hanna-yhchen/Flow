@@ -87,12 +87,12 @@ extension MainFlowController: BarButtonDelegate {
             image: UIImage(systemName: "person.crop.circle"),
             style: .plain,
             target: self,
-            action: #selector(notificationButtonTapped))
+            action: #selector(sideInfoButtonTapped))
         controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "bell"),
             style: .plain,
             target: self,
-            action: #selector(sideInfoButtonTapped))
+            action: #selector(notificationButtonTapped))
     }
 
     @objc func notificationButtonTapped() {
