@@ -15,6 +15,7 @@
 		B53F2EF9278EBDE90038B2C3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2EF8278EBDE90038B2C3 /* User.swift */; };
 		B53F2EFB278ECBE00038B2C3 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2EFA278ECBE00038B2C3 /* Comment.swift */; };
 		B53F2EFD278ED4D80038B2C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53F2EFC278ED4D80038B2C3 /* GoogleService-Info.plist */; };
+		B53F2F0527900C1E0038B2C3 /* FlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2F0427900C1E0038B2C3 /* FlowController.swift */; };
 		B54612792782C65000C87339 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612782782C65000C87339 /* AppDelegate.swift */; };
 		B546127B2782C65000C87339 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B546127A2782C65000C87339 /* SceneDelegate.swift */; };
 		B54612822782C65100C87339 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B54612812782C65100C87339 /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 		B53F2EF8278EBDE90038B2C3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B53F2EFA278ECBE00038B2C3 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		B53F2EFC278ED4D80038B2C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B53F2F0427900C1E0038B2C3 /* FlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlowController.swift; sourceTree = "<group>"; };
 		B54612752782C65000C87339 /* Flow.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Flow.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B54612782782C65000C87339 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B546127A2782C65000C87339 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -282,6 +284,7 @@
 		B5CEF3FB278BDC2B004E5783 /* Shared */ = {
 			isa = PBXGroup;
 			children = (
+				B53F2F0427900C1E0038B2C3 /* FlowController.swift */,
 				B5EAF1562787E037004C429E /* CustomNavigationController.swift */,
 				B53F2EF8278EBDE90038B2C3 /* User.swift */,
 			);
@@ -391,6 +394,7 @@
 				B54612792782C65000C87339 /* AppDelegate.swift in Sources */,
 				B546129B2782FE7300C87339 /* AuthFlowController.swift in Sources */,
 				B546127B2782C65000C87339 /* SceneDelegate.swift in Sources */,
+				B53F2F0527900C1E0038B2C3 /* FlowController.swift in Sources */,
 				B54612AF2784496300C87339 /* UITextField+Publisher.swift in Sources */,
 				B52DAECA278E99A70002D930 /* Post.swift in Sources */,
 				B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */,

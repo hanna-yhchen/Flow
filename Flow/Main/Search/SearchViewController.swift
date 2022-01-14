@@ -48,10 +48,11 @@ class SearchViewController: UIViewController {
         searchController.hidesNavigationBarDuringPresentation = false
         self.searchController = searchController
 
+        // FIXME: SearchBar Increase the Height of Navigation Bar
         let searchBar = searchController.searchBar
         searchBar.delegate = self
-        self.navigationItem.titleView = searchBar
         searchBar.showsCancelButton = false
+        self.navigationItem.titleView = searchBar
 
         let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: makeLayout())
         collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
@@ -59,20 +60,6 @@ class SearchViewController: UIViewController {
         collectionView.delegate = self
         view.addSubview(collectionView)
         self.collectionView = collectionView
-
-//        searchBar.backgroundColor = .systemBackground
-//        searchBar.backgroundImage = UIImage()
-//        searchBar.translatesAutoresizingMaskIntoConstraints = false
-//        collectionView.translatesAutoresizingMaskIntoConstraints = false
-//        view.addSubview(searchBar)
-//        view.addSubview(collectionView)
-//        NSLayoutConstraint.activate([
-//            searchBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-//            searchBar.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            collectionView.topAnchor.constraint(equalTo: searchBar.bottomAnchor, constant: 20),
-//            collectionView.widthAnchor.constraint(equalTo: view.widthAnchor),
-//            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-//        ])
     }
 
     // swiftlint:disable operator_usage_whitespace

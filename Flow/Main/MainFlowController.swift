@@ -8,6 +8,11 @@
 import UIKit
 
 protocol MainFlowControllerDelegate: AnyObject {
+    func mainFlowControllerDidFinish(_ flowController: UIViewController)
+}
+
+protocol BarButtonDelegate: AnyObject {
+    func configureBarButtons(in controller: UIViewController)
 }
 
 class MainFlowController: UIViewController {
@@ -15,12 +20,12 @@ class MainFlowController: UIViewController {
 
     func start() {
         let homeFlowController = flowController(
-            HomeFlowController(),
+            HomeFlowController(barButtonDelegate: self),
             withIconName: "house",
             selectedIconName: "house.fill"
         )
         let searchFlowController = flowController(
-            SearchFlowController(),
+            SearchFlowController(barButtonDelegate: self),
             withIconName: "magnifyingglass",
             selectedIconName: "magnifyingglass"
         )
@@ -59,7 +64,7 @@ class MainFlowController: UIViewController {
         add(child: mainTabController)
     }
 
-    func flowController<T: UIViewController>(_ controller: T, withIconName iconName: String, selectedIconName: String, pointSize: CGFloat = 16) -> T {
+    private func flowController<T: UIViewController>(_ controller: T, withIconName iconName: String, selectedIconName: String, pointSize: CGFloat = 16) -> T {
         let icon = UIImage(
             systemName: iconName,
             withConfiguration: UIImage.SymbolConfiguration(pointSize: pointSize)
@@ -71,5 +76,30 @@ class MainFlowController: UIViewController {
         controller.tabBarItem.image = icon
         controller.tabBarItem.selectedImage = selectedIcon
         return controller
+    }
+}
+
+extension MainFlowController: BarButtonDelegate {
+    func configureBarButtons(in controller: UIViewController) {
+        print("configureBarButtons called")
+
+        controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "person.crop.circle"),
+            style: .plain,
+            target: self,
+            action: #selector(notificationButtonTapped))
+        controller.navigationItem.rightBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "bell"),
+            style: .plain,
+            target: self,
+            action: #selector(sideInfoButtonTapped))
+    }
+
+    @objc func notificationButtonTapped() {
+        print("notificationButtonTapped")
+    }
+
+    @objc func sideInfoButtonTapped() {
+        print("sideInfoButtonTapped")
     }
 }

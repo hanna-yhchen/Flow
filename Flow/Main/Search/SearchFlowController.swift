@@ -10,14 +10,15 @@ import UIKit
 class SearchFlowController: UIViewController {
     // MARK: - Properties
 
+    weak var barButtonDelegate: BarButtonDelegate?
     private let navigation: CustomNavigationController
 
     // MARK: - Lifecycle
 
-    init(navigation: CustomNavigationController = CustomNavigationController()) {
+    init(barButtonDelegate: BarButtonDelegate, navigation: CustomNavigationController = CustomNavigationController()) {
+        self.barButtonDelegate = barButtonDelegate
         self.navigation = navigation
         navigation.navigationBar.prefersLargeTitles = false
-        //navigation.isNavigationBarHidden = true
 
         super.init(nibName: nil, bundle: nil)
         add(child: navigation)
@@ -33,7 +34,7 @@ class SearchFlowController: UIViewController {
     private func showSearch() {
         let searchVC = SearchViewController()
         searchVC.delegate = self
-        add(child: searchVC)
+        barButtonDelegate?.configureBarButtons(in: searchVC)
         navigation.show(searchVC, sender: self)
     }
 }

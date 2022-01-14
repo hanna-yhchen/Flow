@@ -10,11 +10,13 @@ import UIKit
 class HomeFlowController: UIViewController {
     // MARK: - Properties
 
+    weak var barButtonDelegate: BarButtonDelegate?
     private let navigation: CustomNavigationController
 
     // MARK: - Lifecycle
 
-    init(navigation: CustomNavigationController = CustomNavigationController()) {
+    init(barButtonDelegate: BarButtonDelegate, navigation: CustomNavigationController = CustomNavigationController()) {
+        self.barButtonDelegate = barButtonDelegate
         self.navigation = navigation
 
         super.init(nibName: nil, bundle: nil)
@@ -31,6 +33,7 @@ class HomeFlowController: UIViewController {
     private func showFeed() {
         let feedVC = FeedViewController()
         feedVC.delegate = self
+        barButtonDelegate?.configureBarButtons(in: feedVC)
         navigation.show(feedVC, sender: self)
     }
 }
