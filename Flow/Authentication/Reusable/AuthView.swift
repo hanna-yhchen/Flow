@@ -8,22 +8,7 @@
 import UIKit
 
 class AuthView: UIView {
-    // MARK: - Properties
-
-    var isLoading = false {
-        didSet {
-            authButton.isLoading = isLoading
-            authButton.setNeedsUpdateConfiguration()
-        }
-    }
-    var isInputValid = false {
-        didSet {
-            authButton.isInputValid = isInputValid
-            authButton.setNeedsUpdateConfiguration()
-        }
-    }
-
-    // MARK: - Component
+    // MARK: - Components
 
     let inputStack: UIStackView = {
         let stackView = UIStackView()

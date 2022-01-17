@@ -8,8 +8,16 @@
 import UIKit
 
 class AuthButton: UIButton {
-    var isLoading = false
-    var isInputValid = false
+    var isLoading = false {
+        didSet {
+            setNeedsUpdateConfiguration()
+        }
+    }
+    var isInputValid = false {
+        didSet {
+            setNeedsUpdateConfiguration()
+        }
+    }
     let title: String
 
     init(title: String) {
