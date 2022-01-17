@@ -72,7 +72,7 @@ class RegisterViewController: UIViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.confirmPassword, on: viewModel)
             .store(in: &subscriptions)
-        contentView.fullNameTextField.textPublisher
+        contentView.nameTextField.textPublisher
             .receive(on: RunLoop.main)
             .assign(to: \.fullName, on: viewModel)
             .store(in: &subscriptions)
@@ -153,8 +153,8 @@ extension RegisterViewController: UITextFieldDelegate {
         case contentView.passwordTextField:
             _ = contentView.confirmPasswordTextField.becomeFirstResponder()
         case contentView.confirmPasswordTextField:
-            _ = contentView.fullNameTextField.becomeFirstResponder()
-        case contentView.fullNameTextField:
+            _ = contentView.nameTextField.becomeFirstResponder()
+        case contentView.nameTextField:
             _ = contentView.usernameTextField.becomeFirstResponder()
         case contentView.usernameTextField:
             textField.resignFirstResponder()

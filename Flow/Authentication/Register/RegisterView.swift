@@ -32,8 +32,8 @@ class RegisterView: AuthView {
 
     let confirmPasswordTextField = PasswordTextField(placeholder: "Confirm Password")
 
-    let fullNameTextField: AuthTextField = {
-        let textField = AuthTextField(placeholder: "Full Name", leftIconName: "person")
+    let nameTextField: AuthTextField = {
+        let textField = AuthTextField(placeholder: "Name", leftIconName: "person")
 
         textField.textContentType = .name
         textField.autocorrectionType = .no
@@ -44,7 +44,7 @@ class RegisterView: AuthView {
     }()
 
     let usernameTextField: AuthTextField = {
-        let textField = AuthTextField(placeholder: "Username", leftIconName: "tag")
+        let textField = AuthTextField(placeholder: "Username", leftIconName: "at")
 
         textField.textContentType = .username
         textField.autocorrectionType = .no
@@ -76,7 +76,7 @@ class RegisterView: AuthView {
             emailTextField,
             passwordTextField,
             confirmPasswordTextField,
-            fullNameTextField,
+            nameTextField,
             usernameTextField,
             authButton,
         ]

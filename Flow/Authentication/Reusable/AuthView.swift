@@ -18,7 +18,7 @@ class AuthView: UIView {
     }()
 
     let emailTextField: AuthTextField = {
-        let textField = AuthTextField(placeholder: "Email Address", leftIconName: "at")
+        let textField = AuthTextField(placeholder: "Email Address", leftIconName: "envelope")
 
         textField.keyboardType = .emailAddress
         textField.textContentType = .emailAddress

@@ -9,6 +9,7 @@ import UIKit
 import Combine
 
 class RegisterViewModel {
+    @Published var profilePhoto: UIImage?
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
@@ -18,7 +19,6 @@ class RegisterViewModel {
     @Published private var isPasswordConfirmed = false
 
     private var subscriptions = Set<AnyCancellable>()
-
 
     private(set) lazy var isInputValid = Publishers.CombineLatest4($email, $fullName, $username, $isPasswordConfirmed)
         .map { email, fullName, username, isPasswordConfirmed in

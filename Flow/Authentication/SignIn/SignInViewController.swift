@@ -60,16 +60,16 @@ class SignInViewController: UIViewController {
 
         viewModel.isInputValid
             .receive(on: RunLoop.main)
-            .assign(to: \.isInputValid, on: contentView)
+            .assign(to: \.isInputValid, on: contentView.authButton)
             .store(in: &subscriptions)
     }
 
     // MARK: - Actions
 
     @objc private func signIn() {
-        contentView.isLoading = true
+        contentView.authButton.isLoading = true
         Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            self.contentView.isLoading = false
+            self.contentView.authButton.isLoading = false
         }
 
         // TODO: Validate Credentials
