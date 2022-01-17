@@ -23,7 +23,7 @@ class RegisterView: AuthView {
         button.setImage(icon, for: .normal)
 
         button.layer.borderWidth = 1
-        button.layer.cornerRadius = 150 / 2
+        button.layer.cornerRadius = 120 / 2
         button.layer.borderColor = UIColor.systemGray.cgColor
         button.layer.masksToBounds = true
 
@@ -102,8 +102,8 @@ class RegisterView: AuthView {
         NSLayoutConstraint.activate([
             addPhotoButton.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor, constant: 20),
             addPhotoButton.centerXAnchor.constraint(equalTo: centerXAnchor),
-            addPhotoButton.heightAnchor.constraint(equalToConstant: 150),
-            addPhotoButton.widthAnchor.constraint(equalToConstant: 150),
+            addPhotoButton.heightAnchor.constraint(equalToConstant: 120),
+            addPhotoButton.widthAnchor.constraint(equalToConstant: 120),
 
             inputStack.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 20),
             inputStack.leftAnchor.constraint(equalTo: leftAnchor, constant: 40),

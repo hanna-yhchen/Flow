@@ -37,7 +37,7 @@ class RegisterViewController: UIViewController {
         let scrollContentLayoutGuide = scrollView.contentLayoutGuide
         NSLayoutConstraint.activate([
             contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
-            contentView.heightAnchor.constraint(equalToConstant: 700),
+            contentView.heightAnchor.constraint(equalToConstant: 620),
             scrollContentLayoutGuide.topAnchor.constraint(equalTo: contentView.topAnchor),
             scrollContentLayoutGuide.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             scrollContentLayoutGuide.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),

@@ -21,20 +21,14 @@ class AuthFlowController: UIViewController {
 
     init(navigation: CustomNavigationController = CustomNavigationController()) {
         self.navigation = navigation
-        navigation.navigationBar.prefersLargeTitles = true
 
         super.init(nibName: nil, bundle: nil)
+        add(child: navigation)
+        showSignIn()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Methods
-
-    func start() {
-        add(child: navigation)
-        showSignIn()
     }
 
     // MARK: - Private
