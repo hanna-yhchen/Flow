@@ -30,7 +30,7 @@ class MainFlowController: UIViewController {
             selectedIconName: "magnifyingglass"
         )
         let postFlowController = flowController(
-            PostFlowController(),
+            NewPostFlowController(),
             withIconName: "plus.app",
             selectedIconName: "plus.app.fill",
             pointSize: 20

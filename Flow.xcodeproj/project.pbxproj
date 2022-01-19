@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7C927959E3F00E8840D /* PostImageView.swift */; };
 		B507A7CC2797EE8300E8840D /* Story.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7CB2797EE8300E8840D /* Story.swift */; };
+		B507A7CE27983ECE00E8840D /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7CD27983ECE00E8840D /* PostViewController.swift */; };
 		B52DAEC0278D23560002D930 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEBF278D23560002D930 /* SearchViewController.swift */; };
 		B52DAEC4278DD3470002D930 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC3278DD3470002D930 /* ImageCell.swift */; };
 		B52DAEC6278E53D10002D930 /* ImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC5278E53D10002D930 /* ImageItem.swift */; };
@@ -40,7 +41,7 @@
 		B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612C22787227A00C87339 /* PasswordTextField.swift */; };
 		B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F04278923A1008B805E /* HomeFlowController.swift */; };
 		B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F06278923B6008B805E /* SearchFlowController.swift */; };
-		B54D8F09278923C9008B805E /* PostFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F08278923C9008B805E /* PostFlowController.swift */; };
+		B54D8F09278923C9008B805E /* NewPostFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F08278923C9008B805E /* NewPostFlowController.swift */; };
 		B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0A278923F0008B805E /* ChatFlowController.swift */; };
 		B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0C278923F9008B805E /* ProfileFlowController.swift */; };
 		B54D8F1427893601008B805E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F1327893601008B805E /* HomeViewController.swift */; };
@@ -57,6 +58,7 @@
 /* Begin PBXFileReference section */
 		B507A7C927959E3F00E8840D /* PostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageView.swift; sourceTree = "<group>"; };
 		B507A7CB2797EE8300E8840D /* Story.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Story.swift; sourceTree = "<group>"; };
+		B507A7CD27983ECE00E8840D /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		B52DAEBF278D23560002D930 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		B52DAEC3278DD3470002D930 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		B52DAEC5278E53D10002D930 /* ImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
@@ -90,7 +92,7 @@
 		B54612C22787227A00C87339 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		B54D8F04278923A1008B805E /* HomeFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowController.swift; sourceTree = "<group>"; };
 		B54D8F06278923B6008B805E /* SearchFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowController.swift; sourceTree = "<group>"; };
-		B54D8F08278923C9008B805E /* PostFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostFlowController.swift; sourceTree = "<group>"; };
+		B54D8F08278923C9008B805E /* NewPostFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostFlowController.swift; sourceTree = "<group>"; };
 		B54D8F0A278923F0008B805E /* ChatFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowController.swift; sourceTree = "<group>"; };
 		B54D8F0C278923F9008B805E /* ProfileFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFlowController.swift; sourceTree = "<group>"; };
 		B54D8F1327893601008B805E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
@@ -118,6 +120,7 @@
 		B52DAECB278E9C9F0002D930 /* Reusable */ = {
 			isa = PBXGroup;
 			children = (
+				B507A7CD27983ECE00E8840D /* PostViewController.swift */,
 				B53F2F0C2791600E0038B2C3 /* UI Components */,
 				B52DAECD278E9CF00002D930 /* Models */,
 			);
@@ -230,7 +233,7 @@
 				B546129C2782FE7A00C87339 /* MainFlowController.swift */,
 				B54D8F0E278924A8008B805E /* Home */,
 				B54D8F0F278924AD008B805E /* Search */,
-				B54D8F10278924B1008B805E /* Post */,
+				B54D8F10278924B1008B805E /* New Post */,
 				B54D8F11278924B5008B805E /* Chat */,
 				B54D8F122789268E008B805E /* Profile */,
 				B52DAECB278E9C9F0002D930 /* Reusable */,
@@ -287,12 +290,12 @@
 			path = Search;
 			sourceTree = "<group>";
 		};
-		B54D8F10278924B1008B805E /* Post */ = {
+		B54D8F10278924B1008B805E /* New Post */ = {
 			isa = PBXGroup;
 			children = (
-				B54D8F08278923C9008B805E /* PostFlowController.swift */,
+				B54D8F08278923C9008B805E /* NewPostFlowController.swift */,
 			);
-			path = Post;
+			path = "New Post";
 			sourceTree = "<group>";
 		};
 		B54D8F11278924B5008B805E /* Chat */ = {
@@ -422,6 +425,7 @@
 				B54612A927840E9700C87339 /* AuthTextField.swift in Sources */,
 				B54612AB27842EB800C87339 /* UIColor+CustomColors.swift in Sources */,
 				B54612792782C65000C87339 /* AppDelegate.swift in Sources */,
+				B507A7CE27983ECE00E8840D /* PostViewController.swift in Sources */,
 				B546129B2782FE7300C87339 /* AuthFlowController.swift in Sources */,
 				B546127B2782C65000C87339 /* SceneDelegate.swift in Sources */,
 				B54612AF2784496300C87339 /* UITextField+Publisher.swift in Sources */,
@@ -448,7 +452,7 @@
 				B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */,
 				B5EAF1572787E037004C429E /* FNavigationController.swift in Sources */,
 				B53F2F0B279160020038B2C3 /* StoryCell.swift in Sources */,
-				B54D8F09278923C9008B805E /* PostFlowController.swift in Sources */,
+				B54D8F09278923C9008B805E /* NewPostFlowController.swift in Sources */,
 				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
 				B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */,
 				B507A7CC2797EE8300E8840D /* Story.swift in Sources */,
