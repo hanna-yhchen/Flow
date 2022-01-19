@@ -29,7 +29,7 @@ class AuthTextField: UITextField {
     }
 
     private func configureBottomLine() {
-        bottomLine.backgroundColor = .lightGray
+        bottomLine.backgroundColor = .systemGray
         bottomLine.translatesAutoresizingMaskIntoConstraints = false
         addSubview(bottomLine)
         bottomLineHeightConstraint = bottomLine.heightAnchor.constraint(equalToConstant: 1)

@@ -5,10 +5,9 @@
 //  Created by Hanna Chen on 2022/1/12.
 //
 
-import Foundation
 import UIKit
 
-class ImageItem: Hashable {
+struct ImageItem: Hashable {
     let image: UIImage?
     let identifier = UUID()
 

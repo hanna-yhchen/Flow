@@ -90,7 +90,7 @@ extension SignInViewController: UITextFieldDelegate {
     func textFieldDidBeginEditing(_ textField: UITextField) {
         if let authTextField = textField as? AuthTextField {
             UIView.animate(withDuration: 0.2) {
-                authTextField.bottomLine.backgroundColor = .accentGray
+                authTextField.bottomLine.backgroundColor = .secondaryLabel
                 authTextField.bottomLineHeightConstraint.constant = 1.5
                 authTextField.layoutIfNeeded()
             }

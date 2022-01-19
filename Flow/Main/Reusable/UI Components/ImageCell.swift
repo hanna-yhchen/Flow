@@ -9,7 +9,6 @@ import UIKit
 
 class ImageCell: UICollectionViewCell {
     let imageView = UIImageView()
-    static let reuseIdentifier = "image-cell"
 
     override init(frame: CGRect) {
         super.init(frame: frame)

@@ -9,9 +9,16 @@ import UIKit
 import Combine
 
 protocol FeedViewControllerDelegate: AnyObject {
+    func navigateToPost(id: String)
+    func navigateToCommentOfPost(id: String)
 }
 
 class HomeViewController: UIViewController {
+    enum Item: Hashable {
+        case story(Storybook)
+        case feed(Post)
+    }
+
     // MARK: - Properties
 
     weak var delegate: FeedViewControllerDelegate?
@@ -35,6 +42,8 @@ class HomeViewController: UIViewController {
         configureBindings()
     }
 
+    // MARK: - Configuration
+
     private func configureHierarchy() {
         self.collectionView = HomeCollectionView(withFrame: view.bounds)
         collectionView.delegate = self
@@ -42,16 +51,8 @@ class HomeViewController: UIViewController {
     }
 
     private func configureDataSource() {
-        let storyCellRegistration = UICollectionView.CellRegistration<ImageCell, ImageItem> { cell, indexPath, item in
-            cell.bounds = CGRect(x: 0, y: 0, width: 75, height: 75)
-            cell.imageView.layer.cornerRadius = 75 / 2
-            cell.imageView.layer.borderWidth = 2
-            cell.imageView.layer.borderColor = UIColor.red.cgColor
-        }
-
-        let feedCellRegistration = UICollectionView.CellRegistration<ImageCell, ImageItem> { cell, _, item in
-            cell.imageView.image = item.image
-        }
+        let storyCellRegistration = makeStoryCellRegistration()
+        let feedCellRegistration = makeFeedCellRegistration()
 
         dataSource = UICollectionViewDiffableDataSource<HomeSection, ImageItem>(collectionView: collectionView) {
             collectionView, indexPath, item in
@@ -85,7 +86,7 @@ class HomeViewController: UIViewController {
     private func currentSnapshot() -> NSDiffableDataSourceSnapshot<HomeSection, ImageItem> {
         // TODO: Fetch Popular Posts
         let array = Array(repeating: 0, count: 100)
-        let testStories = array.map { _ in ImageItem(image: UIImage(named: "scenery")) }
+        let testStories = array.map { _ in ImageItem(image: nil) }
         let textFeeds = array.map { _ in ImageItem(image: UIImage(named: "scenery")) }
 
         var snapshot = NSDiffableDataSourceSnapshot<HomeSection, ImageItem>()
@@ -95,6 +96,49 @@ class HomeViewController: UIViewController {
         snapshot.appendItems(testStories, toSection: .story)
         snapshot.appendItems(textFeeds, toSection: .feed)
         return snapshot
+    }
+
+    // MARK: - Actions
+
+    @objc private func postCaptionTapped(sender: UITapGestureRecognizer) {
+        guard let captionLabel = sender.view as? UILabel else { return }
+        print("\(captionLabel.tag)th cell label pressed")
+    }
+
+    // MARK: - Cell Registration Factory
+
+    private func makeStoryCellRegistration() -> UICollectionView.CellRegistration<StoryCell, ImageItem> {
+        return UICollectionView.CellRegistration<StoryCell, ImageItem> { cell, _, _ in
+            cell.profileImageView.image = UIImage(named: "keanu")
+        }
+    }
+
+    private func makeFeedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, ImageItem> {
+        return UICollectionView.CellRegistration<FeedCell, ImageItem> {cell, indexPath, item in
+            cell.postImageView.image = UIImage(named: "scenery")
+            cell.postID = item.identifier.uuidString
+
+            // Configure cell actions
+            cell.likeButton.addAction(
+                UIAction {_ in
+                    cell.didLike.toggle()
+                    // Update whoLikes and count
+                },
+                for: .touchUpInside
+            )
+
+            cell.bookmarkButton.addAction(
+                UIAction {_ in
+                    cell.didBookmark.toggle()
+                    // Update whoBookmarks and count
+                },
+                for: .touchUpInside
+            )
+
+//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(captionLabelTapped))
+//            cell.captionLabel.addGestureRecognizer(tapGesture)
+//            cell.captionLabel.tag = indexPath.item
+        }
     }
 }
 

@@ -8,7 +8,7 @@
 import UIKit
 
 extension UIButton {
-    func makeTitleColorTransformerOnTap() -> UIConfigurationTextAttributesTransformer {
+    func makeAccentTitleColorTransformerOnTap() -> UIConfigurationTextAttributesTransformer {
         return UIConfigurationTextAttributesTransformer { incoming in
             var outgoing = incoming
             if self.state != .normal {

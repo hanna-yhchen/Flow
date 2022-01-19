@@ -11,14 +11,13 @@ class SearchFlowController: UIViewController {
     // MARK: - Properties
 
     weak var barButtonDelegate: BarButtonDelegate?
-    private let navigation: CustomNavigationController
+    private let navigation: FNavigationController
 
     // MARK: - Lifecycle
 
-    init(barButtonDelegate: BarButtonDelegate, navigation: CustomNavigationController = CustomNavigationController()) {
+    init(barButtonDelegate: BarButtonDelegate, navigation: FNavigationController = FNavigationController()) {
         self.barButtonDelegate = barButtonDelegate
         self.navigation = navigation
-        navigation.navigationBar.prefersLargeTitles = false
 
         super.init(nibName: nil, bundle: nil)
         add(child: navigation)

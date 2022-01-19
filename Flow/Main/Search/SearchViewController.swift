@@ -19,11 +19,13 @@ class SearchViewController: UIViewController {
     }
 
     weak var delegate: SearchViewControllerDelegate?
+
     // swiftlint:disable implicitly_unwrapped_optional
     private var searchController: UISearchController! = nil
     private var collectionView: UICollectionView! = nil
     private var dataSource: UICollectionViewDiffableDataSource<Section, ImageItem>! = nil
     // swiftlint:enable implicitly_unwrapped_optional
+
     // private let viewModel = SearchViewModel()
     private var subscriptions = Set<AnyCancellable>()
 
@@ -127,8 +129,8 @@ class SearchViewController: UIViewController {
         )
         nestedGroup.interItemSpacing = .fixed(1)
 
-        let section = NSCollectionLayoutSection(group: nestedGroup)
-        let layout = UICollectionViewCompositionalLayout(section: section)
+        let layoutSection = NSCollectionLayoutSection(group: nestedGroup)
+        let layout = UICollectionViewCompositionalLayout(section: layoutSection)
         return layout
     }
 
@@ -176,7 +178,4 @@ extension SearchViewController: UISearchControllerDelegate, UISearchBarDelegate 
 // MARK: - UICollectionViewDelegate
 
 extension SearchViewController: UICollectionViewDelegate {
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        collectionView.deselectItem(at: indexPath, animated: true)
-    }
 }

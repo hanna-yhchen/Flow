@@ -10,15 +10,14 @@ import UIKit
 class AppFlowController: UIViewController {
     func start() {
         // TODO: Check Authentication State
-        startLogin()
-        //startMain()
+        //startLogin()
+        startMain()
     }
 
     private func startLogin() {
-        let loginFlowController = AuthFlowController()
-        loginFlowController.delegate = self
-        add(child: loginFlowController)
-        loginFlowController.start()
+        let authFlowController = AuthFlowController()
+        authFlowController.delegate = self
+        add(child: authFlowController)
     }
 
     private func startMain() {
@@ -32,11 +31,17 @@ class AppFlowController: UIViewController {
 // MARK: - Child Flow Controller Delegate
 
 extension AppFlowController: AuthFlowControllerDelegate {
+    /// Call the app flow controller to show main screen when the user logs in
     func authFlowControllerDidFinish(_ flowController: UIViewController) {
+        // Logged In
         remove(child: flowController)
         startMain()
     }
 }
 
 extension AppFlowController: MainFlowControllerDelegate {
+    /// Get called when the user logs out
+    func mainFlowControllerDidFinish(_ flowController: UIViewController) {
+        // Logged Out
+    }
 }

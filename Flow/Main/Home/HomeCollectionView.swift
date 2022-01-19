@@ -42,33 +42,31 @@ class HomeCollectionView: UICollectionView {
 
                 let group = NSCollectionLayoutGroup.horizontal(
                     layoutSize: NSCollectionLayoutSize(
-                        widthDimension: .absolute(80),
-                        heightDimension: .absolute(80)
+                        widthDimension: .estimated(75),
+                        heightDimension: .estimated(75)
                     ),
                     subitems: [item]
                 )
-                group.edgeSpacing = NSCollectionLayoutEdgeSpacing(leading: .fixed(5), top: nil, trailing: .fixed(5), bottom: nil)
 
                 layoutSection = NSCollectionLayoutSection(group: group)
+                layoutSection.interGroupSpacing = 8
+                layoutSection.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 10, bottom: 3, trailing: 0)
                 layoutSection.orthogonalScrollingBehavior = .continuous
             case .feed:
-                let item = NSCollectionLayoutItem(
-                    layoutSize: NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(1),
-                        heightDimension: .fractionalHeight(1)
-                    )
+                let layoutSize = NSCollectionLayoutSize(
+                    widthDimension: .fractionalWidth(1),
+                    heightDimension: .estimated(350)
                 )
-                item.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 0, bottom: 5, trailing: 0)
 
-                let group = NSCollectionLayoutGroup.vertical(
-                    layoutSize: NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(1),
-                        heightDimension: .estimated(350)
-                    ),
-                    subitems: [item]
+                let item = NSCollectionLayoutItem(layoutSize: layoutSize)
+                let group = NSCollectionLayoutGroup.horizontal(
+                    layoutSize: layoutSize,
+                    subitem: item,
+                    count: 1
                 )
 
                 layoutSection = NSCollectionLayoutSection(group: group)
+                layoutSection.interGroupSpacing = 20
             }
 
             return layoutSection

@@ -37,7 +37,7 @@ class AuthNavigationButton: UIButton {
         var config = UIButton.Configuration.plain()
 
         config.attributedTitle = title
-        config.titleTextAttributesTransformer = makeTitleColorTransformerOnTap()
+        config.titleTextAttributesTransformer = makeAccentTitleColorTransformerOnTap()
         config.contentInsets = NSDirectionalEdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0)
 
         self.configuration = config

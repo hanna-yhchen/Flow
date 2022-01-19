@@ -15,12 +15,13 @@ class AuthFlowController: UIViewController {
     // MARK: - Properties
 
     weak var delegate: AuthFlowControllerDelegate?
-    private let navigation: CustomNavigationController
+    private let navigation: FNavigationController
 
     // MARK: - Lifecycle
 
-    init(navigation: CustomNavigationController = CustomNavigationController()) {
+    init(navigation: FNavigationController = FNavigationController()) {
         self.navigation = navigation
+        navigation.navigationBar.prefersLargeTitles = true
 
         super.init(nibName: nil, bundle: nil)
         add(child: navigation)

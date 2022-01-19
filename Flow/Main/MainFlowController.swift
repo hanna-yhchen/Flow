@@ -81,8 +81,6 @@ class MainFlowController: UIViewController {
 
 extension MainFlowController: BarButtonDelegate {
     func configureBarButtons(in controller: UIViewController) {
-        print("configureBarButtons called")
-
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "person.crop.circle"),
             style: .plain,
