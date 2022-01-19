@@ -13,7 +13,7 @@ struct Comments {
 }
 
 struct Comment {
-    let author: User
+    let authorID: UserID
     let authorName: String
     let content: String
     let date: Date

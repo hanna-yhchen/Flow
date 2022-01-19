@@ -19,13 +19,16 @@ class HomeViewController: UIViewController {
         case feed(Post)
     }
 
+    typealias HomeDataSource = UICollectionViewDiffableDataSource<HomeSection, Item>
+    typealias HomeSnapshot = NSDiffableDataSourceSnapshot<HomeSection, Item>
+
     // MARK: - Properties
 
     weak var delegate: FeedViewControllerDelegate?
 
     // swiftlint:disable implicitly_unwrapped_optional
     private var collectionView: UICollectionView! = nil
-    private var dataSource: UICollectionViewDiffableDataSource<HomeSection, ImageItem>! = nil
+    private var dataSource: HomeDataSource! = nil
     // swiftlint:enable implicitly_unwrapped_optional
 
     private var subscriptions = Set<AnyCancellable>()
@@ -54,25 +57,20 @@ class HomeViewController: UIViewController {
         let storyCellRegistration = makeStoryCellRegistration()
         let feedCellRegistration = makeFeedCellRegistration()
 
-        dataSource = UICollectionViewDiffableDataSource<HomeSection, ImageItem>(collectionView: collectionView) {
+        dataSource = HomeDataSource(collectionView: collectionView) {
             collectionView, indexPath, item in
-
-            guard let section = HomeSection(rawValue: indexPath.section) else {
-                fatalError("Unexpected Home Section Index")
-            }
-
-            switch section {
-            case .story:
+            switch item {
+            case .story(let storybook):
                 return collectionView.dequeueConfiguredReusableCell(
                     using: storyCellRegistration,
                     for: indexPath,
-                    item: item
+                    item: storybook
                 )
-            case .feed:
+            case .feed(let post):
                 return collectionView.dequeueConfiguredReusableCell(
                     using: feedCellRegistration,
                     for: indexPath,
-                    item: item
+                    item: post
                 )
             }
         }
@@ -83,18 +81,19 @@ class HomeViewController: UIViewController {
     private func configureBindings() {
     }
 
-    private func currentSnapshot() -> NSDiffableDataSourceSnapshot<HomeSection, ImageItem> {
+    private func currentSnapshot() -> HomeSnapshot {
         // TODO: Fetch Popular Posts
-        let array = Array(repeating: 0, count: 100)
-        let testStories = array.map { _ in ImageItem(image: nil) }
-        let textFeeds = array.map { _ in ImageItem(image: UIImage(named: "scenery")) }
+        let array = Array(0..<100)
+        let storybooks = array.map { int in Item.story(Storybook(profileImageThumbnailURL: "", authorID: "\(int)", authorName: "Keanu")) }
+        let feeds = array.map { int in
+            Item.feed(
+                Post(id: "\(int)", authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", list: []), whoBookmarks: []))
+        }
 
-        var snapshot = NSDiffableDataSourceSnapshot<HomeSection, ImageItem>()
-        snapshot.appendSections([HomeSection.story, HomeSection.feed])
-
-        dataSource?.apply(snapshot)
-        snapshot.appendItems(testStories, toSection: .story)
-        snapshot.appendItems(textFeeds, toSection: .feed)
+        var snapshot = HomeSnapshot()
+        snapshot.appendSections(HomeSection.allCases)
+        snapshot.appendItems(storybooks, toSection: .story)
+        snapshot.appendItems(feeds, toSection: .feed)
         return snapshot
     }
 
@@ -107,16 +106,17 @@ class HomeViewController: UIViewController {
 
     // MARK: - Cell Registration Factory
 
-    private func makeStoryCellRegistration() -> UICollectionView.CellRegistration<StoryCell, ImageItem> {
-        return UICollectionView.CellRegistration<StoryCell, ImageItem> { cell, _, _ in
+    private func makeStoryCellRegistration() -> UICollectionView.CellRegistration<StoryCell, Storybook> {
+        return UICollectionView.CellRegistration<StoryCell, Storybook> { cell, _, storybook in
             cell.profileImageView.image = UIImage(named: "keanu")
+            cell.usernameLabel.text = storybook.authorName
         }
     }
 
-    private func makeFeedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, ImageItem> {
-        return UICollectionView.CellRegistration<FeedCell, ImageItem> {cell, indexPath, item in
+    private func makeFeedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, Post> {
+        return UICollectionView.CellRegistration<FeedCell, Post> {cell, indexPath, post in
             cell.postImageView.image = UIImage(named: "scenery")
-            cell.postID = item.identifier.uuidString
+            cell.postID = post.id
 
             // Configure cell actions
             cell.likeButton.addAction(

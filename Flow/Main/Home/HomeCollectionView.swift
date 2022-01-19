@@ -7,7 +7,7 @@
 
 import UIKit
 
-enum HomeSection: Int {
+enum HomeSection: Int, CaseIterable {
     case story
     case feed
 }
