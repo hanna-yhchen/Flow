@@ -31,18 +31,21 @@ class StoryCell: UICollectionViewCell {
     }
 
     private func configure() {
+        profileImageView.layer.borderWidth = 3
+        profileImageView.layer.borderColor = UIColor.tintColor.cgColor
+
+        usernameLabel.font = .systemFont(ofSize: 12)
+
         [profileImageView, usernameLabel].forEach { view in
             contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(profileImageView)
-        NSLayoutConstraint.activate([
-            profileImageView.heightAnchor.constraint(equalToConstant: 70),
-            profileImageView.widthAnchor.constraint(equalToConstant: 70),
-        ])
 
-        profileImageView.layer.borderWidth = 3
-        profileImageView.layer.borderColor = UIColor.tintColor.cgColor
+        NSLayoutConstraint.activate([
+            profileImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            usernameLabel.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            usernameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 3),
+        ])
     }
 }

@@ -43,14 +43,14 @@ class HomeCollectionView: UICollectionView {
                 let group = NSCollectionLayoutGroup.horizontal(
                     layoutSize: NSCollectionLayoutSize(
                         widthDimension: .estimated(75),
-                        heightDimension: .estimated(75)
+                        heightDimension: .estimated(90)
                     ),
                     subitems: [item]
                 )
 
                 layoutSection = NSCollectionLayoutSection(group: group)
                 layoutSection.interGroupSpacing = 8
-                layoutSection.contentInsets = NSDirectionalEdgeInsets(top: 3, leading: 10, bottom: 3, trailing: 0)
+                layoutSection.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 8, trailing: 0)
                 layoutSection.orthogonalScrollingBehavior = .continuous
             case .feed:
                 let layoutSize = NSCollectionLayoutSize(

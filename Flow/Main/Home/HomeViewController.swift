@@ -100,8 +100,8 @@ class HomeViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func postCaptionTapped(sender: UITapGestureRecognizer) {
-        guard let captionLabel = sender.view as? UILabel else { return }
-        print("\(captionLabel.tag)th cell label pressed")
+        guard let feedCell = sender.view?.superview?.superview as? FeedCell else { return }
+        print("Tap on post id: \(feedCell.postID)")
     }
 
     // MARK: - Cell Registration Factory
@@ -135,9 +135,9 @@ class HomeViewController: UIViewController {
                 for: .touchUpInside
             )
 
-//            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(captionLabelTapped))
-//            cell.captionLabel.addGestureRecognizer(tapGesture)
-//            cell.captionLabel.tag = indexPath.item
+            // need to pass id
+            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.postCaptionTapped))
+            cell.captionLabel.addGestureRecognizer(tapGesture)
         }
     }
 }
