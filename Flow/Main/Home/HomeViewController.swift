@@ -84,10 +84,10 @@ class HomeViewController: UIViewController {
     private func currentSnapshot() -> HomeSnapshot {
         // TODO: Fetch Popular Posts
         let array = Array(0..<100)
-        let storybooks = array.map { int in Item.story(Storybook(profileImageThumbnailURL: "", authorID: "\(int)", authorName: "Keanu")) }
+        let storybooks = array.map { int in Item.story(Storybook(authorID: "\(int)", whoHasReadAll: [])) }
         let feeds = array.map { int in
             Item.feed(
-                Post(id: "\(int)", authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", list: []), whoBookmarks: []))
+                Post(id: "\(int)", authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: []))
         }
 
         var snapshot = HomeSnapshot()
@@ -108,14 +108,27 @@ class HomeViewController: UIViewController {
 
     private func makeStoryCellRegistration() -> UICollectionView.CellRegistration<StoryCell, Storybook> {
         return UICollectionView.CellRegistration<StoryCell, Storybook> { cell, _, storybook in
+            // TODO: Fetch author's profile Image and username by storybook.authorID
             cell.profileImageView.image = UIImage(named: "keanu")
-            cell.usernameLabel.text = storybook.authorName
+            cell.usernameLabel.text = "Keanu"
+
+            cell.isRead = storybook.whoHasReadAll.contains("myUserID")
         }
     }
 
     private func makeFeedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, Post> {
-        return UICollectionView.CellRegistration<FeedCell, Post> {cell, indexPath, post in
+        return UICollectionView.CellRegistration<FeedCell, Post> {cell, _, post in
+            // TODO: Fetch author's profile Image and username by storybook.authorID
+            // TODO: Fetch post's image by post.photoURLs[0]
             cell.postImageView.image = UIImage(named: "scenery")
+            cell.captionLabel.text = post.caption
+            cell.didLike = post.whoLikes.contains("myUserID")
+            cell.didBookmark = post.whoBookmarks.contains("myUserID")
+            cell.countOfLike = post.whoLikes.count
+            cell.countOfComment = post.comments.count
+            cell.countOfBookmark = post.whoBookmarks.count
+
+
             cell.postID = post.id
 
             // Configure cell actions
@@ -135,7 +148,7 @@ class HomeViewController: UIViewController {
                 for: .touchUpInside
             )
 
-            // need to pass id
+            // Pass id option: subclass gesture recognizer to carry value
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.postCaptionTapped))
             cell.captionLabel.addGestureRecognizer(tapGesture)
         }

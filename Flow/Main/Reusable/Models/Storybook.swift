@@ -8,9 +8,8 @@
 import UIKit
 
 struct Storybook: Hashable {
-    let profileImageThumbnailURL: FirebaseURL
     let authorID: UserID
-    let authorName: String
+    let whoHasReadAll: [UserID]
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(authorID)

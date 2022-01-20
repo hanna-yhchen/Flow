@@ -9,12 +9,19 @@ import Foundation
 
 struct Comments {
     let postID: String
-    let list: [Comment]
+    let count: Int
 }
 
-struct Comment {
+struct Comment: Hashable {
     let authorID: UserID
-    let authorName: String
     let content: String
     let date: Date
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(authorID)
+    }
+
+    static func == (lhs: Comment, rhs: Comment) -> Bool {
+        return lhs.authorID == rhs.authorID
+    }
 }
