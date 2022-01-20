@@ -42,7 +42,6 @@ class HomeViewController: UIViewController {
 
         configureHierarchy()
         configureDataSource()
-        configureBindings()
     }
 
     // MARK: - Configuration
@@ -53,6 +52,17 @@ class HomeViewController: UIViewController {
         view.addSubview(collectionView)
     }
 
+    // MARK: - Actions
+
+    @objc private func postCaptionTapped(sender: UITapGestureRecognizer) {
+        guard let feedCell = sender.view?.superview?.superview as? FeedCell else { return }
+        print("Tap on post id: \(feedCell.postID)")
+    }
+}
+
+// MARK: - Data Source
+
+extension HomeViewController {
     private func configureDataSource() {
         let storyCellRegistration = makeStoryCellRegistration()
         let feedCellRegistration = makeFeedCellRegistration()
@@ -78,9 +88,6 @@ class HomeViewController: UIViewController {
         dataSource.apply(currentSnapshot(), animatingDifferences: false)
     }
 
-    private func configureBindings() {
-    }
-
     private func currentSnapshot() -> HomeSnapshot {
         // TODO: Fetch Popular Posts
         let array = Array(0..<100)
@@ -95,13 +102,6 @@ class HomeViewController: UIViewController {
         snapshot.appendItems(storybooks, toSection: .story)
         snapshot.appendItems(feeds, toSection: .feed)
         return snapshot
-    }
-
-    // MARK: - Actions
-
-    @objc private func postCaptionTapped(sender: UITapGestureRecognizer) {
-        guard let feedCell = sender.view?.superview?.superview as? FeedCell else { return }
-        print("Tap on post id: \(feedCell.postID)")
     }
 
     // MARK: - Cell Registration Factory
