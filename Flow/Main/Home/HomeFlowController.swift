@@ -42,6 +42,9 @@ class HomeFlowController: UIViewController {
 
 extension HomeFlowController: FeedViewControllerDelegate {
     func navigateToPost(id: String) {
+        let testPost = Post(id: "", authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: [])
+        let postVC = PostViewController(postID: id, post: testPost)
+        navigation.pushViewController(postVC, animated: true)
     }
 
     func navigateToCommentOfPost(id: String) {

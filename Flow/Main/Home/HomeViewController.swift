@@ -55,8 +55,8 @@ class HomeViewController: UIViewController {
     // MARK: - Actions
 
     @objc private func postCaptionTapped(sender: UITapGestureRecognizer) {
-        guard let feedCell = sender.view?.superview?.superview as? FeedCell else { return }
-        print("Tap on post id: \(feedCell.postID)")
+        // TODO: Pass id and Post also
+        delegate?.navigateToPost(id: "007")
     }
 }
 
@@ -127,7 +127,6 @@ extension HomeViewController {
             cell.countOfLike = post.whoLikes.count
             cell.countOfComment = post.comments.count
             cell.countOfBookmark = post.whoBookmarks.count
-
 
             cell.postID = post.id
 

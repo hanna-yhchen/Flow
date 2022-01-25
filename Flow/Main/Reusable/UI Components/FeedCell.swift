@@ -197,6 +197,7 @@ class FeedCell: UICollectionViewCell {
     // MARK: - Lifecycle
     override init(frame: CGRect) {
         super.init(frame: frame)
+        backgroundColor = .systemBackground
         shareButton.setTitle("", for: .normal)
         profileImageView.image = UIImage(named: "keanu")
 
