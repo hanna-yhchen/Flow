@@ -9,6 +9,7 @@ import UIKit
 
 class GrowableTextView: UITextView {
     let placeholderLabel = UILabel()
+    let maxHeight: CGFloat = 35 + 3 * 17
 
     init(placeholder: String) {
         super.init(frame: .zero, textContainer: nil)

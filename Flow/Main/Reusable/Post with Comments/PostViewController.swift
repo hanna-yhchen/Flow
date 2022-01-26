@@ -149,8 +149,11 @@ extension PostViewController: UICollectionViewDelegate {
 
 extension PostViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
-        if let textView = textView as? GrowableTextView {
-            textView.placeholderLabel.isHidden = !textView.text.isEmpty
-        }
+        guard let textView = textView as? GrowableTextView else { return }
+        textView.placeholderLabel.isHidden = !textView.text.isEmpty
+
+        let isOversized = textView.contentSize.height >= textView.maxHeight
+        textView.isScrollEnabled = isOversized
+        textView.setNeedsUpdateConstraints()
     }
 }

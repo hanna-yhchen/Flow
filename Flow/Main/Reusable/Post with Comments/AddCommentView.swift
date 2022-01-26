@@ -46,6 +46,7 @@ class AddCommentView: UIView {
             commentTextView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
             commentTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
             commentTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
+            commentTextView.heightAnchor.constraint(lessThanOrEqualToConstant: commentTextView.maxHeight),
         ])
     }
 }
