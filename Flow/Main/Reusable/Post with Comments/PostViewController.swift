@@ -54,6 +54,7 @@ class PostViewController: UIViewController {
         view.addSubview(collectionView)
         // TODO: Fetch Current User's Profile Image
         let addCommentView = AddCommentView(profileImage: UIImage(named: "keanu"))
+        addCommentView.commentTextView.delegate = self
 
         [collectionView, addCommentView].forEach { subview in
             view.addSubview(subview)
@@ -67,13 +68,26 @@ class PostViewController: UIViewController {
             addCommentView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
             addCommentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             addCommentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            addCommentView.heightAnchor.constraint(equalToConstant: 50),
+            addCommentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 45),
             addCommentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
+
+        hideKeyboardWhenTappedAround()
     }
 
     // MARK: - Actions
 
+
+    // MARK: - Helpers
+    private func hideKeyboardWhenTappedAround() {
+        let tapAround = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapAround.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapAround)
+    }
+
+    @objc func dismissKeyboard() {
+        view.endEditing(true)
+    }
 }
 
     // MARK: - Data Source
@@ -128,4 +142,15 @@ extension PostViewController {
 // MARK: - UICollectionViewDelegate
 
 extension PostViewController: UICollectionViewDelegate {
+}
+
+
+// MARK: - UITextViewDelegate
+
+extension PostViewController: UITextViewDelegate {
+    func textViewDidChange(_ textView: UITextView) {
+        if let textView = textView as? GrowableTextView {
+            textView.placeholderLabel.isHidden = !textView.text.isEmpty
+        }
+    }
 }

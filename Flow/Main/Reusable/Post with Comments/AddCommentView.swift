@@ -10,7 +10,7 @@ import UIKit
 class AddCommentView: UIView {
     let separator = UIView()
     let profileImageView = UIImageView.filledCircle(length: 35)
-    let commentTextField = CapsuleTextField(placeholder: "Add a comment")
+    let commentTextView = GrowableTextView(placeholder: "Add a Comment")
 
     init(profileImage: UIImage?) {
         super.init(frame: .zero)
@@ -26,21 +26,8 @@ class AddCommentView: UIView {
     private func configure() {
         self.backgroundColor = .systemBackground
         separator.backgroundColor = .separator
-        commentTextField.returnKeyType = .send
-        commentTextField.layer.borderColor = UIColor.separator.cgColor
-        commentTextField.layer.borderWidth = 0.5
-        commentTextField.layer.cornerRadius = 35 / 2
 
-        let stack = UIStackView(arrangedSubviews: [profileImageView, commentTextField])
-        stack.axis = .horizontal
-        stack.spacing = 5
-        profileImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            profileImageView.heightAnchor.constraint(equalToConstant: 35),
-            profileImageView.widthAnchor.constraint(equalToConstant: 35),
-        ])
-
-        [separator, stack].forEach { view in
+        [separator, profileImageView, commentTextView].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             addSubview(view)
         }
@@ -50,10 +37,15 @@ class AddCommentView: UIView {
             separator.trailingAnchor.constraint(equalTo: trailingAnchor),
             separator.heightAnchor.constraint(equalToConstant: 0.5),
 
-            stack.topAnchor.constraint(equalTo: separator.bottomAnchor, constant: 5),
-            stack.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
+            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            profileImageView.heightAnchor.constraint(equalToConstant: 35),
+            profileImageView.widthAnchor.constraint(equalToConstant: 35),
+
+            commentTextView.topAnchor.constraint(equalTo: profileImageView.topAnchor),
+            commentTextView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
+            commentTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            commentTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
         ])
     }
 }
