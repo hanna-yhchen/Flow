@@ -10,7 +10,7 @@ import UIKit
 class AddCommentView: UIView {
     let separator = UIView()
     let profileImageView = UIImageView.filledCircle(length: 35)
-    let commentTextField = UITextField()
+    let commentTextField = CapsuleTextField(placeholder: "Add a comment")
 
     init(profileImage: UIImage?) {
         super.init(frame: .zero)
@@ -26,7 +26,6 @@ class AddCommentView: UIView {
     private func configure() {
         self.backgroundColor = .systemBackground
         separator.backgroundColor = .separator
-        commentTextField.placeholder = "Add Comment..."
         commentTextField.returnKeyType = .send
         commentTextField.layer.borderColor = UIColor.separator.cgColor
         commentTextField.layer.borderWidth = 0.5

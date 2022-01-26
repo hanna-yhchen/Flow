@@ -42,6 +42,8 @@
 		B54612B9278675B500C87339 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612B8278675B500C87339 /* RegisterView.swift */; };
 		B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612BA278675BC00C87339 /* RegisterViewModel.swift */; };
 		B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612C22787227A00C87339 /* PasswordTextField.swift */; };
+		B54C2D7327A0454E00B447CC /* CapsuleTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C2D7227A0454E00B447CC /* CapsuleTextField.swift */; };
+		B54C2D7527A049A800B447CC /* GrowableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C2D7427A049A800B447CC /* GrowableTextView.swift */; };
 		B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F04278923A1008B805E /* HomeFlowController.swift */; };
 		B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F06278923B6008B805E /* SearchFlowController.swift */; };
 		B54D8F09278923C9008B805E /* NewPostFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F08278923C9008B805E /* NewPostFlowController.swift */; };
@@ -96,6 +98,8 @@
 		B54612B8278675B500C87339 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B54612BA278675BC00C87339 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		B54612C22787227A00C87339 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		B54C2D7227A0454E00B447CC /* CapsuleTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CapsuleTextField.swift; sourceTree = "<group>"; };
+		B54C2D7427A049A800B447CC /* GrowableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowableTextView.swift; sourceTree = "<group>"; };
 		B54D8F04278923A1008B805E /* HomeFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowController.swift; sourceTree = "<group>"; };
 		B54D8F06278923B6008B805E /* SearchFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowController.swift; sourceTree = "<group>"; };
 		B54D8F08278923C9008B805E /* NewPostFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostFlowController.swift; sourceTree = "<group>"; };
@@ -175,6 +179,8 @@
 				B563B5A227950AA30012E9CB /* FeedCell.swift */,
 				B563B5A427952DA20012E9CB /* PostInteractionButton.swift */,
 				B507A7C927959E3F00E8840D /* PostImageView.swift */,
+				B54C2D7227A0454E00B447CC /* CapsuleTextField.swift */,
+				B54C2D7427A049A800B447CC /* GrowableTextView.swift */,
 			);
 			path = "UI Components";
 			sourceTree = "<group>";
@@ -436,6 +442,7 @@
 				B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */,
 				B546129D2782FE7A00C87339 /* MainFlowController.swift in Sources */,
 				B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */,
+				B54C2D7527A049A800B447CC /* GrowableTextView.swift in Sources */,
 				B5EAF15D278821C7004C429E /* AuthButton.swift in Sources */,
 				B507A7D22798FCC000E8840D /* CommentCell.swift in Sources */,
 				B5EAF15B2787E99B004C429E /* AuthNavigationButton.swift in Sources */,
@@ -454,6 +461,7 @@
 				B54612A72783F17A00C87339 /* SignInViewModel.swift in Sources */,
 				B54D8F1427893601008B805E /* HomeViewController.swift in Sources */,
 				B52DAEC4278DD3470002D930 /* ImageCell.swift in Sources */,
+				B54C2D7327A0454E00B447CC /* CapsuleTextField.swift in Sources */,
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
 				B507A7D5279912CB00E8840D /* AddCommentView.swift in Sources */,
