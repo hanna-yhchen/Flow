@@ -72,20 +72,20 @@ class PostViewController: UIViewController {
             addCommentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
 
-        hideKeyboardWhenTappedAround()
+        resignKeyboardOnTappedOutside()
     }
 
     // MARK: - Actions
 
 
     // MARK: - Helpers
-    private func hideKeyboardWhenTappedAround() {
-        let tapAround = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        tapAround.cancelsTouchesInView = false
-        view.addGestureRecognizer(tapAround)
+    private func resignKeyboardOnTappedOutside() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
     }
 
-    @objc func dismissKeyboard() {
+    @objc func resignKeyboard() {
         view.endEditing(true)
     }
 }
