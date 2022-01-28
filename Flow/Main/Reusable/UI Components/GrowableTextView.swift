@@ -23,7 +23,6 @@ class GrowableTextView: UITextView {
 
     private func configure() {
         font = .systemFont(ofSize: 16)
-        keyboardType = .twitter
         isScrollEnabled = false
 
         textContainerInset = UIEdgeInsets(top: 9, left: 10, bottom: 8, right: 10)

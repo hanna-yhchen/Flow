@@ -7,7 +7,7 @@
 
 import UIKit
 
-class PostViewController: UIViewController {
+class PostViewController: ViewControllerWithKeyboardConfiguration {
     enum Section {
         case comment
     }
@@ -61,7 +61,7 @@ class PostViewController: UIViewController {
             subview.translatesAutoresizingMaskIntoConstraints = false
         }
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.topAnchor),
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
@@ -69,25 +69,16 @@ class PostViewController: UIViewController {
             addCommentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             addCommentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             addCommentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 45),
-            addCommentView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
 
-        resignKeyboardOnTappedOutside()
+        bottomConstraint = NSLayoutConstraint(item: addCommentView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
+        bottomConstraint?.isActive = true
+
+        isBottomViewMovingWithKeyboard = true
+        isKeyboardResignedOnTappedOutside = true
     }
 
     // MARK: - Actions
-
-
-    // MARK: - Helpers
-    private func resignKeyboardOnTappedOutside() {
-        let tap = UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
-        tap.cancelsTouchesInView = false
-        view.addGestureRecognizer(tap)
-    }
-
-    @objc func resignKeyboard() {
-        view.endEditing(true)
-    }
 }
 
     // MARK: - Data Source
