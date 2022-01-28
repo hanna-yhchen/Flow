@@ -25,7 +25,7 @@ class PostViewController: UIViewController {
     private let collectionView: UICollectionView
     private var dataSource: PostDataSource?
     private var bottomConstraint : NSLayoutConstraint?
-    private var cancellable: AnyCancellable?
+    private var keyboardFrameSubscription: AnyCancellable?
 
     // MARK: - Lifecycle
 
@@ -49,8 +49,7 @@ class PostViewController: UIViewController {
         navigationItem.title = "Someone's Post"
 
         configureHierarchy()
-        cancellable = subscribeKeyboardWillChangeFrame()
-        view.addResignKeyboardTapGesture()
+        configureKeyboardBehavior()
     }
 
     // MARK: - Configuration
@@ -78,6 +77,11 @@ class PostViewController: UIViewController {
 
         bottomConstraint = NSLayoutConstraint(item: addCommentView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         bottomConstraint?.isActive = true
+    }
+
+    private func configureKeyboardBehavior() {
+        keyboardFrameSubscription = keyboardFrameSubscription()
+        view.addResignKeyboardTapGesture()
     }
 
     // MARK: - Actions

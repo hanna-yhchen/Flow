@@ -16,41 +16,69 @@ class RegisterViewController: UIViewController {
     // MARK: - Properties
 
     weak var delegate: SignInViewControllerDelegate?
+    private let scrollView = UIScrollView()
     private let contentView = RegisterView()
     private let viewModel = RegisterViewModel()
     private var subscriptions = Set<AnyCancellable>()
+    private var bottomConstraint: NSLayoutConstraint?
 
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        configureHierarchy()
+        configureKeyboardBehavior()
         configureTargets()
         configureBindings()
     }
 
-    override func loadView() {
-        let scrollView = UIScrollView()
+    // MARK: - Configuration
+
+    private func configureHierarchy() {
+        scrollView.backgroundColor = .systemBackground
         scrollView.addSubview(contentView)
         contentView.translatesAutoresizingMaskIntoConstraints = false
+        contentView.inputStack.arrangedSubviews.forEach { textField in
+            (textField as? UITextField)?.delegate = self
+        }
+
+        view.addSubview(scrollView)
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
 
         let scrollContentLayoutGuide = scrollView.contentLayoutGuide
         NSLayoutConstraint.activate([
-            contentView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+
+            contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
             contentView.heightAnchor.constraint(equalToConstant: 620),
+
             scrollContentLayoutGuide.topAnchor.constraint(equalTo: contentView.topAnchor),
             scrollContentLayoutGuide.leftAnchor.constraint(equalTo: contentView.leftAnchor),
             scrollContentLayoutGuide.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             scrollContentLayoutGuide.rightAnchor.constraint(equalTo: contentView.rightAnchor),
         ])
 
-        self.view = scrollView
+        bottomConstraint = NSLayoutConstraint(
+            item: scrollView,
+            attribute: .bottom,
+            relatedBy: .equal,
+            toItem: view,
+            attribute: .bottom,
+            multiplier: 1,
+            constant: 0
+        )
+        bottomConstraint?.isActive = true
+
         view.backgroundColor = .systemBackground
         navigationItem.title = "Register"
+    }
 
-        contentView.inputStack.arrangedSubviews.forEach { textField in
-            (textField as? UITextField)?.delegate = self
-        }
+    private func configureKeyboardBehavior() {
+        keyboardFrameSubscription().store(in: &subscriptions)
+        view.addResignKeyboardTapGesture()
     }
 
     private func configureTargets() {
@@ -163,5 +191,26 @@ extension RegisterViewController: UITextFieldDelegate {
             textField.resignFirstResponder()
         }
         return true
+    }
+}
+
+// MARK: - KeyboardHandler
+
+extension RegisterViewController: KeyboardHandler {
+    func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions) {
+        let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: -yOffset, right: 0)
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        UIView.animate(
+            withDuration: duration,
+            delay: TimeInterval(0),
+            options: animationCurve,
+            animations: { self.scrollView.layoutIfNeeded() },
+            completion: nil
+        )
+    }
+
+    var bottomInset: CGFloat {
+        view.safeAreaInsets.bottom
     }
 }

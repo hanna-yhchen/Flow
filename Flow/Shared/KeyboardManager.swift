@@ -9,13 +9,13 @@ import UIKit
 import Combine
 
 protocol KeyboardHandler {
-    func subscribeKeyboardWillChangeFrame() -> AnyCancellable?
+    func keyboardFrameSubscription() -> AnyCancellable
     func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions)
     var bottomInset: CGFloat { get }
 }
 
 extension KeyboardHandler {
-    func subscribeKeyboardWillChangeFrame() -> AnyCancellable? {
+    func keyboardFrameSubscription() -> AnyCancellable {
         return NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillChangeFrameNotification)
             .compactMap(\.userInfo)

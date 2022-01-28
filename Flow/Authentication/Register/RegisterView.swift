@@ -108,6 +108,7 @@ class RegisterView: AuthView {
             inputStack.topAnchor.constraint(equalTo: addPhotoButton.bottomAnchor, constant: 20),
             inputStack.leftAnchor.constraint(equalTo: leftAnchor, constant: 40),
             inputStack.rightAnchor.constraint(equalTo: rightAnchor, constant: -40),
+            inputStack.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: 20)
         ])
     }
 }
