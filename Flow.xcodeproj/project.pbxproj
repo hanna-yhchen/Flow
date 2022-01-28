@@ -18,7 +18,6 @@
 		B52DAEC6278E53D10002D930 /* ImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC5278E53D10002D930 /* ImageItem.swift */; };
 		B52DAEC8278E7A990002D930 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC7278E7A990002D930 /* SearchViewModel.swift */; };
 		B52DAECA278E99A70002D930 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC9278E99A70002D930 /* Post.swift */; };
-		B535639B27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = B535639A27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift */; };
 		B53F2EF9278EBDE90038B2C3 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2EF8278EBDE90038B2C3 /* User.swift */; };
 		B53F2EFB278ECBE00038B2C3 /* Comment.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53F2EFA278ECBE00038B2C3 /* Comment.swift */; };
 		B53F2EFD278ED4D80038B2C3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B53F2EFC278ED4D80038B2C3 /* GoogleService-Info.plist */; };
@@ -74,7 +73,6 @@
 		B52DAEC5278E53D10002D930 /* ImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
 		B52DAEC7278E7A990002D930 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		B52DAEC9278E99A70002D930 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
-		B535639A27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ViewControllerWithKeyboardConfiguration.swift; path = Flow/Extensions/ViewControllerWithKeyboardConfiguration.swift; sourceTree = SOURCE_ROOT; };
 		B53F2EF8278EBDE90038B2C3 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		B53F2EFA278ECBE00038B2C3 /* Comment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment.swift; sourceTree = "<group>"; };
 		B53F2EFC278ED4D80038B2C3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -346,7 +344,6 @@
 			children = (
 				B5EAF1562787E037004C429E /* FNavigationController.swift */,
 				B53F2EF8278EBDE90038B2C3 /* User.swift */,
-				B535639A27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift */,
 				B5D38E7827A3D263005E7108 /* KeyboardManager.swift */,
 			);
 			path = Shared;
@@ -474,7 +471,6 @@
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
 				B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
-				B535639B27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift in Sources */,
 				B507A7D5279912CB00E8840D /* AddCommentView.swift in Sources */,
 				B5EAF15F27882438004C429E /* AuthView.swift in Sources */,
 				B54612A227833CC000C87339 /* SignInView.swift in Sources */,
