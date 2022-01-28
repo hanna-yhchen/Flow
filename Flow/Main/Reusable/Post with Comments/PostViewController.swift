@@ -6,8 +6,9 @@
 //
 
 import UIKit
+import Combine
 
-class PostViewController: ViewControllerWithKeyboardConfiguration {
+class PostViewController: UIViewController {
     enum Section {
         case comment
     }
@@ -23,6 +24,8 @@ class PostViewController: ViewControllerWithKeyboardConfiguration {
 
     private let collectionView: UICollectionView
     private var dataSource: PostDataSource?
+    private var bottomConstraint : NSLayoutConstraint?
+    private var cancellable: AnyCancellable?
 
     // MARK: - Lifecycle
 
@@ -46,6 +49,8 @@ class PostViewController: ViewControllerWithKeyboardConfiguration {
         navigationItem.title = "Someone's Post"
 
         configureHierarchy()
+        cancellable = subscribeKeyboardWillChangeFrame()
+        view.addResignKeyboardTapGesture()
     }
 
     // MARK: - Configuration
@@ -73,9 +78,6 @@ class PostViewController: ViewControllerWithKeyboardConfiguration {
 
         bottomConstraint = NSLayoutConstraint(item: addCommentView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
         bottomConstraint?.isActive = true
-
-        isBottomViewMovingWithKeyboard = true
-        isKeyboardResignedOnTappedOutside = true
     }
 
     // MARK: - Actions
@@ -135,7 +137,6 @@ extension PostViewController {
 extension PostViewController: UICollectionViewDelegate {
 }
 
-
 // MARK: - UITextViewDelegate
 
 extension PostViewController: UITextViewDelegate {
@@ -146,5 +147,24 @@ extension PostViewController: UITextViewDelegate {
         let isOversized = textView.contentSize.height >= textView.maxHeight
         textView.isScrollEnabled = isOversized
         textView.setNeedsUpdateConstraints()
+    }
+}
+
+// MARK: - KeyboardHandler
+
+extension PostViewController: KeyboardHandler {
+    func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions) {
+        bottomConstraint?.constant = yOffset
+        UIView.animate(
+            withDuration: duration,
+            delay: TimeInterval(0),
+            options: animationCurve,
+            animations: { self.view.layoutIfNeeded() },
+            completion: nil
+        )
+    }
+
+    var bottomInset: CGFloat {
+        view.safeAreaInsets.bottom
     }
 }

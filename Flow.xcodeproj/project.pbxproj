@@ -53,6 +53,8 @@
 		B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A227950AA30012E9CB /* FeedCell.swift */; };
 		B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A427952DA20012E9CB /* PostInteractionButton.swift */; };
 		B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */; };
+		B5D38E7927A3D263005E7108 /* KeyboardManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D38E7827A3D263005E7108 /* KeyboardManager.swift */; };
+		B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D38E7A27A3E141005E7108 /* UIView+TapHandle.swift */; };
 		B5EAF1572787E037004C429E /* FNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1562787E037004C429E /* FNavigationController.swift */; };
 		B5EAF1592787E7DE004C429E /* UIButton+ColorTransformerOnTapFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1582787E7DE004C429E /* UIButton+ColorTransformerOnTapFactory.swift */; };
 		B5EAF15B2787E99B004C429E /* AuthNavigationButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF15A2787E99B004C429E /* AuthNavigationButton.swift */; };
@@ -109,6 +111,8 @@
 		B563B5A227950AA30012E9CB /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B563B5A427952DA20012E9CB /* PostInteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteractionButton.swift; sourceTree = "<group>"; };
 		B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+FilledCircleFactory.swift"; sourceTree = "<group>"; };
+		B5D38E7827A3D263005E7108 /* KeyboardManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardManager.swift; sourceTree = "<group>"; };
+		B5D38E7A27A3E141005E7108 /* UIView+TapHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+TapHandle.swift"; sourceTree = "<group>"; };
 		B5EAF1562787E037004C429E /* FNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNavigationController.swift; sourceTree = "<group>"; };
 		B5EAF1582787E7DE004C429E /* UIButton+ColorTransformerOnTapFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+ColorTransformerOnTapFactory.swift"; sourceTree = "<group>"; };
 		B5EAF15A2787E99B004C429E /* AuthNavigationButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthNavigationButton.swift; sourceTree = "<group>"; };
@@ -224,6 +228,7 @@
 				B54612AA27842EB800C87339 /* UIColor+CustomColors.swift */,
 				B5EAF1582787E7DE004C429E /* UIButton+ColorTransformerOnTapFactory.swift */,
 				B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */,
+				B5D38E7A27A3E141005E7108 /* UIView+TapHandle.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -342,6 +347,7 @@
 				B5EAF1562787E037004C429E /* FNavigationController.swift */,
 				B53F2EF8278EBDE90038B2C3 /* User.swift */,
 				B535639A27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift */,
+				B5D38E7827A3D263005E7108 /* KeyboardManager.swift */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -466,6 +472,7 @@
 				B54D8F1427893601008B805E /* HomeViewController.swift in Sources */,
 				B52DAEC4278DD3470002D930 /* ImageCell.swift in Sources */,
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
+				B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
 				B535639B27A241E900F46681 /* ViewControllerWithKeyboardConfiguration.swift in Sources */,
 				B507A7D5279912CB00E8840D /* AddCommentView.swift in Sources */,
@@ -489,6 +496,7 @@
 				B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */,
 				B507A7CC2797EE8300E8840D /* Story.swift in Sources */,
 				B546129F27832C6100C87339 /* SignInViewController.swift in Sources */,
+				B5D38E7927A3D263005E7108 /* KeyboardManager.swift in Sources */,
 				B53F2EF9278EBDE90038B2C3 /* User.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
