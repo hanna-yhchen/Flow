@@ -24,7 +24,7 @@ class PostViewController: UIViewController {
 
     private let collectionView: UICollectionView
     private var dataSource: PostDataSource?
-    private var bottomConstraint : NSLayoutConstraint?
+    private var bottomConstraint: NSLayoutConstraint?
     private var keyboardFrameSubscription: AnyCancellable?
 
     // MARK: - Lifecycle
@@ -75,7 +75,14 @@ class PostViewController: UIViewController {
             addCommentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 45),
         ])
 
-        bottomConstraint = NSLayoutConstraint(item: addCommentView, attribute: .bottom, relatedBy: .equal, toItem: view.safeAreaLayoutGuide, attribute: .bottom, multiplier: 1, constant: 0)
+        bottomConstraint = NSLayoutConstraint(
+            item: addCommentView,
+            attribute: .bottom,
+            relatedBy: .equal,
+            toItem: view.safeAreaLayoutGuide,
+            attribute: .bottom,
+            multiplier: 1, constant: 0
+        )
         bottomConstraint?.isActive = true
     }
 
@@ -166,9 +173,5 @@ extension PostViewController: KeyboardHandler {
             animations: { self.view.layoutIfNeeded() },
             completion: nil
         )
-    }
-
-    var bottomInset: CGFloat {
-        view.safeAreaInsets.bottom
     }
 }

@@ -51,6 +51,7 @@ class RegisterViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
 
             contentView.widthAnchor.constraint(equalTo: view.widthAnchor),
             contentView.heightAnchor.constraint(equalToConstant: 620),
@@ -60,17 +61,6 @@ class RegisterViewController: UIViewController {
             scrollContentLayoutGuide.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
             scrollContentLayoutGuide.rightAnchor.constraint(equalTo: contentView.rightAnchor),
         ])
-
-        bottomConstraint = NSLayoutConstraint(
-            item: scrollView,
-            attribute: .bottom,
-            relatedBy: .equal,
-            toItem: view,
-            attribute: .bottom,
-            multiplier: 1,
-            constant: 0
-        )
-        bottomConstraint?.isActive = true
 
         view.backgroundColor = .systemBackground
         navigationItem.title = "Register"
@@ -198,6 +188,7 @@ extension RegisterViewController: UITextFieldDelegate {
 
 extension RegisterViewController: KeyboardHandler {
     func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions) {
+        // TODO: Make the scrollView moves simultaneously as the keyboard moves
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: -yOffset, right: 0)
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets
@@ -208,9 +199,5 @@ extension RegisterViewController: KeyboardHandler {
             animations: { self.scrollView.layoutIfNeeded() },
             completion: nil
         )
-    }
-
-    var bottomInset: CGFloat {
-        view.safeAreaInsets.bottom
     }
 }

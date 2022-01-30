@@ -1,5 +1,5 @@
 //
-//  KeyboardManager.swift
+//  KeyboardHandler.swift
 //  Flow
 //
 //  Created by Hanna Chen on 2022/1/28.
@@ -8,21 +8,25 @@
 import UIKit
 import Combine
 
-protocol KeyboardHandler {
+protocol KeyboardHandler: AnyObject {
     func keyboardFrameSubscription() -> AnyCancellable
     func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions)
     var bottomInset: CGFloat { get }
 }
 
-extension KeyboardHandler {
+extension KeyboardHandler where Self: UIViewController {
     func keyboardFrameSubscription() -> AnyCancellable {
         return NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillChangeFrameNotification)
             .compactMap(\.userInfo)
             .receive(on: RunLoop.main)
-            .sink {userInfo in
-                keyboardWillChangeFrame(with: userInfo)
+            .sink {[weak self] userInfo in
+                self?.keyboardWillChangeFrame(with: userInfo)
             }
+    }
+
+    var bottomInset: CGFloat {
+        view.safeAreaInsets.bottom
     }
 
     private func keyboardWillChangeFrame(with userInfo: [AnyHashable: Any]) {
