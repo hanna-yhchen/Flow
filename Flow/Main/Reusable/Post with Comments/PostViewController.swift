@@ -138,7 +138,7 @@ extension PostViewController {
 
     private func makeCommentCellRegistration() -> UICollectionView.CellRegistration<CommentCell, Comment> {
         return UICollectionView.CellRegistration<CommentCell, Comment> { cell, indexPath, comment in
-            cell.backgroundColor = .systemBackground
+            cell.nameLabel.text = comment.authorID
         }
     }
 }

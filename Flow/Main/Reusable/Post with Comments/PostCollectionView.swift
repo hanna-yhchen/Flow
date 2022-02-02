@@ -14,6 +14,7 @@ class PostCollectionView: UICollectionView {
         super.init(frame: .zero, collectionViewLayout: UICollectionViewLayout())
         self.collectionViewLayout = makeLayout()
         self.backgroundColor = .systemBackground
+        self.allowsSelection = false
     }
 
     required init?(coder: NSCoder) {

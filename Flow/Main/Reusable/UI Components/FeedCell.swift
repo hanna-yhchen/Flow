@@ -62,7 +62,7 @@ class FeedCell: UICollectionViewCell {
 
     lazy var topStack: UIStackView = {
         let nameStack = UIStackView(arrangedSubviews: [
-            authorNameLabel,
+            nameLabel,
             usernameLabel,
         ])
         nameStack.axis = .vertical
@@ -93,7 +93,7 @@ class FeedCell: UICollectionViewCell {
         return imageView
     }()
 
-    let authorNameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.text = "Name"
         label.font = .boldSystemFont(ofSize: Size.font)
@@ -231,7 +231,7 @@ class FeedCell: UICollectionViewCell {
             bottomStack.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             bottomStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Size.padding),
             bottomStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Size.padding),
-            bottomStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            bottomStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Size.padding),
         ])
     }
 }
