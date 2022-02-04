@@ -99,6 +99,8 @@ class CommentCell: UICollectionViewListCell {
         pointSize: 12
     )
 
+    // MARK: - Lifecycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground
@@ -110,6 +112,8 @@ class CommentCell: UICollectionViewListCell {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Private Configuration
 
     private func configure() {
         [profileImageView, stack].forEach { view in
