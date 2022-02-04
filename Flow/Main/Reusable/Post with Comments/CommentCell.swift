@@ -118,15 +118,15 @@ class CommentCell: UICollectionViewListCell {
         }
 
         NSLayoutConstraint.activate([
-            profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 5),
-            profileImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 5),
+            profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
+            profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 5),
             profileImageView.heightAnchor.constraint(equalToConstant: 35),
             profileImageView.widthAnchor.constraint(equalToConstant: 35),
 
-            stack.topAnchor.constraint(equalTo: topAnchor, constant: 5),
+            stack.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             stack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
-            stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
+            stack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -5),
+            stack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -5),
         ])
     }
 }
