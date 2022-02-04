@@ -125,7 +125,7 @@ class CommentCell: UICollectionViewListCell {
 
             stack.topAnchor.constraint(equalTo: topAnchor, constant: 5),
             stack.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
-            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 5),
+            stack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             stack.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
         ])
     }

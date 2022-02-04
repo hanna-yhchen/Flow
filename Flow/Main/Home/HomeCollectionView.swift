@@ -55,7 +55,7 @@ class HomeCollectionView: UICollectionView {
             case .feed:
                 let layoutSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(350)
+                    heightDimension: .estimated(1)
                 )
 
                 let item = NSCollectionLayoutItem(layoutSize: layoutSize)

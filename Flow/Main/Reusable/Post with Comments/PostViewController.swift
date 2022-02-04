@@ -68,8 +68,8 @@ class PostViewController: UIViewController {
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.bottomAnchor.constraint(equalTo: addCommentView.topAnchor),
 
-            addCommentView.topAnchor.constraint(equalTo: collectionView.bottomAnchor),
             addCommentView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             addCommentView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             addCommentView.heightAnchor.constraint(greaterThanOrEqualToConstant: 45),
@@ -81,7 +81,8 @@ class PostViewController: UIViewController {
             relatedBy: .equal,
             toItem: view.safeAreaLayoutGuide,
             attribute: .bottom,
-            multiplier: 1, constant: 0
+            multiplier: 1,
+            constant: 0
         )
         bottomConstraint?.isActive = true
     }
@@ -119,7 +120,7 @@ extension PostViewController {
 
         var snapshot = PostSnapshot()
         snapshot.appendSections([Section.comment])
-        snapshot.appendItems(comments, toSection: .comment)
+        snapshot.appendItems(comments)
         return snapshot
     }
 

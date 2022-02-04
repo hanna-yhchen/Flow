@@ -22,9 +22,19 @@ class PostCollectionView: UICollectionView {
     }
 
     private func makeLayout() -> UICollectionViewLayout {
-        return UICollectionViewCompositionalLayout { _, layoutEnvironment in
-            let config = UICollectionLayoutListConfiguration(appearance: .plain)
-            let section = NSCollectionLayoutSection.list(using: config, layoutEnvironment: layoutEnvironment)
+        return UICollectionViewCompositionalLayout { _, _ in
+            let layoutSize = NSCollectionLayoutSize(
+                widthDimension: .fractionalWidth(1),
+                heightDimension: .estimated(1)
+            )
+            let item = NSCollectionLayoutItem(layoutSize: layoutSize)
+            let group = NSCollectionLayoutGroup.horizontal(
+                layoutSize: layoutSize,
+                subitem: item,
+                count: 1
+            )
+            let section = NSCollectionLayoutSection(group: group)
+
             let header = NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
@@ -33,6 +43,7 @@ class PostCollectionView: UICollectionView {
                 elementKind: PostCollectionView.headerKind,
                 alignment: .top)
             section.boundarySupplementaryItems = [header]
+
             return section
         }
     }
