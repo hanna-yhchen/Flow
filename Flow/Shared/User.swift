@@ -8,7 +8,7 @@
 import Foundation
 
 struct User {
-    let id: String
+    let id: UserID
     let username: String
     let profileImageURL: FirebaseURL
     let fullName: String

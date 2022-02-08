@@ -10,7 +10,6 @@ import Combine
 
 protocol FeedViewControllerDelegate: AnyObject {
     func navigateToPost(id: String)
-    func navigateToCommentOfPost(id: String)
 }
 
 class HomeViewController: UIViewController {
@@ -19,8 +18,8 @@ class HomeViewController: UIViewController {
         case feed(Post)
     }
 
-    typealias HomeDataSource = UICollectionViewDiffableDataSource<HomeSection, Item>
-    typealias HomeSnapshot = NSDiffableDataSourceSnapshot<HomeSection, Item>
+    private typealias HomeDataSource = UICollectionViewDiffableDataSource<HomeSection, Item>
+    private typealias HomeSnapshot = NSDiffableDataSourceSnapshot<HomeSection, Item>
 
     // MARK: - Properties
 

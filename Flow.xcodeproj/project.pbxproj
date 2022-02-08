@@ -43,6 +43,7 @@
 		B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612BA278675BC00C87339 /* RegisterViewModel.swift */; };
 		B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612C22787227A00C87339 /* PasswordTextField.swift */; };
 		B54AC8CE27B24B9C00F3875C /* SearchCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */; };
+		B54AC8D027B2637500F3875C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC8CF27B2637500F3875C /* ProfileViewController.swift */; };
 		B54C2D7527A049A800B447CC /* GrowableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C2D7427A049A800B447CC /* GrowableTextView.swift */; };
 		B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F04278923A1008B805E /* HomeFlowController.swift */; };
 		B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F06278923B6008B805E /* SearchFlowController.swift */; };
@@ -101,6 +102,7 @@
 		B54612BA278675BC00C87339 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		B54612C22787227A00C87339 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionView.swift; sourceTree = "<group>"; };
+		B54AC8CF27B2637500F3875C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		B54C2D7427A049A800B447CC /* GrowableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowableTextView.swift; sourceTree = "<group>"; };
 		B54D8F04278923A1008B805E /* HomeFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowController.swift; sourceTree = "<group>"; };
 		B54D8F06278923B6008B805E /* SearchFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowController.swift; sourceTree = "<group>"; };
@@ -338,6 +340,7 @@
 			isa = PBXGroup;
 			children = (
 				B54D8F0C278923F9008B805E /* ProfileFlowController.swift */,
+				B54AC8CF27B2637500F3875C /* ProfileViewController.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -472,6 +475,7 @@
 				B54D8F1427893601008B805E /* HomeViewController.swift in Sources */,
 				B52DAEC4278DD3470002D930 /* ThumbnailCell.swift in Sources */,
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
+				B54AC8D027B2637500F3875C /* ProfileViewController.swift in Sources */,
 				B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
 				B507A7D5279912CB00E8840D /* AddCommentView.swift in Sources */,

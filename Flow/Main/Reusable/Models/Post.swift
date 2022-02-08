@@ -9,9 +9,10 @@ import UIKit
 
 typealias FirebaseURL = String
 typealias UserID = String
+typealias PostID = String
 
 struct Post: Hashable {
-    let id: String
+    let id: PostID
     let authorID: UserID
     let thumbnailURL: FirebaseURL
     let photoURLs: [FirebaseURL]

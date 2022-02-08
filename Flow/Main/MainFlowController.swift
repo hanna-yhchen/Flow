@@ -41,7 +41,7 @@ class MainFlowController: UIViewController {
             selectedIconName: "ellipsis.bubble.fill"
         )
         let profileFlowController = flowController(
-            ProfileFlowController(),
+            ProfileFlowController(barButtonDelegate: self),
             withIconName: "person.crop.circle",
             selectedIconName: "person.crop.circle.fill"
         )
