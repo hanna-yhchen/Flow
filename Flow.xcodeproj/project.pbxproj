@@ -14,7 +14,7 @@
 		B507A7D22798FCC000E8840D /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7D12798FCC000E8840D /* CommentCell.swift */; };
 		B507A7D5279912CB00E8840D /* AddCommentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7D4279912CB00E8840D /* AddCommentView.swift */; };
 		B52DAEC0278D23560002D930 /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEBF278D23560002D930 /* SearchViewController.swift */; };
-		B52DAEC4278DD3470002D930 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC3278DD3470002D930 /* ImageCell.swift */; };
+		B52DAEC4278DD3470002D930 /* ThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC3278DD3470002D930 /* ThumbnailCell.swift */; };
 		B52DAEC6278E53D10002D930 /* ImageItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC5278E53D10002D930 /* ImageItem.swift */; };
 		B52DAEC8278E7A990002D930 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC7278E7A990002D930 /* SearchViewModel.swift */; };
 		B52DAECA278E99A70002D930 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52DAEC9278E99A70002D930 /* Post.swift */; };
@@ -42,6 +42,7 @@
 		B54612B9278675B500C87339 /* RegisterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612B8278675B500C87339 /* RegisterView.swift */; };
 		B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612BA278675BC00C87339 /* RegisterViewModel.swift */; };
 		B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612C22787227A00C87339 /* PasswordTextField.swift */; };
+		B54AC8CE27B24B9C00F3875C /* SearchCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */; };
 		B54C2D7527A049A800B447CC /* GrowableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C2D7427A049A800B447CC /* GrowableTextView.swift */; };
 		B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F04278923A1008B805E /* HomeFlowController.swift */; };
 		B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F06278923B6008B805E /* SearchFlowController.swift */; };
@@ -69,7 +70,7 @@
 		B507A7D12798FCC000E8840D /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
 		B507A7D4279912CB00E8840D /* AddCommentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddCommentView.swift; sourceTree = "<group>"; };
 		B52DAEBF278D23560002D930 /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
-		B52DAEC3278DD3470002D930 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		B52DAEC3278DD3470002D930 /* ThumbnailCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThumbnailCell.swift; sourceTree = "<group>"; };
 		B52DAEC5278E53D10002D930 /* ImageItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageItem.swift; sourceTree = "<group>"; };
 		B52DAEC7278E7A990002D930 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		B52DAEC9278E99A70002D930 /* Post.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
@@ -99,6 +100,7 @@
 		B54612B8278675B500C87339 /* RegisterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterView.swift; sourceTree = "<group>"; };
 		B54612BA278675BC00C87339 /* RegisterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterViewModel.swift; sourceTree = "<group>"; };
 		B54612C22787227A00C87339 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
+		B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionView.swift; sourceTree = "<group>"; };
 		B54C2D7427A049A800B447CC /* GrowableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowableTextView.swift; sourceTree = "<group>"; };
 		B54D8F04278923A1008B805E /* HomeFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowController.swift; sourceTree = "<group>"; };
 		B54D8F06278923B6008B805E /* SearchFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowController.swift; sourceTree = "<group>"; };
@@ -177,7 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				B53F2F0A279160020038B2C3 /* StoryCell.swift */,
-				B52DAEC3278DD3470002D930 /* ImageCell.swift */,
+				B52DAEC3278DD3470002D930 /* ThumbnailCell.swift */,
 				B563B5A227950AA30012E9CB /* FeedCell.swift */,
 				B563B5A427952DA20012E9CB /* PostInteractionButton.swift */,
 				B507A7C927959E3F00E8840D /* PostImageView.swift */,
@@ -311,6 +313,7 @@
 				B54D8F06278923B6008B805E /* SearchFlowController.swift */,
 				B52DAEBF278D23560002D930 /* SearchViewController.swift */,
 				B52DAEC7278E7A990002D930 /* SearchViewModel.swift */,
+				B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -467,7 +470,7 @@
 				B54612982782F4F100C87339 /* UIViewController+CustomContainerMethods.swift in Sources */,
 				B54612A72783F17A00C87339 /* SignInViewModel.swift in Sources */,
 				B54D8F1427893601008B805E /* HomeViewController.swift in Sources */,
-				B52DAEC4278DD3470002D930 /* ImageCell.swift in Sources */,
+				B52DAEC4278DD3470002D930 /* ThumbnailCell.swift in Sources */,
 				B54612942782E1C900C87339 /* AppFlowController.swift in Sources */,
 				B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
@@ -487,6 +490,7 @@
 				B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */,
 				B5EAF1572787E037004C429E /* FNavigationController.swift in Sources */,
 				B53F2F0B279160020038B2C3 /* StoryCell.swift in Sources */,
+				B54AC8CE27B24B9C00F3875C /* SearchCollectionView.swift in Sources */,
 				B54D8F09278923C9008B805E /* NewPostFlowController.swift in Sources */,
 				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
 				B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */,
@@ -639,9 +643,10 @@
 				INFOPLIST_FILE = Flow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -667,9 +672,10 @@
 				INFOPLIST_FILE = Flow/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
+				INFOPLIST_KEY_UIRequiresFullScreen = NO;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = UIInterfaceOrientationPortrait;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

@@ -34,6 +34,7 @@ class SearchViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        addResignKeyboardTapGesture()
 
         configureHierarchy()
         configureDataSource()
@@ -56,86 +57,13 @@ class SearchViewController: UIViewController {
         searchBar.showsCancelButton = false
         self.navigationItem.titleView = searchBar
 
-        let collectionView = UICollectionView(frame: view.bounds, collectionViewLayout: makeLayout())
-        collectionView.autoresizingMask = [.flexibleHeight, .flexibleWidth]
-        collectionView.backgroundColor = .systemBackground
+        self.collectionView = SearchCollectionView(withFrame: view.bounds)
         collectionView.delegate = self
         view.addSubview(collectionView)
-        self.collectionView = collectionView
-    }
-
-    // swiftlint:disable operator_usage_whitespace
-    private func makeLayout() -> UICollectionViewLayout {
-        let fullWidth = view.bounds.width
-        let smallItemLength = (fullWidth - 2) / 3
-        let largeItemLength = fullWidth - smallItemLength - 1
-
-        let smallItemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(smallItemLength),
-            heightDimension: .absolute(smallItemLength)
-        )
-        let largeItemSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(largeItemLength),
-            heightDimension: .absolute(largeItemLength)
-        )
-        let verticalPairSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(smallItemLength),
-            heightDimension: .absolute(largeItemLength)
-        )
-        let groupSize = NSCollectionLayoutSize(
-            widthDimension: .absolute(fullWidth),
-            heightDimension: .absolute(largeItemLength)
-        )
-
-        let largeItem = NSCollectionLayoutItem(layoutSize: largeItemSize)
-        let smallItem = NSCollectionLayoutItem(layoutSize: smallItemSize)
-        let verticalPair = NSCollectionLayoutGroup.vertical(
-            layoutSize: verticalPairSize,
-            subitem: smallItem,
-            count: 2
-        )
-        verticalPair.interItemSpacing = .fixed(1)
-
-        let trailingLargeWithPairGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [verticalPair, largeItem]
-        )
-        trailingLargeWithPairGroup.interItemSpacing = .fixed(1)
-
-        let triplePairGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitem: verticalPair,
-            count: 3
-        )
-        triplePairGroup.interItemSpacing = .fixed(1)
-
-        let leadingLargeWithPairGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitems: [largeItem, verticalPair]
-        )
-        leadingLargeWithPairGroup.interItemSpacing = .fixed(1)
-
-        let nestedGroup = NSCollectionLayoutGroup.vertical(
-            layoutSize: NSCollectionLayoutSize(
-                widthDimension: .fractionalWidth(1),
-                heightDimension: .absolute(4 * (largeItemLength +  1))
-            ),
-            subitems: [
-                trailingLargeWithPairGroup,
-                triplePairGroup,
-                leadingLargeWithPairGroup,
-                triplePairGroup,
-            ]
-        )
-        nestedGroup.interItemSpacing = .fixed(1)
-
-        let layoutSection = NSCollectionLayoutSection(group: nestedGroup)
-        let layout = UICollectionViewCompositionalLayout(section: layoutSection)
-        return layout
     }
 
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ImageCell, ImageItem> { cell, _, item in
+        let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, ImageItem> { cell, _, item in
             cell.imageView.image = item.image
         }
 
@@ -152,6 +80,16 @@ class SearchViewController: UIViewController {
     }
 
     private func configureBindings() {
+    }
+
+    private func addResignKeyboardTapGesture() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(resignKeyboard))
+        tap.cancelsTouchesInView = false
+        view.addGestureRecognizer(tap)
+    }
+
+    @objc private func resignKeyboard() {
+        searchController.searchBar.endEditing(true)
     }
 
     // MARK: - Methods

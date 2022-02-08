@@ -1,5 +1,5 @@
 //
-//  ImageCell.swift
+//  ThumbnailCell.swift
 //  Flow
 //
 //  Created by Hanna Chen on 2022/1/11.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ImageCell: UICollectionViewCell {
+class ThumbnailCell: UICollectionViewCell {
     let imageView = UIImageView()
 
     override init(frame: CGRect) {
