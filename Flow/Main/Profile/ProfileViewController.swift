@@ -26,8 +26,9 @@ class ProfileViewController: UIViewController {
 
     weak var delegate: ProfileViewControllerDelegate?
 
+    let profileHeaderView = ProfileHeaderView()
+
     // swiftlint:disable implicitly_unwrapped_optional
-    private var collectionView: UICollectionView! = nil
     private var dataSource: ProfileDataSource! = nil
     // swiftlint:enable implicitly_unwrapped_optional
 
@@ -45,17 +46,25 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.title = "Someone's Profile"
+        navigationItem.title = "Full Name"
 
         configureHierarchy()
         configureDataSource()
     }
 
     private func configureHierarchy() {
+        view.addSubview(profileHeaderView)
+        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
+        NSLayoutConstraint.activate([
+            profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+        ])
+
+        profileHeaderView.usernameLabel.text = "@username"
     }
 
     private func configureDataSource() {
-
     }
 }

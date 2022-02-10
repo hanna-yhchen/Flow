@@ -44,6 +44,7 @@
 		B54612C32787227A00C87339 /* PasswordTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54612C22787227A00C87339 /* PasswordTextField.swift */; };
 		B54AC8CE27B24B9C00F3875C /* SearchCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */; };
 		B54AC8D027B2637500F3875C /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC8CF27B2637500F3875C /* ProfileViewController.swift */; };
+		B54AC8D427B50E5F00F3875C /* ProfileHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54AC8D327B50E5F00F3875C /* ProfileHeaderView.swift */; };
 		B54C2D7527A049A800B447CC /* GrowableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54C2D7427A049A800B447CC /* GrowableTextView.swift */; };
 		B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F04278923A1008B805E /* HomeFlowController.swift */; };
 		B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F06278923B6008B805E /* SearchFlowController.swift */; };
@@ -103,6 +104,7 @@
 		B54612C22787227A00C87339 /* PasswordTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PasswordTextField.swift; sourceTree = "<group>"; };
 		B54AC8CD27B24B9C00F3875C /* SearchCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionView.swift; sourceTree = "<group>"; };
 		B54AC8CF27B2637500F3875C /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
+		B54AC8D327B50E5F00F3875C /* ProfileHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileHeaderView.swift; sourceTree = "<group>"; };
 		B54C2D7427A049A800B447CC /* GrowableTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GrowableTextView.swift; sourceTree = "<group>"; };
 		B54D8F04278923A1008B805E /* HomeFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeFlowController.swift; sourceTree = "<group>"; };
 		B54D8F06278923B6008B805E /* SearchFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFlowController.swift; sourceTree = "<group>"; };
@@ -341,6 +343,7 @@
 			children = (
 				B54D8F0C278923F9008B805E /* ProfileFlowController.swift */,
 				B54AC8CF27B2637500F3875C /* ProfileViewController.swift */,
+				B54AC8D327B50E5F00F3875C /* ProfileHeaderView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -470,6 +473,7 @@
 				B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */,
 				B52DAECA278E99A70002D930 /* Post.swift in Sources */,
 				B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */,
+				B54AC8D427B50E5F00F3875C /* ProfileHeaderView.swift in Sources */,
 				B54612982782F4F100C87339 /* UIViewController+CustomContainerMethods.swift in Sources */,
 				B54612A72783F17A00C87339 /* SignInViewModel.swift in Sources */,
 				B54D8F1427893601008B805E /* HomeViewController.swift in Sources */,
