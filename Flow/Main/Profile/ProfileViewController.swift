@@ -22,11 +22,10 @@ class ProfileViewController: UIViewController {
     // MARK: - Properties
 
     let userID: UserID
-    var isCurrentUser = false
+    let isCurrentUser: Bool
+    let profileHeaderView: ProfileHeaderView
 
     weak var delegate: ProfileViewControllerDelegate?
-
-    let profileHeaderView = ProfileHeaderView()
 
     // swiftlint:disable implicitly_unwrapped_optional
     private var dataSource: ProfileDataSource! = nil
@@ -36,6 +35,9 @@ class ProfileViewController: UIViewController {
     // MARK: - Lifecycle
     init(userID: UserID) {
         self.userID = userID
+        //TODO: Check currentUser
+        self.isCurrentUser = false
+        self.profileHeaderView = ProfileHeaderView(isCurrentUser: isCurrentUser)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -46,7 +48,7 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.title = "Full Name"
+        navigationItem.title = "@username"
 
         configureHierarchy()
         configureDataSource()
@@ -60,9 +62,11 @@ class ProfileViewController: UIViewController {
             profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            profileHeaderView.heightAnchor.constraint(greaterThanOrEqualToConstant: 600)
         ])
 
-        profileHeaderView.usernameLabel.text = "@username"
+        profileHeaderView.nameLabel.text = "Name"
+        profileHeaderView.profileImageView.image = UIImage(named: "keanu")
     }
 
     private func configureDataSource() {

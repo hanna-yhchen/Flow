@@ -55,6 +55,8 @@
 		B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A227950AA30012E9CB /* FeedCell.swift */; };
 		B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A427952DA20012E9CB /* PostInteractionButton.swift */; };
 		B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */; };
+		B5CDB9F927B5F4FB007DF203 /* ProfileStatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */; };
+		B5CDB9FB27B60FE9007DF203 /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDB9FA27B60FE9007DF203 /* BorderedButton.swift */; };
 		B5D38E7927A3D263005E7108 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D38E7827A3D263005E7108 /* KeyboardHandler.swift */; };
 		B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D38E7A27A3E141005E7108 /* UIView+TapHandle.swift */; };
 		B5EAF1572787E037004C429E /* FNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5EAF1562787E037004C429E /* FNavigationController.swift */; };
@@ -115,6 +117,8 @@
 		B563B5A227950AA30012E9CB /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B563B5A427952DA20012E9CB /* PostInteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteractionButton.swift; sourceTree = "<group>"; };
 		B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+FilledCircleFactory.swift"; sourceTree = "<group>"; };
+		B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatButton.swift; sourceTree = "<group>"; };
+		B5CDB9FA27B60FE9007DF203 /* BorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
 		B5D38E7827A3D263005E7108 /* KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
 		B5D38E7A27A3E141005E7108 /* UIView+TapHandle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+TapHandle.swift"; sourceTree = "<group>"; };
 		B5EAF1562787E037004C429E /* FNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FNavigationController.swift; sourceTree = "<group>"; };
@@ -182,11 +186,13 @@
 		B53F2F0C2791600E0038B2C3 /* UI Components */ = {
 			isa = PBXGroup;
 			children = (
+				B5CDB9FA27B60FE9007DF203 /* BorderedButton.swift */,
 				B53F2F0A279160020038B2C3 /* StoryCell.swift */,
 				B52DAEC3278DD3470002D930 /* ThumbnailCell.swift */,
 				B563B5A227950AA30012E9CB /* FeedCell.swift */,
 				B563B5A427952DA20012E9CB /* PostInteractionButton.swift */,
 				B507A7C927959E3F00E8840D /* PostImageView.swift */,
+				B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */,
 				B54C2D7427A049A800B447CC /* GrowableTextView.swift */,
 			);
 			path = "UI Components";
@@ -473,6 +479,7 @@
 				B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */,
 				B52DAECA278E99A70002D930 /* Post.swift in Sources */,
 				B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */,
+				B5CDB9F927B5F4FB007DF203 /* ProfileStatButton.swift in Sources */,
 				B54AC8D427B50E5F00F3875C /* ProfileHeaderView.swift in Sources */,
 				B54612982782F4F100C87339 /* UIViewController+CustomContainerMethods.swift in Sources */,
 				B54612A72783F17A00C87339 /* SignInViewModel.swift in Sources */,
@@ -491,6 +498,7 @@
 				B507A7D02798FBE200E8840D /* PostCollectionView.swift in Sources */,
 				B54612B7278674EE00C87339 /* RegisterViewController.swift in Sources */,
 				B52DAEC0278D23560002D930 /* SearchViewController.swift in Sources */,
+				B5CDB9FB27B60FE9007DF203 /* BorderedButton.swift in Sources */,
 				B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */,
 				B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */,
 				B52DAEC8278E7A990002D930 /* SearchViewModel.swift in Sources */,

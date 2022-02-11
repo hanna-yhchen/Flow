@@ -9,6 +9,8 @@ import UIKit
 
 class ProfileHeaderView: UIView {
     // MARK: - Properties
+    let isCurrentUser: Bool
+
     var storyIsRead = false {
         didSet {
             if storyIsRead {
@@ -16,6 +18,12 @@ class ProfileHeaderView: UIView {
             } else {
                 profileImageView.layer.borderColor = UIColor.tintColor.cgColor
             }
+        }
+    }
+
+    var isFollowing = false {
+        didSet {
+            followButton.setNeedsUpdateConfiguration()
         }
     }
 
@@ -27,58 +35,82 @@ class ProfileHeaderView: UIView {
         return imageView
     }()
 
-    let usernameLabel: UILabel = {
+    let nameLabel: UILabel = {
         let label = UILabel()
         label.font = .boldSystemFont(ofSize: 24)
         return label
     }()
 
+    let bioLabel: UILabel = {
+        let label = UILabel()
+        label.font = .systemFont(ofSize: 16)
+        label.textColor = .secondaryLabel
+        label.text = "Here is a long description about this user to be displayed more than one line..."
+        label.textAlignment = .center
+        label.numberOfLines = 3
+        return label
+    }()
+
     private lazy var statStack: UIStackView = {
-        let stack = UIStackView(arrangedSubviews: [
-            postsButton,
-            followersButton,
-            followingButton,
-        ])
+        let stack = UIStackView()
+        [postStatButton, followerStatButton, followingStatButton].forEach { view in
+            stack.addArrangedSubview(view)
+            view.translatesAutoresizingMaskIntoConstraints = false
+            view.widthAnchor.constraint(lessThanOrEqualToConstant: 100).isActive = true
+        }
         stack.axis = .horizontal
-        stack.spacing = 20
+        stack.spacing = 10
 
         return stack
     }()
 
-    let postsButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        // Use attributed title/subtitle instead
-        config.subtitle = "Posts"
-        config.title = "29"
-        config.baseForegroundColor = .label
-        config.titleAlignment = .center
-        config.titlePadding = 10
-        let button = UIButton(configuration: config)
+    let postStatButton = ProfileStatButton(statName: "Posts")
+    let followerStatButton = ProfileStatButton(statName: "Followers")
+    let followingStatButton = ProfileStatButton(statName: "Following")
+
+    private lazy var interactionStack: UIStackView = {
+        let stack: UIStackView
+        if isCurrentUser {
+            stack = UIStackView(arrangedSubviews: [editButton])
+        } else {
+            stack = UIStackView(arrangedSubviews: [followButton, messageButton])
+        }
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.spacing = 5
+
+        return stack
+    }()
+
+    let editButton = BorderedButton(title: "Edit Profile")
+
+    lazy var followButton: UIButton = {
+        let button = BorderedButton(title: "Follow")
+        var config = button.configuration
+        button.configurationUpdateHandler = {[unowned self] button in
+            guard var config = button.configuration else { return }
+
+            var attributedString: AttributedString
+            if self.isFollowing {
+                attributedString = AttributedString("Following")
+            } else {
+                attributedString = AttributedString("Follow")
+            }
+            attributedString.font = .boldSystemFont(ofSize: 18)
+            attributedString.foregroundColor = .label
+            config.attributedTitle = attributedString
+
+            button.configuration = config
+        }
         return button
     }()
 
-    let followersButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.subtitle = "Followers"
-        config.title = "113"
-        config.titleAlignment = .center
-        config.titlePadding = 10
-        let button = UIButton(configuration: config)
-        return button
-    }()
+    let messageButton = BorderedButton(title: "Message")
 
-    let followingButton: UIButton = {
-        var config = UIButton.Configuration.plain()
-        config.subtitle = "Following"
-        config.title = "89"
-        config.titleAlignment = .center
-        config.titlePadding = 10
-        let button = UIButton(configuration: config)
-        return button
-    }()
     // MARK: - Lifecycle
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(isCurrentUser: Bool) {
+        self.isCurrentUser = isCurrentUser
+        super.init(frame: .zero)
         configure()
         addSubviews()
         addConstraints()
@@ -92,7 +124,7 @@ class ProfileHeaderView: UIView {
     }
 
     private func addSubviews() {
-        [profileImageView, usernameLabel, statStack].forEach { view in
+        [profileImageView, nameLabel, bioLabel, statStack, interactionStack].forEach { view in
             addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -103,11 +135,22 @@ class ProfileHeaderView: UIView {
             profileImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
             profileImageView.topAnchor.constraint(equalTo: topAnchor, constant: 30),
 
-            usernameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
-            usernameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
+            nameLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            nameLabel.topAnchor.constraint(equalTo: profileImageView.bottomAnchor, constant: 10),
+
+            bioLabel.centerXAnchor.constraint(equalTo: centerXAnchor),
+            bioLabel.topAnchor.constraint(equalTo: nameLabel.bottomAnchor, constant: 5),
+            bioLabel.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 25),
+            bioLabel.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -25),
 
             statStack.centerXAnchor.constraint(equalTo: centerXAnchor),
-            statStack.topAnchor.constraint(equalTo: usernameLabel.bottomAnchor, constant: 20),
+            statStack.topAnchor.constraint(equalTo: bioLabel.bottomAnchor, constant: 20),
+            statStack.heightAnchor.constraint(equalToConstant: 40),
+
+            interactionStack.centerXAnchor.constraint(equalTo: centerXAnchor),
+            interactionStack.topAnchor.constraint(equalTo: statStack.bottomAnchor, constant: 20),
+            interactionStack.widthAnchor.constraint(equalTo: bioLabel.widthAnchor),
+            interactionStack.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
 }

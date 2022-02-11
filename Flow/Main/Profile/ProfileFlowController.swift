@@ -31,6 +31,7 @@ class ProfileFlowController: UIViewController {
     // MARK: - Private
 
     private func showProfile() {
+        //TODO: get current UserID
         let profileVC = ProfileViewController(userID: "007")
         profileVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: profileVC)
