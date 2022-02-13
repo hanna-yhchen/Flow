@@ -150,7 +150,8 @@ class ProfileHeaderView: UIView {
             interactionStack.centerXAnchor.constraint(equalTo: centerXAnchor),
             interactionStack.topAnchor.constraint(equalTo: statStack.bottomAnchor, constant: 20),
             interactionStack.widthAnchor.constraint(equalTo: bioLabel.widthAnchor),
-            interactionStack.heightAnchor.constraint(equalToConstant: 40),
+            interactionStack.heightAnchor.constraint(equalToConstant: 35),
+            interactionStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 }

@@ -52,6 +52,7 @@
 		B54D8F0B278923F0008B805E /* ChatFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0A278923F0008B805E /* ChatFlowController.swift */; };
 		B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0C278923F9008B805E /* ProfileFlowController.swift */; };
 		B54D8F1427893601008B805E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F1327893601008B805E /* HomeViewController.swift */; };
+		B55E16A527B894610086503C /* UnderlinedSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55E16A427B894610086503C /* UnderlinedSegmentedControl.swift */; };
 		B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A227950AA30012E9CB /* FeedCell.swift */; };
 		B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A427952DA20012E9CB /* PostInteractionButton.swift */; };
 		B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */; };
@@ -114,6 +115,7 @@
 		B54D8F0A278923F0008B805E /* ChatFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatFlowController.swift; sourceTree = "<group>"; };
 		B54D8F0C278923F9008B805E /* ProfileFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFlowController.swift; sourceTree = "<group>"; };
 		B54D8F1327893601008B805E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
+		B55E16A427B894610086503C /* UnderlinedSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedSegmentedControl.swift; sourceTree = "<group>"; };
 		B563B5A227950AA30012E9CB /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B563B5A427952DA20012E9CB /* PostInteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteractionButton.swift; sourceTree = "<group>"; };
 		B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+FilledCircleFactory.swift"; sourceTree = "<group>"; };
@@ -194,6 +196,7 @@
 				B507A7C927959E3F00E8840D /* PostImageView.swift */,
 				B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */,
 				B54C2D7427A049A800B447CC /* GrowableTextView.swift */,
+				B55E16A427B894610086503C /* UnderlinedSegmentedControl.swift */,
 			);
 			path = "UI Components";
 			sourceTree = "<group>";
@@ -511,6 +514,7 @@
 				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
 				B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */,
 				B507A7CC2797EE8300E8840D /* Story.swift in Sources */,
+				B55E16A527B894610086503C /* UnderlinedSegmentedControl.swift in Sources */,
 				B546129F27832C6100C87339 /* SignInViewController.swift in Sources */,
 				B5D38E7927A3D263005E7108 /* KeyboardHandler.swift in Sources */,
 				B53F2EF9278EBDE90038B2C3 /* User.swift in Sources */,
