@@ -27,10 +27,13 @@ class ProfileViewController: UIViewController {
 
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     var pages: [UIViewController] = []
-    let segmentedControl = UISegmentedControl(items: ["Posts", "Mentioned"])
+//    let segmentedControl = UISegmentedControl(items: ["Posts", "Mentioned"])
+    let segmentedControl = UnderlinedSegmentedControl(titles: ["Posts", "Mentioned"])
     var selectedIndex = 0 {
-        didSet {
-            print("selectedIndex is \(selectedIndex)")
+        willSet {
+            if newValue != segmentedControl.selectedSegmentIndex {
+                segmentedControl.selectedSegmentIndex = newValue
+            }
         }
     }
 
@@ -64,12 +67,10 @@ class ProfileViewController: UIViewController {
     }
 
     private func configureHierarchy() {
-        segmentedControl.selectedSegmentIndex = 0
         segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
 
         pageViewController.delegate = self
         pageViewController.dataSource = self
-        // pageViewController.isEditing = true
         add(child: pageViewController)
         guard let pageView = pageViewController.view else {
             return }
@@ -105,7 +106,6 @@ class ProfileViewController: UIViewController {
             pageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             pageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             pageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            // Seg & page
         ])
 
         profileHeaderView.nameLabel.text = "Name"
@@ -116,14 +116,18 @@ class ProfileViewController: UIViewController {
     }
 
     // MARK: - Actions
-    @objc private func segmentChanged(sender: UISegmentedControl) {
+    @objc private func segmentChanged(sender: UnderlinedSegmentedControl) {
         let pageIndex = sender.selectedSegmentIndex
         let originalIndex = selectedIndex
         var direction: UIPageViewController.NavigationDirection = .forward
         if pageIndex < originalIndex {
             direction = .reverse
         }
-        pageViewController.setViewControllers([pages[pageIndex]], direction: direction, animated: true) {[unowned self] completed in
+        pageViewController.setViewControllers(
+            [pages[pageIndex]],
+            direction: direction,
+            animated: true
+        ) {[unowned self] completed in
             if completed {
                 self.selectedIndex = pageIndex
             }
@@ -148,7 +152,6 @@ extension ProfileViewController: UIPageViewControllerDelegate {
 
         if finished && completed {
             selectedIndex = pageIndex
-            segmentedControl.selectedSegmentIndex = selectedIndex
         }
     }
 }
@@ -159,7 +162,6 @@ extension ProfileViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let originalIndex = pages.firstIndex(of: viewController),
             originalIndex > 0 else {
-                print("viewControllerBefore <= 0")
                 return nil
         }
         return pages[originalIndex - 1]
@@ -168,7 +170,6 @@ extension ProfileViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let originalIndex = pages.firstIndex(of: viewController),
             originalIndex < 1 else {
-                print("viewControllerAfter >= 1")
                 return nil
         }
         return pages[originalIndex + 1]
