@@ -13,4 +13,6 @@ struct User {
     let profileImageURL: FirebaseURL
     let fullName: String
     let followers: [UserID]
+    let posts: [PostID]
+    let mentionedPosts: [PostID]
 }

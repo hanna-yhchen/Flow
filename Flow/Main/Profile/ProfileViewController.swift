@@ -16,18 +16,18 @@ class ProfileViewController: UIViewController {
         case thumbnail
     }
 
-    private typealias ProfileDataSource = UICollectionViewDiffableDataSource<Section, Post>
-    private typealias ProfileSnapshot = NSDiffableDataSourceSnapshot<Section, Post>
+    private typealias ProfilePageDataSource = UICollectionViewDiffableDataSource<Section, PostThumbnail>
+    private typealias ProfilePageSnapshot = NSDiffableDataSourceSnapshot<Section, PostThumbnail>
 
     // MARK: - Properties
 
-    let userID: UserID
+    let user: User
     let isCurrentUser: Bool
     let profileHeaderView: ProfileHeaderView
 
     let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     var pages: [UIViewController] = []
-//    let segmentedControl = UISegmentedControl(items: ["Posts", "Mentioned"])
+
     let segmentedControl = UnderlinedSegmentedControl(titles: ["Posts", "Mentioned"])
     var selectedIndex = 0 {
         willSet {
@@ -40,13 +40,16 @@ class ProfileViewController: UIViewController {
     weak var delegate: ProfileViewControllerDelegate?
 
     // swiftlint:disable implicitly_unwrapped_optional
-    private var dataSource: ProfileDataSource! = nil
+    private var postCollectionView: UICollectionView! = nil
+    private var mentionedCollectionView: UICollectionView! = nil
+    private var postDataSource: ProfilePageDataSource! = nil
+    private var mentionedDataSource: ProfilePageDataSource! = nil
     // swiftlint:enable implicitly_unwrapped_optional
 
     // MARK: - Lifecycle
 
-    init(userID: UserID) {
-        self.userID = userID
+    init(user: User) {
+        self.user = user
         // TODO: Check currentUser
         self.isCurrentUser = false
         self.profileHeaderView = ProfileHeaderView(isCurrentUser: isCurrentUser)
@@ -60,34 +63,23 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.title = "@username"
+        navigationItem.title = "@" + user.username
 
         configureHierarchy()
         configureDataSource()
     }
 
+    // MARK: - Configurations
+
     private func configureHierarchy() {
+        configurePageViewController()
+
         segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
 
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
-        add(child: pageViewController)
         guard let pageView = pageViewController.view else {
             return }
-        pageView.translatesAutoresizingMaskIntoConstraints = false
 
-        let vc0 = UIViewController()
-        vc0.view.backgroundColor = .red
-        vc0.view.tag = 0
-
-        let vc1 = UIViewController()
-        vc1.view.backgroundColor = .blue
-        vc1.view.tag = 1
-
-        pages = [vc0, vc1]
-        pageViewController.setViewControllers([pages[0]], direction: .forward, animated: false)
-
-        [profileHeaderView, segmentedControl].forEach { subview in
+        [profileHeaderView, segmentedControl, pageView].forEach { subview in
             view.addSubview(subview)
             subview.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -108,14 +100,81 @@ class ProfileViewController: UIViewController {
             pageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
         ])
 
-        profileHeaderView.nameLabel.text = "Name"
+        profileHeaderView.nameLabel.text = user.fullName
         profileHeaderView.profileImageView.image = UIImage(named: "keanu")
     }
 
+    private func configurePageViewController() {
+        let postViewController = UIViewController()
+        self.postCollectionView = GridCollectionView(withFrame: view.bounds)
+        postCollectionView.delegate = self
+        postViewController.view = postCollectionView
+        postViewController.view.backgroundColor = .red
+
+        let mentionedViewController = UIViewController()
+        self.mentionedCollectionView = GridCollectionView(withFrame: view.bounds)
+        mentionedCollectionView.delegate = self
+        mentionedViewController.view = mentionedCollectionView
+        mentionedViewController.view.backgroundColor = .blue
+
+        self.pages = [postViewController, mentionedViewController]
+        pageViewController.setViewControllers([pages[0]], direction: .forward, animated: false)
+
+        addChild(pageViewController)
+        pageViewController.delegate = self
+        pageViewController.dataSource = self
+    }
+
     private func configureDataSource() {
+        let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, PostThumbnail> { cell, _, post in
+            // TODO: Fetch post's image
+            cell.backgroundColor = .systemBackground
+            cell.tag = Int(post.id) ?? 0
+        }
+
+        self.postDataSource = ProfilePageDataSource(collectionView: postCollectionView) {
+            collectionView, indexPath, item in
+            return  collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+        }
+        self.mentionedDataSource = ProfilePageDataSource(collectionView: mentionedCollectionView) {
+            collectionView, indexPath, item in
+            return  collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
+        }
+
+        postDataSource.apply(currentPostSnapshot())
+        mentionedDataSource.apply(currentMentionedSnapshot())
+    }
+
+    // MARK: - Methods
+
+    private func currentPostSnapshot() -> ProfilePageSnapshot {
+        // TODO: Fetch User's Post List
+        let array = Array(0..<100)
+        let posts = array.map { int in
+            PostThumbnail(id: String(int), thumbnailURL: "")
+        }
+
+        var snapshot = ProfilePageSnapshot()
+        snapshot.appendSections([Section.thumbnail])
+        snapshot.appendItems(posts)
+        return snapshot
+    }
+
+    private func currentMentionedSnapshot() -> ProfilePageSnapshot {
+        // TODO: Fetch User's Mentioned Post List
+        let array = Array(0..<100)
+        let posts = array.map { int in
+            PostThumbnail(id: String(int), thumbnailURL: "")
+        }
+
+        var snapshot = ProfilePageSnapshot()
+        snapshot.appendSections([Section.thumbnail])
+        snapshot.appendItems(posts)
+        return snapshot
     }
 
     // MARK: - Actions
+
     @objc private func segmentChanged(sender: UnderlinedSegmentedControl) {
         let pageIndex = sender.selectedSegmentIndex
         let originalIndex = selectedIndex
@@ -150,6 +209,7 @@ extension ProfileViewController: UIPageViewControllerDelegate {
                 return
         }
 
+        // FIXME: Animation of segment is slower
         if finished && completed {
             selectedIndex = pageIndex
         }
@@ -173,5 +233,26 @@ extension ProfileViewController: UIPageViewControllerDataSource {
                 return nil
         }
         return pages[originalIndex + 1]
+    }
+}
+
+// MARK: - UICollectionViewDelegate
+
+extension ProfileViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        var dataSource: ProfilePageDataSource
+
+        switch collectionView {
+        case postCollectionView:
+            dataSource = postDataSource
+        case mentionedCollectionView:
+            dataSource = mentionedDataSource
+        default:
+            fatalError("Unexpected collection view")
+        }
+
+        if let post = dataSource.itemIdentifier(for: indexPath) {
+            delegate?.navigateToPost(id: post.id)
+        }
     }
 }

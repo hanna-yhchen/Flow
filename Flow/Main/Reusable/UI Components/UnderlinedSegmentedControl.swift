@@ -85,7 +85,11 @@ class UnderlinedSegmentedControl: UIControl {
                 guard var config = button.configuration else { return }
                 var attributedTitle = AttributedString(title)
                 attributedTitle.font = .systemFont(ofSize: textSize)
-                attributedTitle.foregroundColor = textColor
+                if button.state != .normal {
+                    attributedTitle.foregroundColor = textColor.withAlphaComponent(0.3)
+                } else {
+                    attributedTitle.foregroundColor = textColor
+                }
                 config.attributedTitle = attributedTitle
                 button.configuration = config
             }

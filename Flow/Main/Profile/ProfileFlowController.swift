@@ -31,8 +31,9 @@ class ProfileFlowController: UIViewController {
     // MARK: - Private
 
     private func showProfile() {
-        //TODO: get current UserID
-        let profileVC = ProfileViewController(userID: "007")
+        //TODO: get current User
+        let testUser = User(id: "007", username: "username", profileImageURL: "", fullName: "Name", followers: [], posts: [], mentionedPosts: [])
+        let profileVC = ProfileViewController(user: testUser)
         profileVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: profileVC)
         navigation.show(profileVC, sender: self)
@@ -41,7 +42,7 @@ class ProfileFlowController: UIViewController {
 
 extension ProfileFlowController: ProfileViewControllerDelegate {
     func navigateToPost(id: String) {
-        let testPost = Post(id: "", authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: [])
+        let testPost = Post(id: id, authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: [])
         let postVC = PostViewController(postID: id, post: testPost)
         navigation.pushViewController(postVC, animated: true)
     }

@@ -53,6 +53,8 @@
 		B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F0C278923F9008B805E /* ProfileFlowController.swift */; };
 		B54D8F1427893601008B805E /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B54D8F1327893601008B805E /* HomeViewController.swift */; };
 		B55E16A527B894610086503C /* UnderlinedSegmentedControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55E16A427B894610086503C /* UnderlinedSegmentedControl.swift */; };
+		B55E16A727BA37650086503C /* GridCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55E16A627BA37650086503C /* GridCollectionView.swift */; };
+		B55E16A927BA42A20086503C /* PostThumbnail.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55E16A827BA42A20086503C /* PostThumbnail.swift */; };
 		B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A227950AA30012E9CB /* FeedCell.swift */; };
 		B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A427952DA20012E9CB /* PostInteractionButton.swift */; };
 		B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */; };
@@ -116,6 +118,8 @@
 		B54D8F0C278923F9008B805E /* ProfileFlowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileFlowController.swift; sourceTree = "<group>"; };
 		B54D8F1327893601008B805E /* HomeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewController.swift; sourceTree = "<group>"; };
 		B55E16A427B894610086503C /* UnderlinedSegmentedControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlinedSegmentedControl.swift; sourceTree = "<group>"; };
+		B55E16A627BA37650086503C /* GridCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCollectionView.swift; sourceTree = "<group>"; };
+		B55E16A827BA42A20086503C /* PostThumbnail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostThumbnail.swift; sourceTree = "<group>"; };
 		B563B5A227950AA30012E9CB /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B563B5A427952DA20012E9CB /* PostInteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteractionButton.swift; sourceTree = "<group>"; };
 		B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+FilledCircleFactory.swift"; sourceTree = "<group>"; };
@@ -180,6 +184,7 @@
 				B53F2F0D279163EF0038B2C3 /* Storybook.swift */,
 				B507A7CB2797EE8300E8840D /* Story.swift */,
 				B52DAEC9278E99A70002D930 /* Post.swift */,
+				B55E16A827BA42A20086503C /* PostThumbnail.swift */,
 				B53F2EFA278ECBE00038B2C3 /* Comment.swift */,
 			);
 			path = Models;
@@ -353,6 +358,7 @@
 				B54D8F0C278923F9008B805E /* ProfileFlowController.swift */,
 				B54AC8CF27B2637500F3875C /* ProfileViewController.swift */,
 				B54AC8D327B50E5F00F3875C /* ProfileHeaderView.swift */,
+				B55E16A627BA37650086503C /* GridCollectionView.swift */,
 			);
 			path = Profile;
 			sourceTree = "<group>";
@@ -503,6 +509,7 @@
 				B52DAEC0278D23560002D930 /* SearchViewController.swift in Sources */,
 				B5CDB9FB27B60FE9007DF203 /* BorderedButton.swift in Sources */,
 				B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */,
+				B55E16A727BA37650086503C /* GridCollectionView.swift in Sources */,
 				B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */,
 				B52DAEC8278E7A990002D930 /* SearchViewModel.swift in Sources */,
 				B52DAEC6278E53D10002D930 /* ImageItem.swift in Sources */,
@@ -513,6 +520,7 @@
 				B54D8F09278923C9008B805E /* NewPostFlowController.swift in Sources */,
 				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
 				B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */,
+				B55E16A927BA42A20086503C /* PostThumbnail.swift in Sources */,
 				B507A7CC2797EE8300E8840D /* Story.swift in Sources */,
 				B55E16A527B894610086503C /* UnderlinedSegmentedControl.swift in Sources */,
 				B546129F27832C6100C87339 /* SignInViewController.swift in Sources */,

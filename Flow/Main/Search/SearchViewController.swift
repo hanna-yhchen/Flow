@@ -73,7 +73,7 @@ class SearchViewController: UIViewController {
             return cell
         }
 
-        dataSource.apply(currentSnapshot(), animatingDifferences: false)
+        dataSource.apply(currentSnapshot())
     }
 
     private func configureTargets() {

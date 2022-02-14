@@ -5,7 +5,7 @@
 //  Created by Hanna Chen on 2022/1/12.
 //
 
-import UIKit
+import Foundation
 
 typealias FirebaseURL = String
 typealias UserID = String
