@@ -26,7 +26,7 @@ class GridCollectionView: UICollectionView {
         let group = NSCollectionLayoutGroup.horizontal(
             layoutSize: NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .fractionalWidth(1/3)
+                heightDimension: .fractionalWidth(1 / 3)
             ),
             subitem: item,
             count: 3
