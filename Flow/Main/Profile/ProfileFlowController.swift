@@ -31,9 +31,8 @@ class ProfileFlowController: UIViewController {
     // MARK: - Private
 
     private func showProfile() {
-        //TODO: get current User
-        let testUser = User(id: "007", username: "username", profileImageURL: "", fullName: "Name", followers: [], posts: [], mentionedPosts: [])
-        let profileVC = ProfileViewController(user: testUser)
+        //TODO: get current User id
+        let profileVC = ProfileViewController(userID: "007", isCurrentUser: true)
         profileVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: profileVC)
         navigation.show(profileVC, sender: self)

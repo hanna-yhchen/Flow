@@ -6,10 +6,11 @@
 //
 
 import Foundation
+import UIKit
 
 struct PostThumbnail: Hashable {
     let id: PostID
-    let thumbnailURL: FirebaseURL
+    let thumbnail: UIImage?
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

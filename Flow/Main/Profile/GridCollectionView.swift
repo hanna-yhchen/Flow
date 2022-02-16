@@ -13,6 +13,7 @@ class GridCollectionView: UICollectionView {
         self.collectionViewLayout = makeLayout()
         self.autoresizingMask = [.flexibleHeight, .flexibleWidth]
         self.backgroundColor = .systemBackground
+        self.bounces = false
     }
 
     private func makeLayout() -> UICollectionViewLayout {

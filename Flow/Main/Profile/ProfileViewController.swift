@@ -7,6 +7,7 @@
 
 import UIKit
 import Parchment
+import Combine
 
 protocol ProfileViewControllerDelegate: AnyObject {
     func navigateToPost(id: String)
@@ -22,8 +23,11 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Properties
 
-    let user: User
-    let isCurrentUser: Bool
+    let viewModel: ProfileViewModel
+    private var postList: [PostThumbnail] = []
+    private var mentionedList: [PostThumbnail] = []
+    private var subscriptions = Set<AnyCancellable>()
+
     let profileHeaderView: ProfileHeaderView
 
     var pages: [UIViewController] = []
@@ -39,10 +43,11 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(user: User) {
-        self.user = user
+    init(userID: UserID, isCurrentUser: Bool = false) {
+        // TODO: Initiate View Model by user
+        self.viewModel = ProfileViewModel(userID: userID)
         // TODO: Check currentUser
-        self.isCurrentUser = false
+        let isCurrentUser = false
         self.profileHeaderView = ProfileHeaderView(isCurrentUser: isCurrentUser)
         super.init(nibName: nil, bundle: nil)
     }
@@ -54,10 +59,10 @@ class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.title = "@" + user.username
 
         configureHierarchy()
         configureDataSource()
+        configureBindings()
     }
 
     // MARK: - Configurations
@@ -100,9 +105,6 @@ class ProfileViewController: UIViewController {
             pagingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             pagingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
-
-        profileHeaderView.nameLabel.text = user.fullName
-        profileHeaderView.profileImageView.image = UIImage(named: "keanu")
     }
 
     private func addPages() {
@@ -125,9 +127,8 @@ class ProfileViewController: UIViewController {
 
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, PostThumbnail> { cell, _, post in
-            // TODO: Fetch post's image
             cell.backgroundColor = .systemBackground
-            cell.tag = Int(post.id) ?? 0
+            cell.imageView.image = post.thumbnail
         }
 
         self.postDataSource = ProfilePageDataSource(collectionView: postCollectionView) {
@@ -143,13 +144,37 @@ class ProfileViewController: UIViewController {
         mentionedDataSource.apply(currentMentionedSnapshot())
     }
 
+    private func configureBindings() {
+        viewModel.$profileImage
+            .receive(on: RunLoop.main)
+            .assign(to: \.image, on: profileHeaderView.profileImageView)
+            .store(in: &subscriptions)
+        viewModel.$username
+            .receive(on: RunLoop.main)
+            .assign(to: \.title, on: navigationItem)
+            .store(in: &subscriptions)
+        viewModel.$fullName
+            .receive(on: RunLoop.main)
+            .assign(to: \.text, on: profileHeaderView.nameLabel)
+            .store(in: &subscriptions)
+        viewModel.$postList
+            .receive(on: RunLoop.main)
+            .assign(to: \.postList, on: self)
+            .store(in: &subscriptions)
+        viewModel.$mentionedList
+            .receive(on: RunLoop.main)
+            .assign(to: \.mentionedList, on: self)
+            .store(in: &subscriptions)
+    }
+
     // MARK: - Methods
 
     private func currentPostSnapshot() -> ProfilePageSnapshot {
         // TODO: Fetch User's Post List
+        viewModel.fetchPosts()
         let array = Array(0..<100)
         let posts = array.map { int in
-            PostThumbnail(id: String(int), thumbnailURL: "")
+            PostThumbnail(id: String(int), thumbnail: nil)
         }
 
         var snapshot = ProfilePageSnapshot()
@@ -160,9 +185,10 @@ class ProfileViewController: UIViewController {
 
     private func currentMentionedSnapshot() -> ProfilePageSnapshot {
         // TODO: Fetch User's Mentioned Post List
+        viewModel.fetchMentionedPosts()
         let array = Array(0..<100)
         let posts = array.map { int in
-            PostThumbnail(id: String(int), thumbnailURL: "")
+            PostThumbnail(id: String(int), thumbnail: nil)
         }
 
         var snapshot = ProfilePageSnapshot()
