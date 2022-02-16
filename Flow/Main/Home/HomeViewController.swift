@@ -146,7 +146,7 @@ extension HomeViewController {
                 for: .touchUpInside
             )
 
-            // Pass id option: subclass gesture recognizer to carry value
+            // TODO: Replace with a button covering caption and date in FeedCell
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.postCaptionTapped))
             cell.captionLabel.addGestureRecognizer(tapGesture)
         }

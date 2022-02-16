@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Parchment
 
 protocol ProfileViewControllerDelegate: AnyObject {
     func navigateToPost(id: String)
@@ -25,17 +26,7 @@ class ProfileViewController: UIViewController {
     let isCurrentUser: Bool
     let profileHeaderView: ProfileHeaderView
 
-    let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
     var pages: [UIViewController] = []
-
-    let segmentedControl = UnderlinedSegmentedControl(titles: ["Posts", "Mentioned"])
-    var selectedIndex = 0 {
-        willSet {
-            if newValue != segmentedControl.selectedSegmentIndex {
-                segmentedControl.selectedSegmentIndex = newValue
-            }
-        }
-    }
 
     weak var delegate: ProfileViewControllerDelegate?
 
@@ -72,57 +63,64 @@ class ProfileViewController: UIViewController {
     // MARK: - Configurations
 
     private func configureHierarchy() {
-        configurePageViewController()
+        // TODO: Add Underlay Scroll View
+        addPages()
 
-        segmentedControl.addTarget(self, action: #selector(segmentChanged), for: .valueChanged)
+        let pagingViewController = PagingViewController(viewControllers: pages)
+        pagingViewController.menuInteraction = .swipe
+        pagingViewController.indicatorOptions = .visible(
+            height: 1,
+            zIndex: Int.max,
+            spacing: UIEdgeInsets.zero,
+            insets: UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        )
+        pagingViewController.indicatorColor = .label
+        pagingViewController.selectedTextColor = .label
+        pagingViewController.textColor = .secondaryLabel
+        pagingViewController.font = .boldSystemFont(ofSize: 16)
+        pagingViewController.selectedFont = .boldSystemFont(ofSize: 16)
 
-        guard let pageView = pageViewController.view else {
-            return }
+        add(child: pagingViewController)
+        addChild(pagingViewController)
+        pagingViewController.didMove(toParent: self)
 
-        [profileHeaderView, segmentedControl, pageView].forEach { subview in
-            view.addSubview(subview)
-            subview.translatesAutoresizingMaskIntoConstraints = false
-        }
+        guard let pagingView = pagingViewController.view else { return }
+        pagingView.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(profileHeaderView)
+        profileHeaderView.translatesAutoresizingMaskIntoConstraints = false
 
         NSLayoutConstraint.activate([
             profileHeaderView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             profileHeaderView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             profileHeaderView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            segmentedControl.topAnchor.constraint(equalTo: profileHeaderView.bottomAnchor, constant: 10),
-            segmentedControl.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            segmentedControl.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            segmentedControl.heightAnchor.constraint(equalToConstant: 35),
-
-            pageView.topAnchor.constraint(equalTo: segmentedControl.bottomAnchor),
-            pageView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            pageView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            pageView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            pagingView.topAnchor.constraint(equalTo: profileHeaderView.bottomAnchor, constant: 10),
+            pagingView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            pagingView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            pagingView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
 
         profileHeaderView.nameLabel.text = user.fullName
         profileHeaderView.profileImageView.image = UIImage(named: "keanu")
     }
 
-    private func configurePageViewController() {
+    private func addPages() {
         let postViewController = UIViewController()
         self.postCollectionView = GridCollectionView(withFrame: view.bounds)
         postCollectionView.delegate = self
         postViewController.view = postCollectionView
         postViewController.view.backgroundColor = .red
+        postViewController.title = "Posts"
 
         let mentionedViewController = UIViewController()
         self.mentionedCollectionView = GridCollectionView(withFrame: view.bounds)
         mentionedCollectionView.delegate = self
         mentionedViewController.view = mentionedCollectionView
         mentionedViewController.view.backgroundColor = .blue
+        mentionedViewController.title = "Mentioned"
 
         self.pages = [postViewController, mentionedViewController]
-        pageViewController.setViewControllers([pages[0]], direction: .forward, animated: false)
-
-        addChild(pageViewController)
-        pageViewController.delegate = self
-        pageViewController.dataSource = self
     }
 
     private func configureDataSource() {
@@ -175,65 +173,6 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Actions
 
-    @objc private func segmentChanged(sender: UnderlinedSegmentedControl) {
-        let pageIndex = sender.selectedSegmentIndex
-        let originalIndex = selectedIndex
-        var direction: UIPageViewController.NavigationDirection = .forward
-        if pageIndex < originalIndex {
-            direction = .reverse
-        }
-        pageViewController.setViewControllers(
-            [pages[pageIndex]],
-            direction: direction,
-            animated: true
-        ) {[unowned self] completed in
-            if completed {
-                self.selectedIndex = pageIndex
-            }
-        }
-    }
-}
-
-// MARK: - UIPageViewControllerDelegate
-
-extension ProfileViewController: UIPageViewControllerDelegate {
-    func pageViewController(
-        _ pageViewController: UIPageViewController,
-        didFinishAnimating finished: Bool,
-        previousViewControllers: [UIViewController],
-        transitionCompleted completed: Bool
-    ) {
-        guard let viewControllers = pageViewController.viewControllers,
-            let lastViewController = viewControllers.last,
-            let pageIndex = pages.firstIndex(of: lastViewController) else {
-                return
-        }
-
-        // FIXME: Animation of segment is slower
-        if finished && completed {
-            selectedIndex = pageIndex
-        }
-    }
-}
-
-// MARK: - UIPageViewControllerDataSource
-
-extension ProfileViewController: UIPageViewControllerDataSource {
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let originalIndex = pages.firstIndex(of: viewController),
-            originalIndex > 0 else {
-                return nil
-        }
-        return pages[originalIndex - 1]
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let originalIndex = pages.firstIndex(of: viewController),
-            originalIndex < 1 else {
-                return nil
-        }
-        return pages[originalIndex + 1]
-    }
 }
 
 // MARK: - UICollectionViewDelegate
