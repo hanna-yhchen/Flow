@@ -128,7 +128,8 @@ class ProfileViewController: UIViewController {
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, PostThumbnail> { cell, _, post in
             cell.backgroundColor = .systemBackground
-            cell.imageView.image = post.thumbnail
+            cell.imageView.image = UIImage(named: "scenery")
+            // TODO: Use Static Service to Fetch Image
         }
 
         self.postDataSource = ProfilePageDataSource(collectionView: postCollectionView) {
@@ -174,7 +175,7 @@ class ProfileViewController: UIViewController {
         viewModel.fetchPosts()
         let array = Array(0..<100)
         let posts = array.map { int in
-            PostThumbnail(id: String(int), thumbnail: nil)
+            PostThumbnail(id: String(int), thumbnailURL: "")
         }
 
         var snapshot = ProfilePageSnapshot()
@@ -188,7 +189,7 @@ class ProfileViewController: UIViewController {
         viewModel.fetchMentionedPosts()
         let array = Array(0..<100)
         let posts = array.map { int in
-            PostThumbnail(id: String(int), thumbnail: nil)
+            PostThumbnail(id: String(int), thumbnailURL: "")
         }
 
         var snapshot = ProfilePageSnapshot()

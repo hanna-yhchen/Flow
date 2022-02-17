@@ -36,11 +36,9 @@ class ProfileViewModel {
 
     func fetchPosts() {
         // TODO: Fetch User's PostIDs by UserID
-        // TODO: Fetch Thumbnail Image by URL
     }
 
     func fetchMentionedPosts() {
         // TODO: Fetch User's PostIDs by UserID
-        // TODO: Fetch Thumbnail Image by URL
     }
 }
