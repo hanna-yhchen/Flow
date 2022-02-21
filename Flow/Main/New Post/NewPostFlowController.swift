@@ -29,6 +29,5 @@ class NewPostFlowController: UIViewController {
     // MARK: - Private
 
     private func showImagePicker() {
-        
     }
 }

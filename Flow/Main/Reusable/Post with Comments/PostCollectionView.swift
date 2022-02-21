@@ -25,7 +25,7 @@ class PostCollectionView: UICollectionView {
         return UICollectionViewCompositionalLayout { _, _ in
             let layoutSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
-                heightDimension: .estimated(1)
+                heightDimension: .estimated(200)
             )
             let item = NSCollectionLayoutItem(layoutSize: layoutSize)
             let group = NSCollectionLayoutGroup.horizontal(
@@ -38,7 +38,7 @@ class PostCollectionView: UICollectionView {
             let header = NSCollectionLayoutBoundarySupplementaryItem(
                 layoutSize: NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(350)
+                    heightDimension: .estimated(500)
                 ),
                 elementKind: PostCollectionView.headerKind,
                 alignment: .top)

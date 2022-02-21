@@ -16,7 +16,6 @@ class AddCommentView: UIView {
         super.init(frame: .zero)
         profileImageView.image = profileImage
         configure()
-        print("init AddCommentView()")
     }
 
     required init?(coder: NSCoder) {
