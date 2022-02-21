@@ -59,6 +59,9 @@
 		B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A227950AA30012E9CB /* FeedCell.swift */; };
 		B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A427952DA20012E9CB /* PostInteractionButton.swift */; };
 		B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */; };
+		B5C0850027C32D2700DB8DDD /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C084FF27C32D2700DB8DDD /* NewPostViewController.swift */; };
+		B5C0850227C3376100DB8DDD /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0850127C3376100DB8DDD /* NewPostView.swift */; };
+		B5C0850427C362CF00DB8DDD /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0850327C362CF00DB8DDD /* CaptionTextView.swift */; };
 		B5CDB9F927B5F4FB007DF203 /* ProfileStatButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */; };
 		B5CDB9FB27B60FE9007DF203 /* BorderedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5CDB9FA27B60FE9007DF203 /* BorderedButton.swift */; };
 		B5D38E7927A3D263005E7108 /* KeyboardHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5D38E7827A3D263005E7108 /* KeyboardHandler.swift */; };
@@ -127,6 +130,9 @@
 		B563B5A227950AA30012E9CB /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B563B5A427952DA20012E9CB /* PostInteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteractionButton.swift; sourceTree = "<group>"; };
 		B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+FilledCircleFactory.swift"; sourceTree = "<group>"; };
+		B5C084FF27C32D2700DB8DDD /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
+		B5C0850127C3376100DB8DDD /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewPostView.swift; path = "/Users/hanna/Dropbox/iOS-Development/Personal/Flow/Flow/Main/New Post/NewPostView.swift"; sourceTree = "<absolute>"; };
+		B5C0850327C362CF00DB8DDD /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CaptionTextView.swift; path = "Flow/Main/New Post/CaptionTextView.swift"; sourceTree = SOURCE_ROOT; };
 		B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileStatButton.swift; sourceTree = "<group>"; };
 		B5CDB9FA27B60FE9007DF203 /* BorderedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BorderedButton.swift; sourceTree = "<group>"; };
 		B5D38E7827A3D263005E7108 /* KeyboardHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyboardHandler.swift; sourceTree = "<group>"; };
@@ -223,6 +229,7 @@
 				B507A7C927959E3F00E8840D /* PostImageView.swift */,
 				B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */,
 				B54C2D7427A049A800B447CC /* GrowableTextView.swift */,
+				B5C0850327C362CF00DB8DDD /* CaptionTextView.swift */,
 			);
 			path = "UI Components";
 			sourceTree = "<group>";
@@ -363,6 +370,8 @@
 			isa = PBXGroup;
 			children = (
 				B54D8F08278923C9008B805E /* NewPostFlowController.swift */,
+				B5C084FF27C32D2700DB8DDD /* NewPostViewController.swift */,
+				B5C0850127C3376100DB8DDD /* NewPostView.swift */,
 			);
 			path = "New Post";
 			sourceTree = "<group>";
@@ -560,10 +569,12 @@
 				B5D38E7B27A3E141005E7108 /* UIView+TapHandle.swift in Sources */,
 				B54612B9278675B500C87339 /* RegisterView.swift in Sources */,
 				B507A7D5279912CB00E8840D /* AddCommentView.swift in Sources */,
+				B5C0850427C362CF00DB8DDD /* CaptionTextView.swift in Sources */,
 				B5EAF15F27882438004C429E /* AuthView.swift in Sources */,
 				B54612A227833CC000C87339 /* SignInView.swift in Sources */,
 				B53F2F0727910AA40038B2C3 /* HomeCollectionView.swift in Sources */,
 				B5EAF1592787E7DE004C429E /* UIButton+ColorTransformerOnTapFactory.swift in Sources */,
+				B5C0850227C3376100DB8DDD /* NewPostView.swift in Sources */,
 				B54D8F0D278923F9008B805E /* ProfileFlowController.swift in Sources */,
 				B507A7D02798FBE200E8840D /* PostCollectionView.swift in Sources */,
 				B54612B7278674EE00C87339 /* RegisterViewController.swift in Sources */,
@@ -571,6 +582,7 @@
 				B5CDB9FB27B60FE9007DF203 /* BorderedButton.swift in Sources */,
 				B526C0A927BD407C000E9A7F /* ProfileViewModel.swift in Sources */,
 				B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */,
+				B5C0850027C32D2700DB8DDD /* NewPostViewController.swift in Sources */,
 				B55E16A727BA37650086503C /* GridCollectionView.swift in Sources */,
 				B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */,
 				B52DAEC8278E7A990002D930 /* SearchViewModel.swift in Sources */,

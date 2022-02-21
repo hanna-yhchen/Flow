@@ -7,10 +7,16 @@
 
 import UIKit
 
+protocol NewPostFlowControllerDelegate: AnyObject {
+    func newPostFlowControllerDidFinish(_ flowController: UIViewController)
+}
+
 class NewPostFlowController: UIViewController {
     // MARK: - Properties
 
+    weak var delegate: NewPostFlowControllerDelegate?
     private let navigation: FNavigationController
+    var didFinish = true
 
     // MARK: - Lifecycle
 
@@ -19,15 +25,26 @@ class NewPostFlowController: UIViewController {
 
         super.init(nibName: nil, bundle: nil)
         add(child: navigation)
-        showImagePicker()
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Private
+    func showNewPost() {
+        didFinish = false
+        let newPostVC = NewPostViewController()
+        newPostVC.delegate = self
+        navigation.show(newPostVC, sender: self)
+    }
+}
 
-    private func showImagePicker() {
+// MARK: - NewPostViewControllerDelegate
+
+extension NewPostFlowController: NewPostViewControllerDelegate {
+    func didFinishNewPost(_ controller: NewPostViewController) {
+        didFinish = true
+        remove(child: controller)
+        delegate?.newPostFlowControllerDidFinish(self)
     }
 }

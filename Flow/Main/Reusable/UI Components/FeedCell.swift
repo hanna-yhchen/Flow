@@ -225,8 +225,8 @@ class FeedCell: UICollectionViewCell {
             topStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Size.padding),
 
             postImageView.topAnchor.constraint(equalTo: topStack.bottomAnchor, constant: Size.padding / 2),
-            postImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
-            // height will be set whenever image is set
+            postImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            /// postImageView's dimension will be set whenever the image is set
 
             bottomStack.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             bottomStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Size.padding),

@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:/Users/hanna/Dropbox/iOS-Development/Personal/Flow/Flow/Main/New Post/NewPostView.swift">
+   </FileRef>
+   <FileRef
       location = "group:Flow.xcodeproj">
    </FileRef>
    <FileRef

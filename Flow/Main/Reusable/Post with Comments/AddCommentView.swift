@@ -10,7 +10,7 @@ import UIKit
 class AddCommentView: UIView {
     let separator = UIView()
     let profileImageView = UIImageView.filledCircle(length: 35)
-    let commentTextView = GrowableTextView(placeholder: "Add a Comment")
+    let commentTextView = GrowableTextView(placeholder: "Add a comment...")
 
     init(profileImage: UIImage?) {
         super.init(frame: .zero)

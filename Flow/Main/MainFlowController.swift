@@ -17,6 +17,7 @@ protocol BarButtonDelegate: AnyObject {
 
 class MainFlowController: UIViewController {
     weak var delegate: MainFlowControllerDelegate?
+    let mainTabController = UITabBarController()
 
     func start() {
         let homeFlowController = flowController(
@@ -29,12 +30,13 @@ class MainFlowController: UIViewController {
             withIconName: "magnifyingglass",
             selectedIconName: "magnifyingglass"
         )
-        let postFlowController = flowController(
+        let newPostFlowController = flowController(
             NewPostFlowController(),
             withIconName: "plus.app",
             selectedIconName: "plus.app.fill",
             pointSize: 20
         )
+        newPostFlowController.delegate = self
         let chatFlowController = flowController(
             ChatFlowController(),
             withIconName: "ellipsis.bubble",
@@ -46,11 +48,11 @@ class MainFlowController: UIViewController {
             selectedIconName: "person.crop.circle.fill"
         )
 
-        let mainTabController = UITabBarController()
+        mainTabController.delegate = self
         mainTabController.viewControllers = [
             homeFlowController,
             searchFlowController,
-            postFlowController,
+            newPostFlowController,
             chatFlowController,
             profileFlowController,
         ]
@@ -79,6 +81,8 @@ class MainFlowController: UIViewController {
     }
 }
 
+// MARK: - BarButtonDelegate
+
 extension MainFlowController: BarButtonDelegate {
     func configureBarButtons(in controller: UIViewController) {
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -99,5 +103,24 @@ extension MainFlowController: BarButtonDelegate {
 
     @objc func sideInfoButtonTapped() {
         print("sideInfoButtonTapped")
+    }
+}
+
+// MARK: - NewPostFlowControllerDelegate
+
+extension MainFlowController: NewPostFlowControllerDelegate {
+    func newPostFlowControllerDidFinish(_ flowController: UIViewController) {
+        mainTabController.selectedIndex = 0
+    }
+}
+
+// MARK: - UITabBarControllerDelegate
+
+extension MainFlowController: UITabBarControllerDelegate {
+    func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
+        guard let newPostFlow = viewController as? NewPostFlowController else { return }
+        if newPostFlow.didFinish {
+            newPostFlow.showNewPost()
+        }
     }
 }
