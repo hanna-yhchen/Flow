@@ -20,7 +20,6 @@ class RegisterViewController: UIViewController {
     private let contentView = RegisterView()
     private let viewModel = RegisterViewModel()
     private var subscriptions = Set<AnyCancellable>()
-    private var bottomConstraint: NSLayoutConstraint?
 
     // MARK: - Lifecycle
 

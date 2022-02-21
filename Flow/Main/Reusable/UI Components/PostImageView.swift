@@ -25,10 +25,8 @@ class PostImageView: UIImageView {
             let maxHeight = fullWidth * ( 4 / 3 )
             let estimatedHeight = fullWidth * ratio
             if estimatedHeight > maxHeight {
-                print("estimatedHeight > maxHeight")
                 heightConstraint.constant = maxHeight
             } else {
-                print("estimatedHeight <= maxHeight")
                 heightConstraint.constant = estimatedHeight
             }
 
