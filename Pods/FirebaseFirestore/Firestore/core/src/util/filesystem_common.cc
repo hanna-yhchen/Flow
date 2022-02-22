@@ -27,8 +27,8 @@ namespace firestore {
 namespace util {
 
 Filesystem* Filesystem::Default() {
-  static auto* filesystem = new Filesystem();
-  return filesystem;
+  static Filesystem filesystem;
+  return &filesystem;
 }
 
 Status Filesystem::RecursivelyCreateDir(const Path& path) {
@@ -69,8 +69,8 @@ Status Filesystem::RecursivelyRemove(const Path& path) {
   }
 }
 
-Status Filesystem::RecursivelyRemoveDir(const Path& path) {
-  std::unique_ptr<DirectoryIterator> iter = DirectoryIterator::Create(path);
+Status Filesystem::RecursivelyRemoveDir(const Path& parent) {
+  std::unique_ptr<DirectoryIterator> iter = DirectoryIterator::Create(parent);
   for (; iter->Valid(); iter->Next()) {
     Status status = RecursivelyRemove(iter->file());
     if (!status.ok()) {
@@ -84,7 +84,7 @@ Status Filesystem::RecursivelyRemoveDir(const Path& path) {
     }
     return iter->status();
   }
-  return RemoveDir(path);
+  return RemoveDir(parent);
 }
 
 #if !__APPLE__

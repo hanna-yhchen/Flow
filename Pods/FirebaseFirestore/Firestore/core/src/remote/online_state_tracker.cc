@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Google LLC
+ * Copyright 2019 Google
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,18 +24,15 @@
 #include "Firestore/core/src/util/status.h"
 #include "Firestore/core/src/util/string_format.h"
 
-namespace firebase {
-namespace firestore {
-namespace remote {
-namespace {
-
 namespace chr = std::chrono;
+using firebase::firestore::model::OnlineState;
+using firebase::firestore::util::AsyncQueue;
+using firebase::firestore::util::DelayedOperation;
+using firebase::firestore::util::Status;
+using firebase::firestore::util::StringFormat;
+using firebase::firestore::util::TimerId;
 
-using model::OnlineState;
-using util::AsyncQueue;
-using util::Status;
-using util::StringFormat;
-using util::TimerId;
+namespace {
 
 // To deal with transient failures, we allow multiple stream attempts before
 // giving up and transitioning from OnlineState Unknown to Offline.
@@ -50,6 +47,10 @@ const int kMaxWatchStreamFailures = 1;
 const AsyncQueue::Milliseconds kOnlineStateTimeout = chr::seconds(10);
 
 }  // namespace
+
+namespace firebase {
+namespace firestore {
+namespace remote {
 
 void OnlineStateTracker::HandleWatchStreamStart() {
   if (watch_stream_failures_ != 0) {

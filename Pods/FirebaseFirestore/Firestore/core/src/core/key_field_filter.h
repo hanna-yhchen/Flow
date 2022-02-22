@@ -19,9 +19,7 @@
 
 #include <string>
 
-#include "Firestore/Protos/nanopb/google/firestore/v1/document.nanopb.h"
 #include "Firestore/core/src/core/field_filter.h"
-#include "Firestore/core/src/nanopb/message.h"
 
 namespace firebase {
 namespace firestore {
@@ -32,10 +30,9 @@ namespace core {
  */
 class KeyFieldFilter : public FieldFilter {
  public:
-  /** Creates a new document key filter. Takes ownership of `value`. */
-  KeyFieldFilter(const model::FieldPath& field,
+  KeyFieldFilter(model::FieldPath field,
                  core::Filter::Operator op,
-                 nanopb::SharedMessage<google_firestore_v1_Value> value);
+                 model::FieldValue value);
 
  private:
   class Rep;

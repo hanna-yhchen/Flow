@@ -16,6 +16,7 @@
 
 #include "Firestore/core/src/model/field_mask.h"
 
+#include "Firestore/core/src/model/field_value.h"
 #include "Firestore/core/src/util/hashing.h"
 
 namespace firebase {

@@ -31,10 +31,6 @@ namespace core {
 class Query;
 }  // namespace core
 
-namespace model {
-class Document;
-}  // namespace model
-
 namespace local {
 
 /**
@@ -61,7 +57,8 @@ class LocalDocumentsView {
    * @return Local view of the document or nil if we don't have any cached state
    * for it.
    */
-  const model::Document GetDocument(const model::DocumentKey& key);
+  absl::optional<model::MaybeDocument> GetDocument(
+      const model::DocumentKey& key);
 
   /**
    * Gets the local view of the documents identified by `keys`.
@@ -69,14 +66,14 @@ class LocalDocumentsView {
    * If we don't have cached state for a document in `keys`, a DeletedDocument
    * will be stored for that key in the resulting set.
    */
-  model::DocumentMap GetDocuments(const model::DocumentKeySet& keys);
+  model::MaybeDocumentMap GetDocuments(const model::DocumentKeySet& keys);
 
   /**
    * Similar to `GetDocuments`, but creates the local view from the given
    * `base_docs` without retrieving documents from the local store.
    */
-  model::DocumentMap GetLocalViewOfDocuments(
-      model::MutableDocumentMap base_docs);
+  model::MaybeDocumentMap GetLocalViewOfDocuments(
+      const model::OptionalMaybeDocumentMap& base_docs);
 
   /**
    * Performs a query against the local view of all documents.
@@ -93,15 +90,16 @@ class LocalDocumentsView {
   friend class CountingQueryEngine;  // For testing
 
   /** Internal version of GetDocument that allows re-using batches. */
-  model::Document GetDocument(const model::DocumentKey& key,
-                              const std::vector<model::MutationBatch>& batches);
+  absl::optional<model::MaybeDocument> GetDocument(
+      const model::DocumentKey& key,
+      const std::vector<model::MutationBatch>& batches);
 
   /**
    * Returns the view of the given `docs` as they would appear after applying
    * all mutations in the given `batches`.
    */
-  static model::DocumentMap ApplyLocalMutationsToDocuments(
-      model::MutableDocumentMap& docs,
+  model::OptionalMaybeDocumentMap ApplyLocalMutationsToDocuments(
+      const model::OptionalMaybeDocumentMap& docs,
       const std::vector<model::MutationBatch>& batches);
 
   /** Performs a simple document lookup for the given path. */
@@ -124,9 +122,9 @@ class LocalDocumentsView {
    * `PatchMutation`s will be ignored because no base document can be found, and
    * lead to missing results for the query.
    */
-  model::MutableDocumentMap AddMissingBaseDocuments(
+  model::DocumentMap AddMissingBaseDocuments(
       const std::vector<model::MutationBatch>& matching_batches,
-      model::MutableDocumentMap existing_docs);
+      model::DocumentMap existing_docs);
 
   RemoteDocumentCache* remote_document_cache() {
     return remote_document_cache_;

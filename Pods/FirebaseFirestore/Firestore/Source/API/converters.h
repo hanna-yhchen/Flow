@@ -23,11 +23,8 @@
 
 #import <Foundation/Foundation.h>
 
-#include <memory>
-
 @class FIRGeoPoint;
 @class FIRTimestamp;
-@class FIRDocumentReference;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -39,13 +36,7 @@ namespace firestore {
 
 class GeoPoint;
 
-namespace model {
-class DocumentKey;
-}
-
 namespace api {
-
-class Firestore;
 
 /** Converts a user-supplied FIRGeoPoint to the equivalent C++ GeoPoint. */
 GeoPoint MakeGeoPoint(FIRGeoPoint* geo_point);
@@ -58,9 +49,6 @@ Timestamp MakeTimestamp(FIRTimestamp* timestamp);
 Timestamp MakeTimestamp(NSDate* date);
 
 FIRTimestamp* MakeFIRTimestamp(const Timestamp& timestamp);
-
-FIRDocumentReference* MakeFIRDocumentReference(const model::DocumentKey& document_key,
-                                               std::shared_ptr<Firestore> firestore);
 
 }  // namespace api
 }  // namespace firestore

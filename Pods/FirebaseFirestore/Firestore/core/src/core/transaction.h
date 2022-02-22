@@ -36,7 +36,6 @@ namespace firestore {
 
 namespace model {
 class Precondition;
-class Document;
 }  // namespace model
 
 namespace remote {
@@ -50,11 +49,11 @@ class ParsedUpdateData;
 
 class Transaction {
  public:
-  using LookupCallback =
-      std::function<void(const util::StatusOr<std::vector<model::Document>>&)>;
+  using LookupCallback = std::function<void(
+      const util::StatusOr<std::vector<model::MaybeDocument>>&)>;
 
   Transaction() = default;
-  explicit Transaction(std::shared_ptr<remote::Datastore> datastore);
+  explicit Transaction(remote::Datastore* transaction);
 
   /**
    * Takes a set of keys and asynchronously attempts to fetch all the documents
@@ -106,7 +105,7 @@ class Transaction {
    * error. When the transaction is committed, the versions recorded will be set
    * as preconditions on the writes sent to the backend.
    */
-  util::Status RecordVersion(const model::Document& doc);
+  util::Status RecordVersion(const model::MaybeDocument& doc);
 
   /** Stores mutations to be written when `Commit` is called. */
   void WriteMutations(std::vector<model::Mutation>&& mutations);
@@ -129,7 +128,7 @@ class Transaction {
   absl::optional<model::SnapshotVersion> GetVersion(
       const model::DocumentKey& key) const;
 
-  std::weak_ptr<remote::Datastore> datastore_;
+  remote::Datastore* datastore_ = nullptr;
 
   std::vector<model::Mutation> mutations_;
   bool committed_ = false;

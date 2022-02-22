@@ -27,7 +27,7 @@ namespace firebase {
 namespace firestore {
 namespace model {
 
-class MutableDocument;
+class MaybeDocument;
 
 /**
  * Encodes a precondition for a mutation. This follows the model that the
@@ -61,7 +61,7 @@ class Precondition {
    * Returns true if the precondition is valid for the given document (and the
    * document is available).
    */
-  bool IsValidFor(const MutableDocument& document) const;
+  bool IsValidFor(const absl::optional<MaybeDocument>& maybe_doc) const;
 
   Type type() const {
     return type_;

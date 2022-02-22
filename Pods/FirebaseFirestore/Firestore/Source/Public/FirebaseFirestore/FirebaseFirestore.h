@@ -25,7 +25,6 @@
 #import "FIRFirestoreSettings.h"
 #import "FIRGeoPoint.h"
 #import "FIRListenerRegistration.h"
-#import "FIRLoadBundleTask.h"
 #import "FIRQuery.h"
 #import "FIRQuerySnapshot.h"
 #import "FIRSnapshotMetadata.h"

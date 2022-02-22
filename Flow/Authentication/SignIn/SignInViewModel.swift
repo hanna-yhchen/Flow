@@ -5,8 +5,8 @@
 //  Created by Hanna Chen on 2022/1/4.
 //
 
-import Foundation
 import Combine
+import FirebaseAuth
 
 class SignInViewModel {
     @Published var email: String = ""
@@ -17,4 +17,7 @@ class SignInViewModel {
         .eraseToAnyPublisher()
 
     // TODO: Validate Credentials
+    func signIn(completion: AuthDataResultCallback?) {
+        AuthService.signIn(email: email, password: password, completion: completion)
+    }
 }

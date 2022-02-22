@@ -40,15 +40,13 @@ class LevelDbMigrations {
    * Runs any migrations needed to bring the given database up to the current
    * schema version
    */
-  static void RunMigrations(leveldb::DB* db, const LocalSerializer& serializer);
+  static void RunMigrations(leveldb::DB* db);
 
   /**
    * Runs any migrations needed to bring the given database up to the given
    * schema version
    */
-  static void RunMigrations(leveldb::DB* db,
-                            SchemaVersion version,
-                            const LocalSerializer& serializer);
+  static void RunMigrations(leveldb::DB* db, SchemaVersion version);
 };
 
 }  // namespace local

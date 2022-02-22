@@ -78,11 +78,10 @@ class LruDelegate : public ReferenceDelegate {
   virtual size_t GetSequenceNumberCount() = 0;
 
   /**
-   * Enumerates the sequence numbers of all the targets that the delegate is
-   * aware of. This is typically all sequence numbers in an TargetCache.
+   * Enumerates all the targets that the delegate is aware of. This is typically
+   * all of the targets in an TargetCache.
    */
-  virtual void EnumerateTargetSequenceNumbers(
-      const SequenceNumberCallback& callback) = 0;
+  virtual void EnumerateTargets(const TargetCallback& callback) = 0;
 
   /**
    * Enumerates all of the outstanding mutations.

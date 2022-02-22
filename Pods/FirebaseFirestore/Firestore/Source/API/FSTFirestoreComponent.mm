@@ -20,16 +20,15 @@
 #include <string>
 #include <utility>
 
-#import "FirebaseAppCheck/Sources/Interop/FIRAppCheckInterop.h"
 #import "FirebaseCore/Sources/Private/FirebaseCoreInternal.h"
 #import "Firestore/Source/API/FIRFirestore+Internal.h"
 #import "Interop/Auth/Public/FIRAuthInterop.h"
 
 #include "Firestore/core/include/firebase/firestore/firestore_version.h"
 #include "Firestore/core/src/api/firestore.h"
-#include "Firestore/core/src/credentials/credentials_provider.h"
-#include "Firestore/core/src/credentials/firebase_app_check_credentials_provider_apple.h"
-#include "Firestore/core/src/credentials/firebase_auth_credentials_provider_apple.h"
+#include "Firestore/core/src/auth/credentials_provider.h"
+#include "Firestore/core/src/auth/firebase_credentials_provider_apple.h"
+#include "Firestore/core/src/model/maybe_document.h"
 #include "Firestore/core/src/remote/firebase_metadata_provider.h"
 #include "Firestore/core/src/remote/firebase_metadata_provider_apple.h"
 #include "Firestore/core/src/util/async_queue.h"
@@ -38,12 +37,14 @@
 #include "Firestore/core/src/util/hard_assert.h"
 #include "absl/memory/memory.h"
 
-using firebase::firestore::credentials::FirebaseAppCheckCredentialsProvider;
-using firebase::firestore::credentials::FirebaseAuthCredentialsProvider;
+namespace util = firebase::firestore::util;
+using firebase::firestore::api::Firestore;
+using firebase::firestore::auth::CredentialsProvider;
+using firebase::firestore::auth::FirebaseCredentialsProvider;
+using firebase::firestore::remote::FirebaseMetadataProvider;
 using firebase::firestore::remote::FirebaseMetadataProviderApple;
 using firebase::firestore::util::AsyncQueue;
 using firebase::firestore::util::Executor;
-using firebase::firestore::util::MakeString;
 using firebase::firestore::util::ThrowInvalidArgument;
 
 NS_ASSUME_NONNULL_BEGIN
@@ -93,27 +94,22 @@ NS_ASSUME_NONNULL_BEGIN
     if (!firestore) {
       std::string queue_name{"com.google.firebase.firestore"};
       if (!self.app.isDefaultApp) {
-        absl::StrAppend(&queue_name, ".", MakeString(self.app.name));
+        absl::StrAppend(&queue_name, ".", util::MakeString(self.app.name));
       }
 
       auto executor = Executor::CreateSerial(queue_name.c_str());
       auto workerQueue = AsyncQueue::Create(std::move(executor));
 
       id<FIRAuthInterop> auth = FIR_COMPONENT(FIRAuthInterop, self.app.container);
-      id<FIRAppCheckInterop> app_check = FIR_COMPONENT(FIRAppCheckInterop, self.app.container);
-      auto authCredentialsProvider =
-          std::make_shared<FirebaseAuthCredentialsProvider>(self.app, auth);
-      auto appCheckCredentialsProvider =
-          std::make_shared<FirebaseAppCheckCredentialsProvider>(self.app, app_check);
+      auto credentialsProvider = std::make_shared<FirebaseCredentialsProvider>(self.app, auth);
 
       auto firebaseMetadataProvider = absl::make_unique<FirebaseMetadataProviderApple>(self.app);
 
-      model::DatabaseId databaseID{MakeString(projectID), MakeString(database)};
-      std::string persistenceKey = MakeString(self.app.name);
+      model::DatabaseId databaseID{util::MakeString(projectID), util::MakeString(database)};
+      std::string persistenceKey = util::MakeString(self.app.name);
       firestore = [[FIRFirestore alloc] initWithDatabaseID:std::move(databaseID)
                                             persistenceKey:std::move(persistenceKey)
-                                   authCredentialsProvider:std::move(authCredentialsProvider)
-                               appCheckCredentialsProvider:std::move(appCheckCredentialsProvider)
+                                       credentialsProvider:std::move(credentialsProvider)
                                                workerQueue:std::move(workerQueue)
                                   firebaseMetadataProvider:std::move(firebaseMetadataProvider)
                                                firebaseApp:self.app
@@ -147,7 +143,10 @@ NS_ASSUME_NONNULL_BEGIN
 #pragma mark - Object Lifecycle
 
 + (void)load {
-  [FIRApp registerInternalLibrary:(Class<FIRLibrary>)self withName:@"fire-fst"];
+  [FIRApp registerInternalLibrary:(Class<FIRLibrary>)self
+                         withName:@"fire-fst"
+                      withVersion:[NSString stringWithUTF8String:firebase::firestore::
+                                                                     kFirestoreVersionString]];
 }
 
 #pragma mark - Interoperability

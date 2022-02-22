@@ -9,9 +9,8 @@ target 'Flow' do
   pod 'Parchment', '~> 3.2'
   pod 'Firebase/Auth'
   pod 'Firebase/Firestore'
+  pod 'FirebaseFirestoreSwift'
   pod 'Firebase/Storage'
-  pod 'CombineFirebase/Auth'
-  pod 'CombineFirebase/Firestore'
-  pod 'CombineFirebase/Storage'
+  pod 'SDWebImage', '~> 5.0'
 
 end

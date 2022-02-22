@@ -16,25 +16,19 @@
 
 #import "FirebaseStorage/Sources/Public/FirebaseStorage/FIRStorage.h"
 
-#import "FirebaseAppCheck/Sources/Interop/FIRAppCheckInterop.h"
 #import "FirebaseCore/Sources/Private/FirebaseCoreInternal.h"
 #import "Interop/Auth/Public/FIRAuthInterop.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-/** A NSMutableDictionary of FirebaseApp name and bucket names to FIRStorage  instance. */
-typedef NSMutableDictionary<NSString *, FIRStorage *> FIRStorageDictionary;
-
 @interface FIRStorage ()
 // Surface the internal initializer to create instances of FIRStorage.
 - (instancetype)initWithApp:(FIRApp *)app
                      bucket:(NSString *)bucket
-                       auth:(nullable id<FIRAuthInterop>)auth
-                   appCheck:(nullable id<FIRAppCheckInterop>)appCheck;
+                       auth:(nullable id<FIRAuthInterop>)auth;
 @end
 
 @interface FIRStorageComponent () <FIRLibrary>
-@property(nonatomic) FIRStorageDictionary *instances;
 /// Internal initializer.
 - (instancetype)initWithApp:(FIRApp *)app;
 @end
@@ -47,7 +41,6 @@ typedef NSMutableDictionary<NSString *, FIRStorage *> FIRStorageDictionary;
   self = [super init];
   if (self) {
     _app = app;
-    _instances = [NSMutableDictionary dictionary];
   }
   return self;
 }
@@ -55,7 +48,9 @@ typedef NSMutableDictionary<NSString *, FIRStorage *> FIRStorageDictionary;
 #pragma mark - Lifecycle
 
 + (void)load {
-  [FIRApp registerInternalLibrary:(Class<FIRLibrary>)self withName:@"fire-str"];
+  [FIRApp registerInternalLibrary:(Class<FIRLibrary>)self
+                         withName:@"fire-str"
+                      withVersion:[NSString stringWithUTF8String:FIRStorageVersionString]];
 }
 
 #pragma mark - FIRComponentRegistrant
@@ -65,7 +60,6 @@ typedef NSMutableDictionary<NSString *, FIRStorage *> FIRStorageDictionary;
                                                       isRequired:NO];
   FIRComponentCreationBlock creationBlock =
       ^id _Nullable(FIRComponentContainer *container, BOOL *isCacheable) {
-    *isCacheable = YES;
     return [[FIRStorageComponent alloc] initWithApp:container.app];
   };
   FIRComponent *storageProvider =
@@ -80,21 +74,9 @@ typedef NSMutableDictionary<NSString *, FIRStorage *> FIRStorageDictionary;
 #pragma mark - FIRStorageInstanceProvider Conformance
 
 - (FIRStorage *)storageForBucket:(NSString *)bucket {
-  FIRStorageDictionary *instances = [self instances];
-  @synchronized(instances) {
-    FIRStorage *instance = instances[bucket];
-    if (!instance) {
-      // Create an instance of FIRStorage and return it.
-      id<FIRAuthInterop> auth = FIR_COMPONENT(FIRAuthInterop, self.app.container);
-      id<FIRAppCheckInterop> appCheck = FIR_COMPONENT(FIRAppCheckInterop, self.app.container);
-      instance = [[FIRStorage alloc] initWithApp:self.app
-                                          bucket:bucket
-                                            auth:auth
-                                        appCheck:appCheck];
-      instances[bucket] = instance;
-    }
-    return instance;
-  }
+  // Create an instance of FIRStorage and return it.
+  id<FIRAuthInterop> auth = FIR_COMPONENT(FIRAuthInterop, self.app.container);
+  return [[FIRStorage alloc] initWithApp:self.app bucket:bucket auth:auth];
 }
 
 @end

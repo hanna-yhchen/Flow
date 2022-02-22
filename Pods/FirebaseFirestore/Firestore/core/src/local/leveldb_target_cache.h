@@ -18,7 +18,6 @@
 #define FIRESTORE_CORE_SRC_LOCAL_LEVELDB_TARGET_CACHE_H_
 
 #include <unordered_map>
-#include <unordered_set>
 
 #include "Firestore/Protos/nanopb/firestore/local/target.nanopb.h"
 #include "Firestore/core/src/local/target_cache.h"
@@ -72,12 +71,11 @@ class LevelDbTargetCache : public TargetCache {
 
   absl::optional<TargetData> GetTarget(const core::Target& target) override;
 
-  void EnumerateSequenceNumbers(
-      const SequenceNumberCallback& callback) override;
+  void EnumerateTargets(const TargetCallback& callback) override;
 
-  size_t RemoveTargets(model::ListenSequenceNumber upper_bound,
-                       const std::unordered_map<model::TargetId, TargetData>&
-                           live_targets) override;
+  int RemoveTargets(model::ListenSequenceNumber upper_bound,
+                    const std::unordered_map<model::TargetId, TargetData>&
+                        live_targets) override;
 
   // Key-related methods
 
@@ -93,8 +91,8 @@ class LevelDbTargetCache : public TargetCache {
   void RemoveMatchingKeys(const model::DocumentKeySet& keys,
                           model::TargetId target_id) override;
 
-  /** Removes all document keys in the query results of the given target ID. */
-  void RemoveMatchingKeysForTarget(model::TargetId target_id) override;
+  /** Removes all the keys in the query results of the given target ID. */
+  void RemoveAllKeysForTarget(model::TargetId target_id);
 
   model::DocumentKeySet GetMatchingKeys(model::TargetId target_id) override;
 
@@ -130,19 +128,11 @@ class LevelDbTargetCache : public TargetCache {
   bool UpdateMetadata(const TargetData& target_data);
   void SaveMetadata();
 
-  /** Parses the given bytes as a `firestore_client_Target` protocol buffer. */
-  nanopb::Message<firestore_client_Target> DecodeTargetProto(
-      nanopb::Reader* reader);
-
   /**
    * Parses the given bytes as a `firestore_client_Target` protocol buffer and
    * then converts to the equivalent target data.
    */
   TargetData DecodeTarget(absl::string_view encoded);
-
-  /** Removes the given targets from the query to target mapping. */
-  void RemoveQueryTargetKeyForTargets(
-      const std::unordered_set<model::TargetId>& target_id);
 
   // The LevelDbTargetCache is owned by LevelDbPersistence.
   LevelDbPersistence* db_;

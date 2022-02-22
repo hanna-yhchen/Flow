@@ -15,7 +15,7 @@ protocol RegisterViewControllerDelegate: AnyObject {
 class RegisterViewController: UIViewController {
     // MARK: - Properties
 
-    weak var delegate: SignInViewControllerDelegate?
+    weak var delegate: RegisterViewControllerDelegate?
     private let scrollView = UIScrollView()
     private let contentView = RegisterView()
     private let viewModel = RegisterViewModel()
@@ -77,6 +77,10 @@ class RegisterViewController: UIViewController {
     }
 
     private func configureBindings() {
+        contentView.$profileImage
+            .assign(to: \.profileImage, on: viewModel)
+            .store(in: &subscriptions)
+        /// Q: Do I need to receive these on main thread?
         contentView.emailTextField.textPublisher
             .receive(on: RunLoop.main)
             .assign(to: \.email, on: viewModel)
@@ -119,10 +123,14 @@ class RegisterViewController: UIViewController {
 
     @objc private func register() {
         contentView.authButton.isLoading = true
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            self.contentView.authButton.isLoading = false
+        viewModel.register {[unowned self] error in
+            if let error = error {
+                print("DEBUG: Error registering user -", error.localizedDescription)
+                self.contentView.authButton.isLoading = false
+                return
+            }
+            self.delegate?.registerDidComplete(self)
         }
-        // TODO: Validate Credentials
     }
 
     @objc private func goSignIn() {
@@ -135,7 +143,7 @@ class RegisterViewController: UIViewController {
 extension RegisterViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey: Any]) {
         guard let selectedImage = info[.editedImage] as? UIImage else { return }
-        contentView.profilePhoto = selectedImage.withRenderingMode(.alwaysOriginal)
+        contentView.profileImage = selectedImage.withRenderingMode(.alwaysOriginal)
         self.dismiss(animated: true, completion: nil)
     }
 }

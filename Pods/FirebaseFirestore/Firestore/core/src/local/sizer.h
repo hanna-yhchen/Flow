@@ -23,7 +23,7 @@ namespace firebase {
 namespace firestore {
 namespace model {
 
-class MutableDocument;
+class MaybeDocument;
 class MutationBatch;
 
 }  // namespace model
@@ -44,7 +44,7 @@ class Sizer {
    * NoDocuments have an associated size.
    */
   virtual int64_t CalculateByteSize(
-      const model::MutableDocument& maybe_doc) const = 0;
+      const model::MaybeDocument& maybe_doc) const = 0;
 
   /**
    * Calculates the size of the given mutation_batch in bytes.

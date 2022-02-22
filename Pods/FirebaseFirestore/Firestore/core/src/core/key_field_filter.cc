@@ -21,9 +21,6 @@
 
 #include "Firestore/core/src/model/document.h"
 #include "Firestore/core/src/model/document_key.h"
-#include "Firestore/core/src/model/value_util.h"
-#include "Firestore/core/src/nanopb/nanopb_util.h"
-#include "Firestore/core/src/util/hard_assert.h"
 #include "absl/algorithm/container.h"
 
 namespace firebase {
@@ -33,22 +30,14 @@ namespace core {
 using model::Document;
 using model::DocumentKey;
 using model::FieldPath;
-using model::GetTypeOrder;
-using model::TypeOrder;
-using nanopb::SharedMessage;
+using model::FieldValue;
 
 using Operator = Filter::Operator;
 
 class KeyFieldFilter::Rep : public FieldFilter::Rep {
  public:
-  Rep(FieldPath field,
-      Operator op,
-      SharedMessage<google_firestore_v1_Value> value)
+  Rep(FieldPath field, Operator op, FieldValue value)
       : FieldFilter::Rep(std::move(field), op, std::move(value)) {
-    HARD_ASSERT(GetTypeOrder(this->value()) == TypeOrder::kReference,
-                "KeyFieldFilter expects a ReferenceValue");
-    key_ = DocumentKey::FromName(
-        nanopb::MakeString(this->value().reference_value));
   }
 
   Type type() const override {
@@ -56,19 +45,18 @@ class KeyFieldFilter::Rep : public FieldFilter::Rep {
   }
 
   bool Matches(const model::Document& doc) const override;
-
- private:
-  DocumentKey key_;
 };
 
-KeyFieldFilter::KeyFieldFilter(const FieldPath& field,
-                               Operator op,
-                               SharedMessage<google_firestore_v1_Value> value)
-    : FieldFilter(std::make_shared<const Rep>(field, op, std::move(value))) {
+KeyFieldFilter::KeyFieldFilter(FieldPath field, Operator op, FieldValue value)
+    : FieldFilter(
+          std::make_shared<const Rep>(std::move(field), op, std::move(value))) {
 }
 
 bool KeyFieldFilter::Rep::Matches(const Document& doc) const {
-  return MatchesComparison(doc->key().CompareTo(key_));
+  const DocumentKey& lhs_key = doc.key();
+  const DocumentKey& rhs_key = value().reference_value().key();
+
+  return MatchesComparison(lhs_key.CompareTo(rhs_key));
 }
 
 }  // namespace core

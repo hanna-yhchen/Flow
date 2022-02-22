@@ -9,7 +9,9 @@ import UIKit
 import Combine
 
 class RegisterViewModel {
-    @Published var profilePhoto: UIImage?
+    // MARK: - Properties
+
+    @Published var profileImage: UIImage?
     @Published var email: String = ""
     @Published var password: String = ""
     @Published var confirmPassword: String = ""
@@ -26,6 +28,8 @@ class RegisterViewModel {
         }
         .eraseToAnyPublisher()
 
+    // MARK: - LifeCycle
+
     init() {
         Publishers.CombineLatest($password, $confirmPassword)
             .map { $0 == $1 }
@@ -34,5 +38,20 @@ class RegisterViewModel {
             .store(in: &subscriptions)
     }
 
-    // TODO: Validate Credentials
+    // MARK: - Methods
+
+    func register(completion: @escaping(Error?) -> Void) {
+        // TODO: Validate Credentials
+        guard let profileImage = profileImage else {
+            return
+        }
+        let credentials = AuthCredentials(
+            email: email,
+            password: password,
+            username: username,
+            fullName: fullName,
+            profileImage: profileImage
+        )
+        AuthService.register(with: credentials, completion: completion)
+    }
 }

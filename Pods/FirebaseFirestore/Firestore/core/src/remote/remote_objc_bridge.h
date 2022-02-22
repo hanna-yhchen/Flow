@@ -41,6 +41,7 @@ class TargetData;
 
 namespace model {
 class DocumentKey;
+class MaybeDocument;
 class SnapshotVersion;
 }  // namespace model
 
@@ -74,13 +75,9 @@ class WatchStreamSerializer {
 
   nanopb::Message<google_firestore_v1_ListenResponse> ParseResponse(
       nanopb::Reader* reader) const;
-  /**
-   * Decodes the listen response. Modifies the provided proto to release
-   * ownership of any Value messages.
-   */
   std::unique_ptr<WatchChange> DecodeWatchChange(
       nanopb::Reader* reader,
-      google_firestore_v1_ListenResponse& response) const;
+      const google_firestore_v1_ListenResponse& response) const;
   model::SnapshotVersion DecodeSnapshotVersion(
       nanopb::Reader* reader,
       const google_firestore_v1_ListenResponse& response) const;
@@ -105,12 +102,9 @@ class WriteStreamSerializer {
   model::SnapshotVersion DecodeCommitVersion(
       nanopb::Reader* reader,
       const google_firestore_v1_WriteResponse& proto) const;
-  /**
-   * Decodes the write response. Modifies the provided proto to release
-   * ownership of any Value messages.
-   */
   std::vector<model::MutationResult> DecodeMutationResults(
-      nanopb::Reader* reader, google_firestore_v1_WriteResponse& proto) const;
+      nanopb::Reader* reader,
+      const google_firestore_v1_WriteResponse& proto) const;
 
  private:
   Serializer serializer_;
@@ -130,7 +124,7 @@ class DatastoreSerializer {
    * Merges results of the streaming read together. The array is sorted by the
    * document key.
    */
-  util::StatusOr<std::vector<model::Document>> MergeLookupResponses(
+  util::StatusOr<std::vector<model::MaybeDocument>> MergeLookupResponses(
       const std::vector<grpc::ByteBuffer>& responses) const;
 
   const Serializer& serializer() const {

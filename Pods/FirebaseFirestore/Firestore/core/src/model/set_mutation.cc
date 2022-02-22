@@ -19,11 +19,12 @@
 #include <cstdlib>
 #include <utility>
 
-#include "Firestore/core/src/model/mutable_document.h"
-#include "Firestore/core/src/model/value_util.h"
+#include "Firestore/core/src/model/document.h"
+#include "Firestore/core/src/model/field_path.h"
+#include "Firestore/core/src/model/field_value.h"
+#include "Firestore/core/src/model/no_document.h"
 #include "Firestore/core/src/util/hard_assert.h"
 #include "Firestore/core/src/util/hashing.h"
-#include "Firestore/core/src/util/to_string.h"
 #include "absl/strings/str_cat.h"
 
 namespace firebase {
@@ -36,67 +37,49 @@ static_assert(
 
 SetMutation::SetMutation(DocumentKey key,
                          ObjectValue value,
-                         Precondition precondition,
-                         std::vector<FieldTransform> field_transforms)
-    : Mutation(std::make_shared<Rep>(std::move(key),
-                                     std::move(value),
-                                     std::move(precondition),
-                                     std::move(field_transforms))) {
+                         Precondition precondition)
+    : Mutation(std::make_shared<Rep>(
+          std::move(key), std::move(value), std::move(precondition))) {
 }
 
 SetMutation::SetMutation(const Mutation& mutation) : Mutation(mutation) {
   HARD_ASSERT(type() == Type::Set);
 }
 
-SetMutation::SetMutation(DocumentKey key,
-                         ObjectValue value,
-                         Precondition precondition)
-    : Mutation(std::make_shared<Rep>(std::move(key),
-                                     std::move(value),
-                                     std::move(precondition),
-                                     std::vector<FieldTransform>())) {
-}
-
 SetMutation::Rep::Rep(DocumentKey&& key,
                       ObjectValue&& value,
-                      Precondition&& precondition,
-                      std::vector<FieldTransform>&& field_transforms)
-    : Mutation::Rep(
-          std::move(key), std::move(precondition), std::move(field_transforms)),
+                      Precondition&& precondition)
+    : Mutation::Rep(std::move(key), std::move(precondition)),
       value_(std::move(value)) {
 }
 
-void SetMutation::Rep::ApplyToRemoteDocument(
-    MutableDocument& document, const MutationResult& mutation_result) const {
-  VerifyKeyMatches(document);
+MaybeDocument SetMutation::Rep::ApplyToRemoteDocument(
+    const absl::optional<MaybeDocument>& maybe_doc,
+    const MutationResult& mutation_result) const {
+  VerifyKeyMatches(maybe_doc);
+
+  HARD_ASSERT(mutation_result.transform_results() == absl::nullopt,
+              "Transform results received by SetMutation.");
 
   // Unlike ApplyToLocalView, if we're applying a mutation to a remote document
   // the server has accepted the mutation so the precondition must have held.
-  auto transform_results = ServerTransformResults(
-      document.data(), mutation_result.transform_results());
-  ObjectValue new_data{DeepClone(value_.Get())};
-  new_data.SetAll(std::move(transform_results));
-  document
-      .ConvertToFoundDocument(mutation_result.version(), std::move(new_data))
-      .SetHasCommittedMutations();
+
+  const SnapshotVersion& version = mutation_result.version();
+  return Document(value_, key(), version, DocumentState::kCommittedMutations);
 }
 
-void SetMutation::Rep::ApplyToLocalView(
-    MutableDocument& document, const Timestamp& local_write_time) const {
-  VerifyKeyMatches(document);
+absl::optional<MaybeDocument> SetMutation::Rep::ApplyToLocalView(
+    const absl::optional<MaybeDocument>& maybe_doc,
+    const absl::optional<MaybeDocument>&,
+    const Timestamp&) const {
+  VerifyKeyMatches(maybe_doc);
 
-  if (!precondition().IsValidFor(document)) {
-    return;
+  if (!precondition().IsValidFor(maybe_doc)) {
+    return maybe_doc;
   }
 
-  auto transform_results =
-      LocalTransformResults(document.data(), local_write_time);
-  ObjectValue new_data{DeepClone(value_.Get())};
-  new_data.SetAll(std::move(transform_results));
-  document
-      .ConvertToFoundDocument(GetPostMutationVersion(document),
-                              std::move(new_data))
-      .SetHasLocalMutations();
+  SnapshotVersion version = GetPostMutationVersion(maybe_doc);
+  return Document(value_, key(), version, DocumentState::kLocalMutations);
 }
 
 bool SetMutation::Rep::Equals(const Mutation::Rep& other) const {
@@ -113,8 +96,7 @@ size_t SetMutation::Rep::Hash() const {
 std::string SetMutation::Rep::ToString() const {
   return absl::StrCat("SetMutation(key=", key().ToString(),
                       ", precondition=", precondition().ToString(),
-                      ", value=", value().ToString(),
-                      ", transforms=", util::ToString(field_transforms()), ")");
+                      ", value=", value().ToString(), ")");
 }
 
 }  // namespace model

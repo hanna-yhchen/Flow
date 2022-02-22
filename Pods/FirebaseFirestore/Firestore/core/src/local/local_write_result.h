@@ -19,9 +19,7 @@
 
 #include <utility>
 
-#include "Firestore/core/src/immutable/sorted_map.h"
-#include "Firestore/core/src/model/document.h"
-#include "Firestore/core/src/model/model_fwd.h"
+#include "Firestore/core/src/model/document_map.h"
 #include "Firestore/core/src/model/types.h"
 
 namespace firebase {
@@ -31,7 +29,7 @@ namespace local {
 /** The result of a write to the local store. */
 class LocalWriteResult {
  public:
-  LocalWriteResult(model::BatchId batch_id, model::DocumentMap&& changes)
+  LocalWriteResult(model::BatchId batch_id, model::MaybeDocumentMap&& changes)
       : batch_id_(batch_id), changes_(std::move(changes)) {
   }
 
@@ -43,13 +41,13 @@ class LocalWriteResult {
   }
 
   /** The document changes resulting from the local write. */
-  const model::DocumentMap& changes() const {
+  const model::MaybeDocumentMap& changes() const {
     return changes_;
   }
 
  private:
   model::BatchId batch_id_;
-  model::DocumentMap changes_;
+  model::MaybeDocumentMap changes_;
 };
 
 }  // namespace local

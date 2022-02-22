@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ProfileHeaderView: UIView {
     // MARK: - Properties
@@ -24,6 +25,12 @@ class ProfileHeaderView: UIView {
     var isFollowing = false {
         didSet {
             followButton.setNeedsUpdateConfiguration()
+        }
+    }
+
+    var profileImageURL: URL? {
+        didSet {
+            profileImageView.sd_setImage(with: profileImageURL)
         }
     }
 

@@ -21,7 +21,6 @@
 #endif
 
 @protocol FIRAuthInterop;
-@protocol FIRAppCheckInterop;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -38,7 +37,6 @@ NS_ASSUME_NONNULL_BEGIN
  * Initializes the token authorizer with an instance of FIRApp.
  * @param googleAppID The Google AppID of the app to send with the request.
  * @param auth An instance that provides access to Auth functionality, if it exists.
- * @param appCheck An instance that provides access to AppCheck functionality, if it exists.
  * @return Returns an instance of FIRStorageTokenAuthorizer which adds the appropriate
  * "Authorization" header to all outbound requests. Note that a token may not be added
  * if the Auth instance is nil. This allows for unauthenticated access, if Firebase
@@ -46,8 +44,7 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithGoogleAppID:(NSString *)googleAppID
                      fetcherService:(GTMSessionFetcherService *)service
-                       authProvider:(nullable id<FIRAuthInterop>)auth
-                           appCheck:(nullable id<FIRAppCheckInterop>)appCheck;
+                       authProvider:(nullable id<FIRAuthInterop>)auth;
 
 @end
 

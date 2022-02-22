@@ -30,10 +30,11 @@ namespace firebase {
 namespace firestore {
 namespace remote {
 
-using credentials::AuthCredentialsProvider;
-using credentials::AuthToken;
+using auth::CredentialsProvider;
+using auth::Token;
 using local::TargetData;
 using model::TargetId;
+using nanopb::Message;
 using remote::ByteBufferReader;
 using util::AsyncQueue;
 using util::Status;
@@ -41,20 +42,12 @@ using util::TimerId;
 
 WatchStream::WatchStream(
     const std::shared_ptr<AsyncQueue>& async_queue,
-    std::shared_ptr<credentials::AuthCredentialsProvider>
-        auth_credentials_provider,
-    std::shared_ptr<credentials::AppCheckCredentialsProvider>
-        app_check_credentials_provider,
+    std::shared_ptr<CredentialsProvider> credentials_provider,
     Serializer serializer,
     GrpcConnection* grpc_connection,
     WatchStreamCallback* callback)
-    : Stream{async_queue,
-             std::move(auth_credentials_provider),
-             std::move(app_check_credentials_provider),
-             grpc_connection,
-             TimerId::ListenStreamConnectionBackoff,
-             TimerId::ListenStreamIdle,
-             TimerId::HealthCheckTimeout},
+    : Stream{async_queue, std::move(credentials_provider), grpc_connection,
+             TimerId::ListenStreamConnectionBackoff, TimerId::ListenStreamIdle},
       watch_serializer_{std::move(serializer)},
       callback_{NOT_NULL(callback)} {
 }
@@ -77,11 +70,9 @@ void WatchStream::UnwatchTargetId(TargetId target_id) {
 }
 
 std::unique_ptr<GrpcStream> WatchStream::CreateGrpcStream(
-    GrpcConnection* grpc_connection,
-    const AuthToken& auth_token,
-    const std::string& app_check_token) {
+    GrpcConnection* grpc_connection, const Token& token) {
   return grpc_connection->CreateStream("/google.firestore.v1.Firestore/Listen",
-                                       auth_token, app_check_token, this);
+                                       token, this);
 }
 
 void WatchStream::TearDown(GrpcStream* grpc_stream) {

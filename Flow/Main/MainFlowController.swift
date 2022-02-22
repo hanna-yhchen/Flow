@@ -103,6 +103,9 @@ extension MainFlowController: BarButtonDelegate {
 
     @objc func sideInfoButtonTapped() {
         print("sideInfoButtonTapped")
+        // TODO: side menu
+        // temporarily used for logging out
+        delegate?.mainFlowControllerDidFinish(self)
     }
 }
 

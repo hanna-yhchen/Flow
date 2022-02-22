@@ -19,9 +19,7 @@
 
 #include <string>
 
-#include "Firestore/Protos/nanopb/google/firestore/v1/document.nanopb.h"
 #include "Firestore/core/src/core/field_filter.h"
-#include "Firestore/core/src/nanopb/message.h"
 
 namespace firebase {
 namespace firestore {
@@ -38,9 +36,7 @@ namespace core {
  */
 class ArrayContainsFilter : public FieldFilter {
  public:
-  /** Creates a new array-contains filter. Takes ownership of `value`. */
-  ArrayContainsFilter(const model::FieldPath& field,
-                      nanopb::SharedMessage<google_firestore_v1_Value> value);
+  ArrayContainsFilter(model::FieldPath field, model::FieldValue value);
 
  private:
   class Rep;

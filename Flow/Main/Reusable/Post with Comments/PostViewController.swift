@@ -20,7 +20,6 @@ class PostViewController: UIViewController {
     // MARK: - Properties
 
     let post: Post
-    let postID: String
 
     private let collectionView: UICollectionView
     private var dataSource: PostDataSource?
@@ -29,9 +28,8 @@ class PostViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(postID: String, post: Post) {
+    init(post: Post) {
         self.post = post
-        self.postID = postID
         self.collectionView = PostCollectionView()
         super.init(nibName: nil, bundle: nil)
 

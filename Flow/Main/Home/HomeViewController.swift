@@ -93,7 +93,7 @@ extension HomeViewController {
         let storybooks = array.map { int in Item.story(Storybook(authorID: "\(int)", whoHasReadAll: [])) }
         let feeds = array.map { int in
             Item.feed(
-                Post(id: "\(int)", authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: []))
+                Post(id: "\(int)", authorID: "", photoURL: nil, caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: []))
         }
 
         var snapshot = HomeSnapshot()

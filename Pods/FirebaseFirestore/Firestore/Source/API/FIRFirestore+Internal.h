@@ -20,12 +20,12 @@
 #include <string>
 
 #include "Firestore/core/src/api/firestore.h"
-#include "Firestore/core/src/credentials/credentials_provider.h"
+#include "Firestore/core/src/auth/credentials_provider.h"
 #include "Firestore/core/src/util/async_queue.h"
 
 @class FIRApp;
 @class FSTFirestoreClient;
-@class FSTUserDataReader;
+@class FSTUserDataConverter;
 
 namespace firebase {
 namespace firestore {
@@ -36,9 +36,10 @@ class FirebaseMetadataProvider;
 }  // namespace firebase
 
 namespace api = firebase::firestore::api;
-namespace credentials = firebase::firestore::credentials;
+namespace auth = firebase::firestore::auth;
 namespace model = firebase::firestore::model;
 namespace remote = firebase::firestore::remote;
+namespace util = firebase::firestore::util;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -58,12 +59,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 - (instancetype)initWithDatabaseID:(model::DatabaseId)databaseID
                     persistenceKey:(std::string)persistenceKey
-           authCredentialsProvider:
-               (std::shared_ptr<credentials::AuthCredentialsProvider>)authCredentialsProvider
-       appCheckCredentialsProvider:
-           (std::shared_ptr<credentials::AppCheckCredentialsProvider>)appCheckCredentialsProvider
-                       workerQueue:
-                           (std::shared_ptr<firebase::firestore::util::AsyncQueue>)workerQueue
+               credentialsProvider:(std::shared_ptr<auth::CredentialsProvider>)credentialsProvider
+                       workerQueue:(std::shared_ptr<util::AsyncQueue>)workerQueue
           firebaseMetadataProvider:
               (std::unique_ptr<remote::FirebaseMetadataProvider>)firebaseMetadataProvider
                        firebaseApp:(FIRApp *)app
@@ -77,12 +74,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)terminateInternalWithCompletion:(nullable void (^)(NSError *_Nullable error))completion;
 
-- (const std::shared_ptr<firebase::firestore::util::AsyncQueue> &)workerQueue;
+- (const std::shared_ptr<util::AsyncQueue> &)workerQueue;
 
 @property(nonatomic, assign, readonly) std::shared_ptr<api::Firestore> wrapped;
 
 @property(nonatomic, assign, readonly) const model::DatabaseId &databaseID;
-@property(nonatomic, strong, readonly) FSTUserDataReader *dataReader;
+@property(nonatomic, strong, readonly) FSTUserDataConverter *dataConverter;
 
 @end
 

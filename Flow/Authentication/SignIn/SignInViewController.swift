@@ -69,11 +69,14 @@ class SignInViewController: UIViewController {
 
     @objc private func signIn() {
         contentView.authButton.isLoading = true
-        Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { _ in
-            self.contentView.authButton.isLoading = false
+        viewModel.signIn {[unowned self] _, error in
+            if let error = error {
+                print("DEBUG: Error logging user in -", error.localizedDescription)
+                contentView.authButton.isLoading = false
+                return
+            }
+            delegate?.signInDidComplete(self)
         }
-
-        // TODO: Validate Credentials
     }
 
     @objc private func goRegister() {

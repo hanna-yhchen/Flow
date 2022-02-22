@@ -60,8 +60,8 @@ ABSL_ATTRIBUTE_NORETURN void ObjcThrowHandler(ExceptionType type,
         handleFailureInFunction:MakeNSString(func)
                            file:MakeNSString(file)
                      lineNumber:line
-                    description:@"%@: %@", ExceptionName(type),
-                                MakeNSString(message)];
+                    description:@"%@: %s", ExceptionName(type),
+                                message.c_str()];
     std::terminate();
   } else {
     @throw MakeException(type, message);  // NOLINT

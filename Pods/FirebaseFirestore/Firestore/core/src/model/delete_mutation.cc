@@ -19,8 +19,10 @@
 #include <cstdlib>
 #include <utility>
 
+#include "Firestore/core/src/model/document.h"
 #include "Firestore/core/src/model/field_path.h"
-#include "Firestore/core/src/model/mutable_document.h"
+#include "Firestore/core/src/model/field_value.h"
+#include "Firestore/core/src/model/no_document.h"
 #include "Firestore/core/src/util/hard_assert.h"
 
 namespace firebase {
@@ -39,11 +41,12 @@ DeleteMutation::DeleteMutation(const Mutation& mutation) : Mutation(mutation) {
   HARD_ASSERT(type() == Type::Delete);
 }
 
-void DeleteMutation::Rep::ApplyToRemoteDocument(
-    MutableDocument& document, const MutationResult& mutation_result) const {
-  VerifyKeyMatches(document);
+MaybeDocument DeleteMutation::Rep::ApplyToRemoteDocument(
+    const absl::optional<MaybeDocument>& maybe_doc,
+    const MutationResult& mutation_result) const {
+  VerifyKeyMatches(maybe_doc);
 
-  HARD_ASSERT(mutation_result.transform_results()->values_count == 0,
+  HARD_ASSERT(mutation_result.transform_results() == absl::nullopt,
               "Transform results received by DeleteMutation.");
 
   // Unlike ApplyToLocalView, if we're applying a mutation to a remote document
@@ -52,17 +55,22 @@ void DeleteMutation::Rep::ApplyToRemoteDocument(
   // We store the deleted document at the commit version of the delete. Any
   // document version that the server sends us before the delete was applied is
   // discarded.
-  document.ConvertToNoDocument(mutation_result.version())
-      .SetHasCommittedMutations();
+  return NoDocument(key(), mutation_result.version(),
+                    /* has_committed_mutations= */ true);
 }
 
-void DeleteMutation::Rep::ApplyToLocalView(MutableDocument& document,
-                                           const Timestamp&) const {
-  VerifyKeyMatches(document);
+absl::optional<MaybeDocument> DeleteMutation::Rep::ApplyToLocalView(
+    const absl::optional<MaybeDocument>& maybe_doc,
+    const absl::optional<MaybeDocument>&,
+    const Timestamp&) const {
+  VerifyKeyMatches(maybe_doc);
 
-  if (precondition().IsValidFor(document)) {
-    document.ConvertToNoDocument(SnapshotVersion::None());
+  if (!precondition().IsValidFor(maybe_doc)) {
+    return maybe_doc;
   }
+
+  return NoDocument(key(), SnapshotVersion::None(),
+                    /* has_committed_mutations= */ false);
 }
 
 std::string DeleteMutation::Rep::ToString() const {

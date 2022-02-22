@@ -20,23 +20,21 @@
 #include <utility>
 
 #include "Firestore/core/src/model/document.h"
-#include "Firestore/core/src/model/value_util.h"
 #include "absl/algorithm/container.h"
 
 namespace firebase {
 namespace firestore {
 namespace core {
 
-using model::Contains;
 using model::Document;
 using model::FieldPath;
-using model::IsArray;
-using nanopb::SharedMessage;
+using model::FieldValue;
+
 using Operator = Filter::Operator;
 
 class ArrayContainsFilter::Rep : public FieldFilter::Rep {
  public:
-  Rep(FieldPath field, SharedMessage<google_firestore_v1_Value> value)
+  Rep(FieldPath field, FieldValue value)
       : FieldFilter::Rep(
             std::move(field), Operator::ArrayContains, std::move(value)) {
   }
@@ -48,21 +46,20 @@ class ArrayContainsFilter::Rep : public FieldFilter::Rep {
   bool Matches(const model::Document& doc) const override;
 };
 
-ArrayContainsFilter::ArrayContainsFilter(
-    const model::FieldPath& field,
-    SharedMessage<google_firestore_v1_Value> value)
-    : FieldFilter(std::make_shared<const Rep>(field, std::move(value))) {
+ArrayContainsFilter::ArrayContainsFilter(FieldPath field, FieldValue value)
+    : FieldFilter(
+          std::make_shared<const Rep>(std::move(field), std::move(value))) {
 }
 
 bool ArrayContainsFilter::Rep::Matches(const Document& doc) const {
-  absl::optional<google_firestore_v1_Value> maybe_lhs = doc->field(field());
+  absl::optional<FieldValue> maybe_lhs = doc.field(field());
   if (!maybe_lhs) return false;
 
-  const google_firestore_v1_Value& lhs = *maybe_lhs;
-  if (!IsArray(lhs)) return false;
+  const FieldValue& lhs = *maybe_lhs;
+  if (lhs.type() != FieldValue::Type::Array) return false;
 
-  const google_firestore_v1_ArrayValue& contents = lhs.array_value;
-  return Contains(contents, value());
+  const FieldValue::Array& contents = lhs.array_value();
+  return absl::c_linear_search(contents, value());
 }
 
 }  // namespace core

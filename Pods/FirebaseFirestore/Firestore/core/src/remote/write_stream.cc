@@ -30,8 +30,8 @@ namespace firebase {
 namespace firestore {
 namespace remote {
 
-using credentials::AuthCredentialsProvider;
-using credentials::AuthToken;
+using auth::CredentialsProvider;
+using auth::Token;
 using model::Mutation;
 using nanopb::ByteString;
 using nanopb::Message;
@@ -42,20 +42,12 @@ using util::TimerId;
 
 WriteStream::WriteStream(
     const std::shared_ptr<AsyncQueue>& async_queue,
-    std::shared_ptr<credentials::AuthCredentialsProvider>
-        auth_credentials_provider,
-    std::shared_ptr<credentials::AppCheckCredentialsProvider>
-        app_check_credentials_provider,
+    std::shared_ptr<CredentialsProvider> credentials_provider,
     Serializer serializer,
     GrpcConnection* grpc_connection,
     WriteStreamCallback* callback)
-    : Stream{async_queue,
-             std::move(auth_credentials_provider),
-             std::move(app_check_credentials_provider),
-             grpc_connection,
-             TimerId::WriteStreamConnectionBackoff,
-             TimerId::WriteStreamIdle,
-             TimerId::HealthCheckTimeout},
+    : Stream{async_queue, std::move(credentials_provider), grpc_connection,
+             TimerId::WriteStreamConnectionBackoff, TimerId::WriteStreamIdle},
       write_serializer_{std::move(serializer)},
       callback_{NOT_NULL(callback)} {
 }
@@ -95,11 +87,9 @@ void WriteStream::WriteMutations(const std::vector<Mutation>& mutations) {
 }
 
 std::unique_ptr<GrpcStream> WriteStream::CreateGrpcStream(
-    GrpcConnection* grpc_connection,
-    const AuthToken& auth_token,
-    const std::string& app_check_token) {
+    GrpcConnection* grpc_connection, const Token& token) {
   return grpc_connection->CreateStream("/google.firestore.v1.Firestore/Write",
-                                       auth_token, app_check_token, this);
+                                       token, this);
 }
 
 void WriteStream::TearDown(GrpcStream* grpc_stream) {
@@ -156,7 +146,7 @@ Status WriteStream::NotifyStreamResponse(const grpc::ByteBuffer& message) {
       return reader.status();
     }
 
-    callback_->OnWriteStreamMutationResult(version, std::move(results));
+    callback_->OnWriteStreamMutationResult(version, results);
   }
 
   return Status::OK();

@@ -20,6 +20,8 @@ namespace firebase {
 namespace firestore {
 namespace nanopb {
 
+using util::Status;
+
 StringReader::StringReader(const ByteString& bytes)
     : StringReader(bytes.data(), bytes.size()) {
 }

@@ -31,8 +31,6 @@ namespace firebase {
 namespace firestore {
 namespace model {
 
-class MutableDocument;
-
 /**
  * A BatchID that was searched for and not found or a batch ID value known to
  * be before all known batches.
@@ -89,12 +87,15 @@ class MutationBatch {
    * Applies all the mutations in this MutationBatch to the specified document
    * to create a new remote document.
    *
-   * @param document The document to which to apply mutations.
+   * @param maybe_doc The document to which to apply mutations or nullopt if
+   *     there's no existing document.
+   * @param document_key The key of the document to apply mutations to.
    * @param mutation_batch_result The result of applying the MutationBatch to
    *     the backend.
    */
-  void ApplyToRemoteDocument(
-      MutableDocument& document,
+  absl::optional<MaybeDocument> ApplyToRemoteDocument(
+      absl::optional<MaybeDocument> maybe_doc,
+      const DocumentKey& document_key,
       const MutationBatchResult& mutation_batch_result) const;
 
   /**
@@ -105,15 +106,20 @@ class MutationBatch {
    * been committed and so it's possible that the mutation is operating on a
    * locally non-existent document and may produce a non-existent document.
    *
-   * @param document The document to which to apply mutations.
+   * @param maybe_doc The document to which to apply mutations or nullopt if
+   *     there's no existing document.
+   * @param document_key The key of the document to apply mutations to.
    */
-  void ApplyToLocalDocument(MutableDocument& document) const;
+  absl::optional<MaybeDocument> ApplyToLocalDocument(
+      absl::optional<MaybeDocument> maybe_doc,
+      const DocumentKey& document_key) const;
 
   /**
    * Computes the local view for all provided documents given the mutations in
    * this batch.
    */
-  void ApplyToLocalDocumentSet(DocumentMap& document_map) const;
+  MaybeDocumentMap ApplyToLocalDocumentSet(
+      const MaybeDocumentMap& document_set) const;
 
   /**
    * Returns the set of unique keys referenced by all mutations in the batch.

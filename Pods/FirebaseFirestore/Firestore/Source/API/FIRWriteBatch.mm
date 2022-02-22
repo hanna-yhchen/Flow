@@ -17,17 +17,17 @@
 #import "Firestore/Source/API/FIRWriteBatch+Internal.h"
 
 #import "Firestore/Source/API/FIRDocumentReference+Internal.h"
-#import "Firestore/Source/API/FSTUserDataReader.h"
+#import "Firestore/Source/API/FSTUserDataConverter.h"
 
 #include "Firestore/core/src/api/write_batch.h"
 #include "Firestore/core/src/core/user_data.h"
 #include "Firestore/core/src/util/delayed_constructor.h"
 #include "Firestore/core/src/util/error_apple.h"
 
+namespace util = firebase::firestore::util;
 using firebase::firestore::core::ParsedSetData;
 using firebase::firestore::core::ParsedUpdateData;
-using firebase::firestore::util::DelayedConstructor;
-using firebase::firestore::util::MakeCallback;
+using firebase::firestore::model::Precondition;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -35,31 +35,32 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FIRWriteBatch ()
 
-- (instancetype)initWithDataReader:(FSTUserDataReader *)dataReader
-                        writeBatch:(api::WriteBatch &&)writeBatch NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithDataConverter:(FSTUserDataConverter *)dataConverter
+                           writeBatch:(api::WriteBatch &&)writeBatch NS_DESIGNATED_INITIALIZER;
 
-@property(nonatomic, strong, readonly) FSTUserDataReader *dataReader;
+@property(nonatomic, strong, readonly) FSTUserDataConverter *dataConverter;
 
 @end
 
 @implementation FIRWriteBatch (Internal)
 
-+ (instancetype)writeBatchWithDataReader:(FSTUserDataReader *)dataReader
-                              writeBatch:(api::WriteBatch &&)writeBatch {
-  return [[FIRWriteBatch alloc] initWithDataReader:dataReader writeBatch:std::move(writeBatch)];
++ (instancetype)writeBatchWithDataConverter:(FSTUserDataConverter *)dataConverter
+                                 writeBatch:(api::WriteBatch &&)writeBatch {
+  return [[FIRWriteBatch alloc] initWithDataConverter:dataConverter
+                                           writeBatch:std::move(writeBatch)];
 }
 
 @end
 
 @implementation FIRWriteBatch {
-  DelayedConstructor<api::WriteBatch> _writeBatch;
+  util::DelayedConstructor<api::WriteBatch> _writeBatch;
 }
 
-- (instancetype)initWithDataReader:(FSTUserDataReader *)dataReader
-                        writeBatch:(api::WriteBatch &&)writeBatch {
+- (instancetype)initWithDataConverter:(FSTUserDataConverter *)dataConverter
+                           writeBatch:(api::WriteBatch &&)writeBatch {
   self = [super init];
   if (self) {
-    _dataReader = dataReader;
+    _dataConverter = dataConverter;
     _writeBatch.Init(std::move(writeBatch));
   }
   return self;
@@ -73,8 +74,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (FIRWriteBatch *)setData:(NSDictionary<NSString *, id> *)data
                forDocument:(FIRDocumentReference *)document
                      merge:(BOOL)merge {
-  ParsedSetData parsed = merge ? [self.dataReader parsedMergeData:data fieldMask:nil]
-                               : [self.dataReader parsedSetData:data];
+  ParsedSetData parsed = merge ? [self.dataConverter parsedMergeData:data fieldMask:nil]
+                               : [self.dataConverter parsedSetData:data];
   _writeBatch->SetData(document.internalReference, std::move(parsed));
 
   return self;
@@ -83,7 +84,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (FIRWriteBatch *)setData:(NSDictionary<NSString *, id> *)data
                forDocument:(FIRDocumentReference *)document
                mergeFields:(NSArray<id> *)mergeFields {
-  ParsedSetData parsed = [self.dataReader parsedMergeData:data fieldMask:mergeFields];
+  ParsedSetData parsed = [self.dataConverter parsedMergeData:data fieldMask:mergeFields];
   _writeBatch->SetData(document.internalReference, std::move(parsed));
 
   return self;
@@ -91,7 +92,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (FIRWriteBatch *)updateData:(NSDictionary<id, id> *)fields
                   forDocument:(FIRDocumentReference *)document {
-  ParsedUpdateData parsed = [self.dataReader parsedUpdateData:fields];
+  ParsedUpdateData parsed = [self.dataConverter parsedUpdateData:fields];
   _writeBatch->UpdateData(document.internalReference, std::move(parsed));
 
   return self;
@@ -108,7 +109,7 @@ NS_ASSUME_NONNULL_BEGIN
 }
 
 - (void)commitWithCompletion:(nullable void (^)(NSError *_Nullable error))completion {
-  _writeBatch->Commit(MakeCallback(completion));
+  _writeBatch->Commit(util::MakeCallback(completion));
 }
 
 @end

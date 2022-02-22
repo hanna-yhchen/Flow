@@ -6,12 +6,15 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class AppFlowController: UIViewController {
     func start() {
-        // TODO: Check Authentication State
-        startLogin()
-        // startMain()
+        if Auth.auth().currentUser != nil {
+            startMain()
+        } else {
+            startLogin()
+        }
     }
 
     private func startLogin() {
@@ -33,7 +36,6 @@ class AppFlowController: UIViewController {
 extension AppFlowController: AuthFlowControllerDelegate {
     /// Call the app flow controller to show main screen when the user logs in
     func authFlowControllerDidFinish(_ flowController: UIViewController) {
-        // Logged In
         remove(child: flowController)
         startMain()
     }
@@ -42,6 +44,11 @@ extension AppFlowController: AuthFlowControllerDelegate {
 extension AppFlowController: MainFlowControllerDelegate {
     /// Get called when the user logs out
     func mainFlowControllerDidFinish(_ flowController: UIViewController) {
-        // Logged Out
+        do {
+            try Auth.auth().signOut()
+        } catch let error {
+            print("DEBUG: Error signing out -", error)
+        }
+        startLogin()
     }
 }

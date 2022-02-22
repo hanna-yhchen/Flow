@@ -29,7 +29,6 @@ FOUNDATION_EXPORT NSString *const kGCSObjectPathFormat;
 
 FOUNDATION_EXPORT NSString *const kFIRStorageScheme;
 FOUNDATION_EXPORT NSString *const kFIRStorageHost;
-FOUNDATION_EXPORT NSInteger const kFIRStoragePort;
 FOUNDATION_EXPORT NSString *const kFIRStorageVersionPath;
 FOUNDATION_EXPORT NSString *const kFIRStorageBucketPathFormat;
 FOUNDATION_EXPORT NSString *const kFIRStorageObjectPathFormat;

@@ -13,12 +13,12 @@ class ProfileViewModel {
 
     private let userID: UserID
 
-    @Published private(set) var profileImage: UIImage?
+    @Published private(set) var profileImageURL: URL?
     @Published private(set) var username: String?
     @Published private(set) var fullName: String?
 
-    @Published private(set) var postList: [PostThumbnail] = []
-    @Published private(set) var mentionedList: [PostThumbnail] = []
+    @Published private(set) var postList: [Post] = []
+    @Published private(set) var mentionedList: [Post] = []
 
     init(userID: UserID) {
         self.userID = userID
@@ -27,11 +27,19 @@ class ProfileViewModel {
 
     func fetchUser() {
         // TODO: Fetch User
-        let user = User(id: "007", username: "username", profileImageURL: "", fullName: "Name", followers: [], posts: [], mentionedPosts: [])
-        // TODO: Fetch Profile Image
-        profileImage = UIImage(named: "keanu")
-        username = "@" + user.username
-        fullName = user.fullName
+        UserService.fetchUser(id: userID) {[unowned self] user, error in
+            if let error = error {
+                print("DEBUG: Error fetching current user -", error.localizedDescription)
+                return
+            }
+            guard let user = user else {
+                print("DEBUG: Fetched empty user document")
+                return
+            }
+            profileImageURL = URL(string: user.profileImageURL)
+            username = "@" + user.username
+            fullName = user.fullName
+        }
     }
 
     func fetchPosts() {

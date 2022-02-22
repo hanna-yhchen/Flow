@@ -37,7 +37,7 @@ class TargetData;
 using OrphanedDocumentCallback =
     std::function<void(const model::DocumentKey&, model::ListenSequenceNumber)>;
 
-using SequenceNumberCallback = std::function<void(model::ListenSequenceNumber)>;
+using TargetCallback = std::function<void(const TargetData&)>;
 
 /**
  * Represents cached targets received from the remote backend. This contains
@@ -74,10 +74,8 @@ class TargetCache {
    */
   virtual void UpdateTarget(const TargetData& target_data) = 0;
 
-  /**
-   * Removes the cached entry for the given target data. The entry must already
-   * exist in the cache.
-   */
+  /** Removes the cached entry for the given target data. The entry must already
+   * exist in the cache. */
   virtual void RemoveTarget(const TargetData& target_data) = 0;
 
   /**
@@ -89,20 +87,9 @@ class TargetCache {
    */
   virtual absl::optional<TargetData> GetTarget(const core::Target& target) = 0;
 
-  /** Enumerates all sequence numbers in the TargetCache. */
-  virtual void EnumerateSequenceNumbers(
-      const SequenceNumberCallback& callback) = 0;
+  virtual void EnumerateTargets(const TargetCallback& callback) = 0;
 
-  /**
-   * Removes all target by sequence number up to (and including) the given
-   * sequence number. Targets in `live_targets` are ignored.
-   *
-   * @param upper_bound The upper bound for last target's sequence number
-   *     (inclusive).
-   * @param live_targets Targets to ignore.
-   * @return The number of targets removed.
-   */
-  virtual size_t RemoveTargets(
+  virtual int RemoveTargets(
       model::ListenSequenceNumber upper_bound,
       const std::unordered_map<model::TargetId, TargetData>& live_targets) = 0;
 
@@ -112,9 +99,6 @@ class TargetCache {
 
   virtual void RemoveMatchingKeys(const model::DocumentKeySet& keys,
                                   model::TargetId target_id) = 0;
-
-  /** Removes all document keys in the query results of the given target ID. */
-  virtual void RemoveMatchingKeysForTarget(model::TargetId target_id) = 0;
 
   virtual model::DocumentKeySet GetMatchingKeys(model::TargetId target_id) = 0;
 

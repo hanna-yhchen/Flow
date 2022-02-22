@@ -7,11 +7,12 @@
 
 import Foundation
 
-struct User {
+struct User: Codable {
     let id: UserID
     let username: String
-    let profileImageURL: FirebaseURL
+    let profileImageURL: String
     let fullName: String
+    let follows: [UserID]
     let followers: [UserID]
     let posts: [PostID]
     let mentionedPosts: [PostID]

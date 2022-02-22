@@ -24,7 +24,7 @@
 #import "Firestore/Source/API/FIRDocumentSnapshot+Internal.h"
 #import "Firestore/Source/API/FIRFirestore+Internal.h"
 #import "Firestore/Source/API/FIRTransaction+Internal.h"
-#import "Firestore/Source/API/FSTUserDataReader.h"
+#import "Firestore/Source/API/FSTUserDataConverter.h"
 
 #include "Firestore/core/src/core/transaction.h"
 #include "Firestore/core/src/core/user_data.h"
@@ -39,7 +39,9 @@ using firebase::firestore::core::ParsedSetData;
 using firebase::firestore::core::ParsedUpdateData;
 using firebase::firestore::core::Transaction;
 using firebase::firestore::model::Document;
+using firebase::firestore::model::MaybeDocument;
 using firebase::firestore::util::MakeNSError;
+using firebase::firestore::util::Status;
 using firebase::firestore::util::StatusOr;
 using firebase::firestore::util::ThrowInvalidArgument;
 
@@ -87,8 +89,8 @@ NS_ASSUME_NONNULL_BEGIN
                 forDocument:(FIRDocumentReference *)document
                       merge:(BOOL)merge {
   [self validateReference:document];
-  ParsedSetData parsed = merge ? [self.firestore.dataReader parsedMergeData:data fieldMask:nil]
-                               : [self.firestore.dataReader parsedSetData:data];
+  ParsedSetData parsed = merge ? [self.firestore.dataConverter parsedMergeData:data fieldMask:nil]
+                               : [self.firestore.dataConverter parsedSetData:data];
   _internalTransaction->Set(document.key, std::move(parsed));
   return self;
 }
@@ -97,7 +99,7 @@ NS_ASSUME_NONNULL_BEGIN
                 forDocument:(FIRDocumentReference *)document
                 mergeFields:(NSArray<id> *)mergeFields {
   [self validateReference:document];
-  ParsedSetData parsed = [self.firestore.dataReader parsedMergeData:data fieldMask:mergeFields];
+  ParsedSetData parsed = [self.firestore.dataConverter parsedMergeData:data fieldMask:mergeFields];
   _internalTransaction->Set(document.key, std::move(parsed));
   return self;
 }
@@ -105,7 +107,7 @@ NS_ASSUME_NONNULL_BEGIN
 - (FIRTransaction *)updateData:(NSDictionary<id, id> *)fields
                    forDocument:(FIRDocumentReference *)document {
   [self validateReference:document];
-  ParsedUpdateData parsed = [self.firestore.dataReader parsedUpdateData:fields];
+  ParsedUpdateData parsed = [self.firestore.dataConverter parsedUpdateData:fields];
   _internalTransaction->Update(document.key, std::move(parsed));
   return self;
 }
@@ -122,7 +124,7 @@ NS_ASSUME_NONNULL_BEGIN
   [self validateReference:document];
   _internalTransaction->Lookup(
       {document.key},
-      [self, document, completion](const StatusOr<std::vector<Document>> &maybe_documents) {
+      [self, document, completion](const StatusOr<std::vector<MaybeDocument>> &maybe_documents) {
         if (!maybe_documents.ok()) {
           completion(nil, MakeNSError(maybe_documents.status()));
           return;
@@ -130,25 +132,26 @@ NS_ASSUME_NONNULL_BEGIN
 
         const auto &documents = maybe_documents.ValueOrDie();
         HARD_ASSERT(documents.size() == 1, "Mismatch in docs returned from document lookup.");
-        const Document &internalDoc = documents.front();
-        if (internalDoc->is_found_document()) {
+        const MaybeDocument &internalDoc = documents.front();
+        if (internalDoc.is_no_document()) {
           FIRDocumentSnapshot *doc =
-              [[FIRDocumentSnapshot alloc] initWithFirestore:self.firestore
-                                                 documentKey:internalDoc->key()
-                                                    document:internalDoc
+              [[FIRDocumentSnapshot alloc] initWithFirestore:self.firestore.wrapped
+                                                 documentKey:document.key
+                                                    document:absl::nullopt
                                                    fromCache:false
                                             hasPendingWrites:false];
           completion(doc, nil);
-        } else if (internalDoc->is_no_document()) {
-          FIRDocumentSnapshot *doc = [[FIRDocumentSnapshot alloc] initWithFirestore:self.firestore
-                                                                        documentKey:document.key
-                                                                           document:absl::nullopt
-                                                                          fromCache:false
-                                                                   hasPendingWrites:false];
+        } else if (internalDoc.is_document()) {
+          FIRDocumentSnapshot *doc =
+              [[FIRDocumentSnapshot alloc] initWithFirestore:self.firestore.wrapped
+                                                 documentKey:internalDoc.key()
+                                                    document:Document(internalDoc)
+                                                   fromCache:false
+                                            hasPendingWrites:false];
           completion(doc, nil);
         } else {
           HARD_FAIL("BatchGetDocumentsRequest returned unexpected document type: %s",
-                    internalDoc.ToString());
+                    internalDoc.type());
         }
       });
 }
@@ -175,8 +178,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)validateReference:(FIRDocumentReference *)reference {
   if (reference.firestore != self.firestore) {
-    ThrowInvalidArgument("Provided document reference is from a different Cloud Firestore "
-                         "instance.");
+    ThrowInvalidArgument("Provided document reference is from a different Firestore instance.");
   }
 }
 

@@ -17,7 +17,6 @@
 #import <Foundation/Foundation.h>
 
 @class FIRStoragePath;
-@class FIRStorageReference;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -54,20 +53,20 @@ NS_ASSUME_NONNULL_BEGIN
 
 /**
  * Returns a base NSURLRequest used by all tasks.
- * @param reference The FIRStorageReference to create a request for.
+ * @param path The FIRStoragePath to create a request for.
  * @return Returns a properly formatted NSURLRequest of the form:
  * scheme://host/version/b/<bucket>/o[/path/to/object]
  */
-+ (NSURLRequest *)defaultRequestForReference:(FIRStorageReference *)reference;
++ (NSURLRequest *)defaultRequestForPath:(FIRStoragePath *)path;
 
 /**
  * Returns a base NSURLRequest with custom query parameters.
- * @param reference The FIRStorageReference to create a request for.
+ * @param path The FIRStoragePath to create a request for.
  * @param queryParams A key/value dictionary with query parameters.
  * @return Returns a formatted NSURLRequest
  */
-+ (NSURLRequest *)defaultRequestForReference:(FIRStorageReference *)reference
-                                 queryParams:(NSDictionary<NSString *, NSString *> *)queryParams;
++ (NSURLRequest *)defaultRequestForPath:(FIRStoragePath *)path
+                            queryParams:(NSDictionary<NSString *, NSString *> *)queryParams;
 
 /**
  * Creates the appropriate GCS percent escaped path for a given FIRStoragePath.
@@ -84,16 +83,6 @@ NS_ASSUME_NONNULL_BEGIN
  * @return An NSError in the Firebase Storage error domain.
  */
 + (NSError *)storageErrorWithDescription:(NSString *)description code:(NSInteger)code;
-
-/**
- * Performs a crude translation of the user provided timeouts to the retry intervals that
- * GTMSessionFetcher accepts. GTMSessionFetcher times out operations if the time between individual
- * retry attempts exceed a certain threshold, while our API contract looks at the total observed
- * time of the operation (i.e. the sum of all retries).
- * @param retryTime A timeout that caps the sum of all retry attempts
- * @return A timeout that caps the timeout of the last retry attempt
- */
-+ (NSTimeInterval)computeRetryIntervalFromRetryTime:(NSTimeInterval)retryTime;
 
 @end
 

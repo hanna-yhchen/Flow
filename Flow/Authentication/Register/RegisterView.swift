@@ -10,9 +10,9 @@ import UIKit
 class RegisterView: AuthView {
     // MARK: - Components
 
-    var profilePhoto: UIImage? {
+    @Published var profileImage: UIImage? {
         didSet {
-            addPhotoButton.setImage(profilePhoto, for: .normal)
+            addPhotoButton.setImage(profileImage, for: .normal)
         }
     }
 

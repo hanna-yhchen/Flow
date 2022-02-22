@@ -26,7 +26,7 @@
 #include "Firestore/core/src/core/view_snapshot.h"
 #include "Firestore/core/src/model/document_key.h"
 #include "Firestore/core/src/model/document_key_set.h"
-#include "Firestore/core/src/model/mutable_document.h"
+#include "Firestore/core/src/model/maybe_document.h"
 #include "Firestore/core/src/model/snapshot_version.h"
 #include "Firestore/core/src/model/types.h"
 #include "Firestore/core/src/nanopb/byte_string.h"
@@ -242,11 +242,14 @@ class RemoteEvent {
  public:
   using TargetChangeMap = std::unordered_map<model::TargetId, TargetChange>;
   using TargetSet = std::unordered_set<model::TargetId>;
+  using DocumentUpdateMap = std::unordered_map<model::DocumentKey,
+                                               model::MaybeDocument,
+                                               model::DocumentKeyHash>;
 
   RemoteEvent(model::SnapshotVersion snapshot_version,
               TargetChangeMap target_changes,
               TargetSet target_mismatches,
-              model::DocumentUpdateMap document_updates,
+              DocumentUpdateMap document_updates,
               model::DocumentKeySet limbo_document_changes)
       : snapshot_version_{snapshot_version},
         target_changes_{std::move(target_changes)},
@@ -277,7 +280,7 @@ class RemoteEvent {
    * A set of which documents have changed or been deleted, along with the doc's
    * new values (if not deleted).
    */
-  const model::DocumentUpdateMap& document_updates() const {
+  const DocumentUpdateMap& document_updates() const {
     return document_updates_;
   }
 
@@ -292,7 +295,7 @@ class RemoteEvent {
   model::SnapshotVersion snapshot_version_;
   TargetChangeMap target_changes_;
   TargetSet target_mismatches_;
-  model::DocumentUpdateMap document_updates_;
+  DocumentUpdateMap document_updates_;
   model::DocumentKeySet limbo_document_changes_;
 };
 
@@ -353,7 +356,7 @@ class WatchChangeAggregator {
    * document key to the given target's mapping.
    */
   void AddDocumentToTarget(model::TargetId target_id,
-                           const model::MutableDocument& document);
+                           const model::MaybeDocument& document);
 
   /**
    * Removes the provided document from the target mapping. If the document no
@@ -365,7 +368,7 @@ class WatchChangeAggregator {
   void RemoveDocumentFromTarget(
       model::TargetId target_id,
       const model::DocumentKey& key,
-      const absl::optional<model::MutableDocument>& updated_document);
+      const absl::optional<model::MaybeDocument>& updated_document);
 
   /**
    * Returns the current count of documents in the target. This includes both
@@ -412,7 +415,7 @@ class WatchChangeAggregator {
   std::unordered_map<model::TargetId, TargetState> target_states_;
 
   /** Keeps track of the documents to update since the last raised snapshot. */
-  model::DocumentUpdateMap pending_document_updates_;
+  RemoteEvent::DocumentUpdateMap pending_document_updates_;
 
   /** A mapping of document keys to their set of target IDs. */
   std::unordered_map<model::DocumentKey,

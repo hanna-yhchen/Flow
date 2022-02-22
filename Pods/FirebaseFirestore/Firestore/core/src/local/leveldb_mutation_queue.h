@@ -35,9 +35,9 @@ class Timestamp;
 
 namespace firestore {
 
-namespace credentials {
+namespace auth {
 class User;
-}  // namespace credentials
+}  // namespace auth
 
 namespace local {
 class LevelDbPersistence;
@@ -51,7 +51,7 @@ model::BatchId LoadNextBatchIdFromDb(leveldb::DB* db);
 
 class LevelDbMutationQueue : public MutationQueue {
  public:
-  LevelDbMutationQueue(const credentials::User& user,
+  LevelDbMutationQueue(const auth::User& user,
                        LevelDbPersistence* db,
                        LocalSerializer* serializer);
 

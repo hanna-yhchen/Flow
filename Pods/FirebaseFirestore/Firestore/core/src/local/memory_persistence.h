@@ -23,8 +23,7 @@
 #include <utility>
 #include <vector>
 
-#include "Firestore/core/src/credentials/user.h"
-#include "Firestore/core/src/local/memory_bundle_cache.h"
+#include "Firestore/core/src/auth/user.h"
 #include "Firestore/core/src/local/memory_index_manager.h"
 #include "Firestore/core/src/local/memory_mutation_queue.h"
 #include "Firestore/core/src/local/memory_remote_document_cache.h"
@@ -53,9 +52,9 @@ class Sizer;
 class MemoryPersistence : public Persistence {
  public:
   using MutationQueues =
-      std::unordered_map<credentials::User,
+      std::unordered_map<auth::User,
                          std::unique_ptr<MemoryMutationQueue>,
-                         credentials::HashUser>;
+                         auth::HashUser>;
 
   static std::unique_ptr<MemoryPersistence> WithEagerGarbageCollector();
 
@@ -74,12 +73,9 @@ class MemoryPersistence : public Persistence {
 
   void Shutdown() override;
 
-  MemoryMutationQueue* GetMutationQueueForUser(
-      const credentials::User& user) override;
+  MemoryMutationQueue* GetMutationQueueForUser(const auth::User& user) override;
 
   MemoryTargetCache* target_cache() override;
-
-  MemoryBundleCache* bundle_cache() override;
 
   MemoryRemoteDocumentCache* remote_document_cache() override;
 
@@ -116,8 +112,6 @@ class MemoryPersistence : public Persistence {
   MemoryRemoteDocumentCache remote_document_cache_;
 
   MemoryIndexManager index_manager_;
-
-  MemoryBundleCache bundle_cache_;
 
   std::unique_ptr<ReferenceDelegate> reference_delegate_;
 

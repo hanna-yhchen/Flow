@@ -146,7 +146,6 @@ LevelDbTransaction::LevelDbTransaction(DB* db,
 }
 
 const ReadOptions& LevelDbTransaction::DefaultReadOptions() {
-  // ReadOptions is trivial so it does not need to be heap-allocated.
   static ReadOptions options = [] {
     ReadOptions read_options;
     read_options.verify_checksums = true;
@@ -156,7 +155,6 @@ const ReadOptions& LevelDbTransaction::DefaultReadOptions() {
 }
 
 const WriteOptions& LevelDbTransaction::DefaultWriteOptions() {
-  // WriteOptions is trivial so it does not need to be heap-allocated.
   static WriteOptions options;
   return options;
 }

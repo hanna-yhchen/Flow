@@ -10,7 +10,7 @@ import Parchment
 import Combine
 
 protocol ProfileViewControllerDelegate: AnyObject {
-    func navigateToPost(id: String)
+    func navigateToPost(_ post: Post)
 }
 
 class ProfileViewController: UIViewController {
@@ -18,14 +18,14 @@ class ProfileViewController: UIViewController {
         case thumbnail
     }
 
-    private typealias ProfilePageDataSource = UICollectionViewDiffableDataSource<Section, PostThumbnail>
-    private typealias ProfilePageSnapshot = NSDiffableDataSourceSnapshot<Section, PostThumbnail>
+    private typealias ProfilePageDataSource = UICollectionViewDiffableDataSource<Section, Post>
+    private typealias ProfilePageSnapshot = NSDiffableDataSourceSnapshot<Section, Post>
 
     // MARK: - Properties
 
     let viewModel: ProfileViewModel
-    private var postList: [PostThumbnail] = []
-    private var mentionedList: [PostThumbnail] = []
+    private var postList: [Post] = []
+    private var mentionedList: [Post] = []
     private var subscriptions = Set<AnyCancellable>()
 
     let profileHeaderView: ProfileHeaderView
@@ -126,7 +126,7 @@ class ProfileViewController: UIViewController {
     }
 
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, PostThumbnail> { cell, _, post in
+        let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, Post> { cell, _, post in
             cell.backgroundColor = .systemBackground
             cell.imageView.image = UIImage(named: "scenery")
             // TODO: Use Static Service to Fetch Image
@@ -146,9 +146,9 @@ class ProfileViewController: UIViewController {
     }
 
     private func configureBindings() {
-        viewModel.$profileImage
+        viewModel.$profileImageURL
             .receive(on: RunLoop.main)
-            .assign(to: \.image, on: profileHeaderView.profileImageView)
+            .assign(to: \.profileImageURL, on: profileHeaderView)
             .store(in: &subscriptions)
         viewModel.$username
             .receive(on: RunLoop.main)
@@ -175,7 +175,7 @@ class ProfileViewController: UIViewController {
         viewModel.fetchPosts()
         let array = Array(0..<100)
         let posts = array.map { int in
-            PostThumbnail(id: String(int), thumbnailURL: "")
+            Post(id: String(int), authorID: "007", photoURL: nil, caption: "Hello", date: Date(), whoLikes: [], comments: Comments(postID: String(int), count: 3), whoBookmarks: [])
         }
 
         var snapshot = ProfilePageSnapshot()
@@ -189,7 +189,7 @@ class ProfileViewController: UIViewController {
         viewModel.fetchMentionedPosts()
         let array = Array(0..<100)
         let posts = array.map { int in
-            PostThumbnail(id: String(int), thumbnailURL: "")
+            Post(id: String(int), authorID: "007", photoURL: nil, caption: "Hello", date: Date(), whoLikes: [], comments: Comments(postID: String(int), count: 3), whoBookmarks: [])
         }
 
         var snapshot = ProfilePageSnapshot()
@@ -218,7 +218,7 @@ extension ProfileViewController: UICollectionViewDelegate {
         }
 
         if let post = dataSource.itemIdentifier(for: indexPath) {
-            delegate?.navigateToPost(id: post.id)
+            delegate?.navigateToPost(post)
         }
     }
 }

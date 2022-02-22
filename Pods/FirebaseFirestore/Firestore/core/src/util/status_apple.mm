@@ -96,18 +96,17 @@ Status Status::FromNSError(NSError* error) {
 
   while (error) {
     if ([error.domain isEqualToString:NSPOSIXErrorDomain]) {
-      auto error_code = static_cast<int>(error.code);
-      auto description = MakeString(original->error().localizedDescription);
-      return FromErrno(error_code, description)
+      return FromErrno(static_cast<int>(error.code),
+                       MakeString(original->error().localizedDescription))
           .WithPlatformError(std::move(original));
     }
 
     error = error.userInfo[NSUnderlyingErrorKey];
   }
 
-  auto description = StringFormat("Unknown error: %s", original->error());
-  return Status{Error::kErrorUnknown, description}.WithPlatformError(
-      std::move(original));
+  return Status{Error::kErrorUnknown,
+                StringFormat("Unknown error: %s", original->error())}
+      .WithPlatformError(std::move(original));
 }
 
 NSError* Status::ToNSError() const {

@@ -20,7 +20,7 @@
 
 #include "Firestore/core/src/api/write_batch.h"
 
-@class FSTUserDataReader;
+@class FSTUserDataConverter;
 
 namespace api = firebase::firestore::api;
 
@@ -28,8 +28,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FIRWriteBatch (Internal)
 
-+ (instancetype)writeBatchWithDataReader:(FSTUserDataReader *)dataReader
-                              writeBatch:(api::WriteBatch &&)writeBatch;
++ (instancetype)writeBatchWithDataConverter:(FSTUserDataConverter *)dataConverter
+                                 writeBatch:(api::WriteBatch &&)writeBatch;
 
 @end
 

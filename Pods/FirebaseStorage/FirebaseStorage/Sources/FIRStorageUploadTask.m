@@ -19,7 +19,6 @@
 #import "FirebaseStorage/Sources/FIRStorageObservableTask_Private.h"
 #import "FirebaseStorage/Sources/FIRStorageTask_Private.h"
 #import "FirebaseStorage/Sources/FIRStorageUploadTask_Private.h"
-#import "FirebaseStorage/Sources/FIRStorage_Private.h"
 
 #if SWIFT_PACKAGE
 @import GTMSessionFetcherCore;
@@ -129,7 +128,7 @@
       uploadFetcher.comment = @"File UploadTask";
     }
 
-    uploadFetcher.maxRetryInterval = self.reference.storage.maxUploadRetryInterval;
+    uploadFetcher.maxRetryInterval = self.reference.storage.maxUploadRetryTime;
 
     [uploadFetcher setSendProgressBlock:^(int64_t bytesSent, int64_t totalBytesSent,
                                           int64_t totalBytesExpectedToSend) {
@@ -178,9 +177,8 @@
 
     [strongSelf->_uploadFetcher
         beginFetchWithCompletionHandler:^(NSData *_Nullable data, NSError *_Nullable error) {
-          FIRStorageUploadTask *strongSelf = weakSelf;
-          if (strongSelf.fetcherCompletion) {
-            strongSelf.fetcherCompletion(data, error);
+          if (weakSelf.fetcherCompletion != nil) {
+            weakSelf.fetcherCompletion(data, error);
           }
         }];
   }];

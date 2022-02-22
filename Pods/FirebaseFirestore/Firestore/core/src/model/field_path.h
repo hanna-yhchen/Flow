@@ -22,7 +22,6 @@
 #include <utility>
 
 #include "Firestore/core/src/model/base_path.h"
-#include "Firestore/core/src/util/status_fwd.h"
 #include "absl/strings/string_view.h"
 
 namespace firebase {
@@ -90,12 +89,12 @@ class FieldPath : public impl::BasePath<FieldPath>,
    * where path segments are separated by a dot "." and optionally encoded using
    * backticks.
    */
-  static util::StatusOr<FieldPath> FromServerFormat(const std::string& path);
+  static FieldPath FromServerFormat(const std::string& path);
 
  private:
   // TODO(b/146372592): Make this public once we can use Abseil across
   // iOS/public C++ library boundaries.
-  static util::StatusOr<FieldPath> FromServerFormatView(absl::string_view path);
+  static FieldPath FromServerFormatView(absl::string_view path);
 
  public:
   /** Returns a field path that represents an empty path. */

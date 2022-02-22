@@ -7,15 +7,13 @@
 
 import Foundation
 
-typealias FirebaseURL = String
 typealias UserID = String
 typealias PostID = String
 
 struct Post: Hashable {
     let id: PostID
     let authorID: UserID
-    let thumbnailURL: FirebaseURL
-    let photoURLs: [FirebaseURL]
+    let photoURL: URL?
     let caption: String
     let date: Date
     let whoLikes: [UserID]

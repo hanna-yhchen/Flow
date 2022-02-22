@@ -23,6 +23,9 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+/** Project version string for FirebaseStorage. */
+FOUNDATION_EXPORT const char *const FIRStorageVersionString NS_SWIFT_NAME(StorageVersionString);
+
 /**
  * FirebaseStorage is a service that supports uploading and downloading binary objects,
  * such as images, videos, and other files to Google Cloud Storage.
@@ -121,11 +124,6 @@ NS_SWIFT_NAME(Storage)
  * @return An instance of FIRStorageReference at the given child path.
  */
 - (FIRStorageReference *)referenceWithPath:(NSString *)string;
-
-/**
- * Configures the Storage SDK to use an emulated backend instead of the default remote backend.
- */
-- (void)useEmulatorWithHost:(NSString *)host port:(NSInteger)port;
 
 @end
 

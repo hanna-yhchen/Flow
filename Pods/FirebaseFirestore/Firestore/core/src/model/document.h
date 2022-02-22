@@ -18,57 +18,118 @@
 #define FIRESTORE_CORE_SRC_MODEL_DOCUMENT_H_
 
 #include <iosfwd>
+#include <memory>
 #include <string>
-#include <utility>
 
-#include "Firestore/core/src/model/mutable_document.h"
+#include "Firestore/core/src/model/maybe_document.h"
+#include "absl/types/any.h"
+#include "absl/types/optional.h"
 
 namespace firebase {
 namespace firestore {
+
+typedef struct _google_firestore_v1_Document google_firestore_v1_Document;
+typedef struct _google_firestore_v1_Value google_firestore_v1_Value;
+
+namespace local {
+class LocalSerializer;
+}  // namespace local
+
+namespace nanopb {
+class Reader;
+
+template <typename T>
+class Message;
+}  // namespace nanopb
+
+namespace remote {
+class Serializer;
+}  // namespace remote
+
 namespace model {
 
-/** Represents an immutable document in Firestore. */
-class Document {
- public:
-  Document(MutableDocument document)  // NOLINT(runtime/explicit)
-      : document_{std::move(document)} {
-  }
+class FieldPath;
+class FieldValue;
+class ObjectValue;
 
-  Document() = default;
+/** Describes the `has_pending_writes` state of a document. */
+enum class DocumentState {
+  /**
+   * Local mutations applied via the mutation queue. Document is potentially
+   * inconsistent.
+   */
+  kLocalMutations,
 
-  const MutableDocument& get() const {
-    return document_;
-  }
+  /**
+   * Mutations applied based on a write acknowledgment. Document is potentially
+   * inconsistent.
+   */
+  kCommittedMutations,
 
-  const MutableDocument* operator->() const {
-    return &document_;
-  }
-
-  size_t Hash() const {
-    return document_.Hash();
-  }
-
-  std::string ToString() const {
-    return document_.ToString();
-  }
-
-  const SnapshotVersion& read_time() const {
-    return document_.read_time();
-  }
-
- private:
-  MutableDocument document_;
+  /** No mutations applied. Document was sent to us by Watch. */
+  kSynced,
 };
 
-inline bool operator==(const Document& lhs, const Document& rhs) {
-  return lhs.get() == rhs.get();
-}
+std::ostream& operator<<(std::ostream& os, DocumentState state);
+
+/**
+ * Represents a document in Firestore with a key, version, data and whether the
+ * data has local mutations applied to it.
+ */
+class Document : public MaybeDocument {
+ public:
+  Document(ObjectValue data,
+           DocumentKey key,
+           SnapshotVersion version,
+           DocumentState document_state);
+
+ private:
+  // TODO(b/146372592): Make this public once we can use Abseil across
+  // iOS/public C++ library boundaries.
+  friend class remote::Serializer;
+
+  Document(ObjectValue data,
+           DocumentKey key,
+           SnapshotVersion version,
+           DocumentState document_state,
+           absl::any proto);
+
+ public:
+  /**
+   * Casts a MaybeDocument to a Document. This is a checked operation that will
+   * assert if the type of the MaybeDocument isn't actually Type::Document.
+   */
+  explicit Document(const MaybeDocument& document);
+
+  /** Creates an invalid Document instance. */
+  Document() = default;
+
+  const ObjectValue& data() const;
+
+  absl::optional<FieldValue> field(const FieldPath& path) const;
+
+  DocumentState document_state() const;
+
+  bool has_local_mutations() const;
+
+  bool has_committed_mutations() const;
+
+  const absl::any& proto() const;
+
+  /** Compares against another Document. */
+  friend bool operator==(const Document& lhs, const Document& rhs);
+
+  friend std::ostream& operator<<(std::ostream& os, const Document& doc);
+
+ private:
+  class Rep;
+
+  const Rep& doc_rep() const;
+};
 
 inline bool operator!=(const Document& lhs, const Document& rhs) {
   return !(lhs == rhs);
 }
-
-std::ostream& operator<<(std::ostream& os, const Document& doc);
 
 }  // namespace model
 }  // namespace firestore

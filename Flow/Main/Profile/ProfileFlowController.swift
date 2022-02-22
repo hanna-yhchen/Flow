@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import FirebaseAuth
 
 class ProfileFlowController: UIViewController {
     // MARK: - Properties
@@ -31,8 +32,11 @@ class ProfileFlowController: UIViewController {
     // MARK: - Private
 
     private func showProfile() {
-        //TODO: get current User id
-        let profileVC = ProfileViewController(userID: "007", isCurrentUser: true)
+        guard let currentUserId = Auth.auth().currentUser?.uid else {
+            print("DEBUG: Absent current user")
+            return
+        }
+        let profileVC = ProfileViewController(userID: currentUserId, isCurrentUser: true)
         profileVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: profileVC)
         navigation.show(profileVC, sender: self)
@@ -40,9 +44,8 @@ class ProfileFlowController: UIViewController {
 }
 
 extension ProfileFlowController: ProfileViewControllerDelegate {
-    func navigateToPost(id: String) {
-        let testPost = Post(id: id, authorID: "", thumbnailURL: "", photoURLs: [], caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: [])
-        let postVC = PostViewController(postID: id, post: testPost)
+    func navigateToPost(_ post: Post) {
+        let postVC = PostViewController(post: post)
         navigation.pushViewController(postVC, animated: true)
     }
 }

@@ -178,7 +178,7 @@ NS_SWIFT_NAME(putData(_:metadata:));
  * Asynchronously downloads the object at the FIRStorageReference to an NSData object in memory.
  * An NSData of the provided max size will be allocated, so ensure that the device has enough free
  * memory to complete the download. For downloading large files, writeToFile may be a better option.
- * @param size The maximum size in bytes to download. If the download exceeds this size,
+ * @param size The maximum size in bytes to download. If the download exceeds this size
  * the task will be cancelled and an error will be returned.
  * @param completion A completion block that either returns the object data on success,
  * or an error on failure.
@@ -194,7 +194,7 @@ NS_SWIFT_NAME(putData(_:metadata:));
 /**
  * Asynchronously retrieves a long lived download URL with a revokable token.
  * This can be used to share the file with others, but can be revoked by a developer
- * in the Firebase Console.
+ * in the Firebase Console if desired.
  * @param completion A completion block that either returns the URL on success,
  * or an error on failure.
  */
@@ -252,8 +252,7 @@ NS_SWIFT_NAME(putData(_:metadata:));
  */
 - (void)listWithMaxResults:(int64_t)maxResults
                 completion:
-                    (void (^)(FIRStorageListResult *result, NSError *_Nullable error))completion
-    NS_SWIFT_NAME(list(maxResults:completion:));
+                    (void (^)(FIRStorageListResult *result, NSError *_Nullable error))completion;
 
 /**
  * Resumes a previous call to list(maxResults:completion:)`, starting after a pagination token.
@@ -275,8 +274,7 @@ NS_SWIFT_NAME(putData(_:metadata:));
 - (void)listWithMaxResults:(int64_t)maxResults
                  pageToken:(NSString *)pageToken
                 completion:
-                    (void (^)(FIRStorageListResult *result, NSError *_Nullable error))completion
-    NS_SWIFT_NAME(list(maxResults:pageToken:completion:));
+                    (void (^)(FIRStorageListResult *result, NSError *_Nullable error))completion;
 
 #pragma mark - Metadata Operations
 

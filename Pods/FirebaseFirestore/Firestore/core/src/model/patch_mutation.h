@@ -17,13 +17,13 @@
 #ifndef FIRESTORE_CORE_SRC_MODEL_PATCH_MUTATION_H_
 #define FIRESTORE_CORE_SRC_MODEL_PATCH_MUTATION_H_
 
-#include <map>
 #include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "Firestore/core/src/model/field_mask.h"
+#include "Firestore/core/src/model/field_value.h"
 #include "Firestore/core/src/model/model_fwd.h"
 #include "Firestore/core/src/model/mutation.h"
 
@@ -50,12 +50,6 @@ class PatchMutation : public Mutation {
                 ObjectValue value,
                 FieldMask mask,
                 Precondition precondition);
-
-  PatchMutation(DocumentKey key,
-                ObjectValue value,
-                FieldMask mask,
-                Precondition precondition,
-                std::vector<FieldTransform> field_transforms);
 
   /**
    * Casts a Mutation to a PatchMutation. This is a checked operation that will
@@ -87,8 +81,7 @@ class PatchMutation : public Mutation {
     Rep(DocumentKey&& key,
         ObjectValue&& value,
         FieldMask&& mask,
-        Precondition&& precondition,
-        std::vector<FieldTransform>&& field_transforms);
+        Precondition&& precondition);
 
     Type type() const override {
       return Type::Patch;
@@ -102,18 +95,14 @@ class PatchMutation : public Mutation {
       return mask_;
     }
 
-    /**
-     * Returns this patch mutation as a list of field paths to values (or
-     * nullopt for deletes).
-     */
-    TransformMap GetPatch() const;
-
-    void ApplyToRemoteDocument(
-        MutableDocument& document,
+    MaybeDocument ApplyToRemoteDocument(
+        const absl::optional<MaybeDocument>& maybe_doc,
         const MutationResult& mutation_result) const override;
 
-    void ApplyToLocalView(MutableDocument& document,
-                          const Timestamp& local_write_time) const override;
+    absl::optional<MaybeDocument> ApplyToLocalView(
+        const absl::optional<MaybeDocument>& maybe_doc,
+        const absl::optional<MaybeDocument>&,
+        const Timestamp&) const override;
 
     bool Equals(const Mutation::Rep& other) const override;
 
@@ -122,6 +111,11 @@ class PatchMutation : public Mutation {
     std::string ToString() const override;
 
    private:
+    ObjectValue PatchDocument(
+        const absl::optional<MaybeDocument>& maybe_doc) const;
+
+    ObjectValue PatchObject(ObjectValue obj) const;
+
     ObjectValue value_;
     FieldMask mask_;
   };

@@ -49,7 +49,7 @@ class RemoteDocumentCache {
    * @param document A Document or DeletedDocument to put in the cache.
    * @param read_time The time at which the document was read or committed.
    */
-  virtual void Add(const model::MutableDocument& document,
+  virtual void Add(const model::MaybeDocument& document,
                    const model::SnapshotVersion& read_time) = 0;
 
   /** Removes the cached entry for the given key (no-op if no entry exists). */
@@ -62,7 +62,8 @@ class RemoteDocumentCache {
    * @return The cached Document or DeletedDocument entry, or nullopt if we
    * have nothing cached.
    */
-  virtual model::MutableDocument Get(const model::DocumentKey& key) = 0;
+  virtual absl::optional<model::MaybeDocument> Get(
+      const model::DocumentKey& key) = 0;
 
   /**
    * Looks up a set of entries in the cache.
@@ -71,7 +72,7 @@ class RemoteDocumentCache {
    * @return The cached Document or NoDocument entries indexed by key. If an
    * entry is not cached, the corresponding key will be mapped to a null value.
    */
-  virtual model::MutableDocumentMap GetAll(
+  virtual model::OptionalMaybeDocumentMap GetAll(
       const model::DocumentKeySet& keys) = 0;
 
   /**
@@ -87,7 +88,7 @@ class RemoteDocumentCache {
    * documents that have been read since this snapshot version (exclusive).
    * @return The set of matching documents.
    */
-  virtual model::MutableDocumentMap GetMatching(
+  virtual model::DocumentMap GetMatching(
       const core::Query& query,
       const model::SnapshotVersion& since_read_time) = 0;
 };

@@ -61,6 +61,8 @@
 
     fetcher.comment = @"DeleteTask";
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
     strongSelf->_fetcherCompletion = ^(NSData *_Nullable data, NSError *_Nullable error) {
       if (!self.error) {
         self.error = [FIRStorageErrors errorWithServerError:error reference:self.reference];
@@ -70,12 +72,10 @@
       }
       self->_fetcherCompletion = nil;
     };
+#pragma clang diangostic pop
 
     [fetcher beginFetchWithCompletionHandler:^(NSData *_Nullable data, NSError *_Nullable error) {
-      FIRStorageDeleteTask *strongSelf = weakSelf;
-      if (strongSelf.fetcherCompletion) {
-        strongSelf.fetcherCompletion(data, error);
-      }
+      weakSelf.fetcherCompletion(data, error);
     }];
   }];
 }

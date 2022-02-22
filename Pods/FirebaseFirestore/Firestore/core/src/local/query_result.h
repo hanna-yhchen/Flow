@@ -20,9 +20,8 @@
 #include <utility>
 #include <vector>
 
-#include "Firestore/core/src/model/document.h"
 #include "Firestore/core/src/model/document_key_set.h"
-#include "Firestore/core/src/model/model_fwd.h"
+#include "Firestore/core/src/model/document_map.h"
 
 namespace firebase {
 namespace firestore {

@@ -15,7 +15,6 @@
 #import "FirebaseStorage/Sources/FIRStorageGetDownloadURLTask.h"
 
 #import "FirebaseStorage/Sources/FIRStorageTask_Private.h"
-#import "FirebaseStorage/Sources/FIRStorage_Private.h"
 
 @implementation FIRStorageGetDownloadURLTask {
  @private
@@ -40,7 +39,7 @@
   [_fetcher stopFetching];
 }
 
-- (NSURL *)downloadURLFromMetadataDictionary:(NSDictionary *)dictionary {
++ (NSURL *)downloadURLFromMetadataDictionary:(NSDictionary *)dictionary {
   NSString *downloadTokens = dictionary[kFIRStorageMetadataDownloadTokens];
 
   if (downloadTokens && downloadTokens.length > 0) {
@@ -51,9 +50,8 @@
                                                     [FIRStorageUtils GCSEscapedString:path]];
 
     NSURLComponents *components = [[NSURLComponents alloc] init];
-    components.scheme = self.reference.storage.scheme;
-    components.host = self.reference.storage.host;
-    components.port = self.reference.storage.port;
+    components.scheme = kFIRStorageScheme;
+    components.host = kFIRStorageHost;
     components.percentEncodedPath = fullPath;
 
     // The backend can return an arbitrary number of download tokens, but we only expose the first
@@ -74,6 +72,7 @@
 
   [self dispatchAsync:^() {
     FIRStorageGetDownloadURLTask *strongSelf = weakSelf;
+
     if (!strongSelf) {
       return;
     }
@@ -89,6 +88,8 @@
     strongSelf->_fetcher = fetcher;
     fetcher.comment = @"GetDownloadURLTask";
 
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Warc-retain-cycles"
     strongSelf->_fetcherCompletion = ^(NSData *data, NSError *error) {
       NSURL *downloadURL;
       if (error) {
@@ -98,7 +99,8 @@
       } else {
         NSDictionary *responseDictionary = [NSDictionary frs_dictionaryFromJSONData:data];
         if (responseDictionary != nil) {
-          downloadURL = [strongSelf downloadURLFromMetadataDictionary:responseDictionary];
+          downloadURL =
+              [FIRStorageGetDownloadURLTask downloadURLFromMetadataDictionary:responseDictionary];
           if (!downloadURL) {
             self.error =
                 [FIRStorageErrors errorWithCustomMessage:@"Failed to retrieve a download URL."];
@@ -114,11 +116,9 @@
 
       self->_fetcherCompletion = nil;
     };
+#pragma clang diagnostic pop
     [fetcher beginFetchWithCompletionHandler:^(NSData *data, NSError *error) {
-      FIRStorageGetDownloadURLTask *strongSelf = weakSelf;
-      if (strongSelf.fetcherCompletion) {
-        strongSelf.fetcherCompletion(data, error);
-      }
+      weakSelf.fetcherCompletion(data, error);
     }];
   }];
 };

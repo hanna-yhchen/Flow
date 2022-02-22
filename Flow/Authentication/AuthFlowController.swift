@@ -45,15 +45,22 @@ class AuthFlowController: UIViewController {
 
 extension AuthFlowController: SignInViewControllerDelegate {
     func signInDidComplete(_ controller: SignInViewController) {
-        remove(child: controller)
+        // remove(child: controller)
         delegate?.authFlowControllerDidFinish(self)
     }
 
     func navigateToRegister() {
         let registerVC = RegisterViewController()
+        registerVC.delegate = self
         navigation.pushViewController(registerVC, animated: true)
     }
 
     func navigateToHelp() {
+    }
+}
+
+extension AuthFlowController: RegisterViewControllerDelegate {
+    func registerDidComplete(_ controller: RegisterViewController) {
+        delegate?.authFlowControllerDidFinish(self)
     }
 }
