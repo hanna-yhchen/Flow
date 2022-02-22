@@ -10,8 +10,8 @@ import UIKit
 class AppFlowController: UIViewController {
     func start() {
         // TODO: Check Authentication State
-        //startLogin()
-        startMain()
+        startLogin()
+        // startMain()
     }
 
     private func startLogin() {
