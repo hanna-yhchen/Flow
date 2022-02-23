@@ -12,10 +12,7 @@ class NewPostView: UIView {
 
     @Published var postImageView: PostImageView = {
         let imageView = PostImageView()
-        imageView.image = UIImage(
-            systemName: "plus.viewfinder",
-            withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)
-        )
+        imageView.reset()
         imageView.isUserInteractionEnabled = true
         return imageView
     }()

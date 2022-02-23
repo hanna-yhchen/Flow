@@ -49,6 +49,7 @@ class NewPostViewController: UIViewController {
             action: #selector(shareTapped)
         )
         navigationItem.rightBarButtonItem = shareButton
+        shareButton.isEnabled = false
 
         showImagePicker()
     }
@@ -132,10 +133,7 @@ class NewPostViewController: UIViewController {
 
     @objc private func cancelTapped() {
         view.endEditing(true)
-        contentView.postImageView.image = UIImage(
-            systemName: "plus.viewfinder",
-            withConfiguration: UIImage.SymbolConfiguration(weight: .ultraLight)
-        )
+        contentView.postImageView.reset()
         contentView.captionTextView.text = ""
         contentView.captionTextView.placeholderLabel.isHidden = false
     }
@@ -164,6 +162,7 @@ extension NewPostViewController: PHPickerViewControllerDelegate {
             provider.loadObject(ofClass: UIImage.self) { image, _ in
                 guard let image = image as? UIImage else { return }
                 DispatchQueue.main.async {
+                    self.contentView.postImageView.placeholderImageView.isHidden = true
                     self.contentView.postImageView.image = image
                     self.contentView.layoutIfNeeded()
                 }
