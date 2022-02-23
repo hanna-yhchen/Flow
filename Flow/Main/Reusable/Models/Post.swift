@@ -10,14 +10,13 @@ import Foundation
 typealias UserID = String
 typealias PostID = String
 
-struct Post: Hashable {
+struct Post: Hashable, Codable {
     let id: PostID
     let authorID: UserID
-    let photoURL: URL?
+    let imageURL: String
     let caption: String
-    let date: Date
+    let timeIntervalSince1970: Double
     let whoLikes: [UserID]
-    let comments: Comments
     let whoBookmarks: [UserID]
 
     func hash(into hasher: inout Hasher) {

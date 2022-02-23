@@ -10,7 +10,7 @@ import UIKit
 class NewPostView: UIView {
     // MARK: - Components
 
-    let postImageView: PostImageView = {
+    @Published var postImageView: PostImageView = {
         let imageView = PostImageView()
         imageView.image = UIImage(
             systemName: "plus.viewfinder",
@@ -19,7 +19,7 @@ class NewPostView: UIView {
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
-    let captionTextView = CaptionTextView(placeholder: "Write a caption...")
+    @Published var captionTextView = CaptionTextView(placeholder: "Write a caption...")
 
     // MARK: - Lifecycle
 

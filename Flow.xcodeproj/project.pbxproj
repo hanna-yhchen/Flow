@@ -73,6 +73,8 @@
 		B5F7F6B427C48519008D7B67 /* ImageService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7F6B327C48519008D7B67 /* ImageService.swift */; };
 		B5F7F6B627C4D6A4008D7B67 /* UserService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7F6B527C4D6A4008D7B67 /* UserService.swift */; };
 		B5F7F6B927C4E876008D7B67 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B5F7F6B827C4E876008D7B67 /* GoogleService-Info.plist */; };
+		B5F7F6BB27C630CB008D7B67 /* PostService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7F6BA27C630CB008D7B67 /* PostService.swift */; };
+		B5F7F6BD27C68CF2008D7B67 /* NewPostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F7F6BC27C68CF2008D7B67 /* NewPostViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -146,6 +148,8 @@
 		B5F7F6B327C48519008D7B67 /* ImageService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageService.swift; sourceTree = "<group>"; };
 		B5F7F6B527C4D6A4008D7B67 /* UserService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserService.swift; sourceTree = "<group>"; };
 		B5F7F6B827C4E876008D7B67 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "GoogleService-Info.plist"; path = "../../../../../Desktop/GoogleService-Info.plist"; sourceTree = "<group>"; };
+		B5F7F6BA27C630CB008D7B67 /* PostService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostService.swift; sourceTree = "<group>"; };
+		B5F7F6BC27C68CF2008D7B67 /* NewPostViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -376,6 +380,7 @@
 				B54D8F08278923C9008B805E /* NewPostFlowController.swift */,
 				B5C084FF27C32D2700DB8DDD /* NewPostViewController.swift */,
 				B5C0850127C3376100DB8DDD /* NewPostView.swift */,
+				B5F7F6BC27C68CF2008D7B67 /* NewPostViewModel.swift */,
 			);
 			path = "New Post";
 			sourceTree = "<group>";
@@ -416,6 +421,7 @@
 				B5F7F6B127C47937008D7B67 /* AuthService.swift */,
 				B5F7F6B327C48519008D7B67 /* ImageService.swift */,
 				B5F7F6B527C4D6A4008D7B67 /* UserService.swift */,
+				B5F7F6BA27C630CB008D7B67 /* PostService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -566,9 +572,11 @@
 				B54612AB27842EB800C87339 /* UIColor+CustomColors.swift in Sources */,
 				B54612792782C65000C87339 /* AppDelegate.swift in Sources */,
 				B507A7CE27983ECE00E8840D /* PostViewController.swift in Sources */,
+				B5F7F6BD27C68CF2008D7B67 /* NewPostViewModel.swift in Sources */,
 				B546129B2782FE7300C87339 /* AuthFlowController.swift in Sources */,
 				B546127B2782C65000C87339 /* SceneDelegate.swift in Sources */,
 				B54612AF2784496300C87339 /* UITextField+Publisher.swift in Sources */,
+				B5F7F6BB27C630CB008D7B67 /* PostService.swift in Sources */,
 				B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */,
 				B52DAECA278E99A70002D930 /* Post.swift in Sources */,
 				B54612BB278675BC00C87339 /* RegisterViewModel.swift in Sources */,

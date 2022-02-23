@@ -93,7 +93,16 @@ extension HomeViewController {
         let storybooks = array.map { int in Item.story(Storybook(authorID: "\(int)", whoHasReadAll: [])) }
         let feeds = array.map { int in
             Item.feed(
-                Post(id: "\(int)", authorID: "", photoURL: nil, caption: "Test caption", date: Date(), whoLikes: [], comments: Comments(postID: "", count: 0), whoBookmarks: []))
+                Post(
+                    id: String(int),
+                    authorID: "007",
+                    imageURL: "",
+                    caption: "This is a test Post!",
+                    timeIntervalSince1970: Date().timeIntervalSince1970,
+                    whoLikes: [],
+                    whoBookmarks: []
+                )
+            )
         }
 
         var snapshot = HomeSnapshot()
@@ -119,12 +128,13 @@ extension HomeViewController {
         return UICollectionView.CellRegistration<FeedCell, Post> {cell, _, post in
             // TODO: Fetch author's profile Image and username by storybook.authorID
             // TODO: Fetch post's image by post.photoURLs[0]
+            // TODO: Use ViewModel Instead
             cell.postImageView.image = UIImage(named: "scenery")
             cell.captionLabel.text = post.caption
             cell.didLike = post.whoLikes.contains("myUserID")
             cell.didBookmark = post.whoBookmarks.contains("myUserID")
             cell.countOfLike = post.whoLikes.count
-            cell.countOfComment = post.comments.count
+            cell.countOfComment = 0
             cell.countOfBookmark = post.whoBookmarks.count
 
             cell.postID = post.id

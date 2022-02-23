@@ -125,12 +125,13 @@ extension PostViewController {
     private func makePostViewRegistration() -> UICollectionView.SupplementaryRegistration<PostView> {
         return UICollectionView.SupplementaryRegistration<PostView>(elementKind: PostCollectionView.headerKind) {
             [unowned self] postView, _, _ in
+            // TODO: Use PostViewModel Instead
             postView.postImageView.image = UIImage(named: "scenery")
             postView.captionLabel.text = self.post.caption
             postView.didLike = self.post.whoLikes.contains("myUserID")
             postView.didBookmark = self.post.whoBookmarks.contains("myUserID")
             postView.countOfLike = self.post.whoLikes.count
-            postView.countOfComment = self.post.comments.count
+            postView.countOfComment = 0
             postView.countOfBookmark = self.post.whoBookmarks.count
         }
     }

@@ -17,10 +17,18 @@ class NewPostViewController: UIViewController {
     // MARK: - Properties
 
     weak var delegate: NewPostViewControllerDelegate?
+    private var viewModel = NewPostViewModel()
     private let scrollView = UIScrollView()
     private let contentView = NewPostView()
 
     private var keyboardFrameSubscription: AnyCancellable?
+    private var subscriptions = Set<AnyCancellable>()
+
+    private var isInputValid = false {
+        didSet {
+            navigationItem.rightBarButtonItem?.isEnabled = isInputValid
+        }
+    }
 
     // MARK: - LifeCycle
 
@@ -55,6 +63,7 @@ class NewPostViewController: UIViewController {
 
         configureHierarchy()
         configureKeyboardBehavior()
+        configureBindings()
     }
 
     // MARK: - Configuration
@@ -94,6 +103,22 @@ class NewPostViewController: UIViewController {
         view.addResignKeyboardTapGesture()
     }
 
+    private func configureBindings() {
+        contentView.$postImageView
+            .map { $0.image }
+            .assign(to: \.postImage, on: viewModel)
+            .store(in: &subscriptions)
+        contentView.$captionTextView
+            .map { $0.text }
+            .assign(to: \.caption, on: viewModel)
+            .store(in: &subscriptions)
+
+        viewModel.isInputValid
+            .receive(on: RunLoop.main)
+            .assign(to: \.isInputValid, on: self)
+            .store(in: &subscriptions)
+    }
+
     // MARK: - Actions
 
     @objc private func showImagePicker() {
@@ -117,7 +142,13 @@ class NewPostViewController: UIViewController {
 
     @objc private func shareTapped() {
         // TODO: Upload New Post
-        delegate?.didFinishNewPost(self)
+        viewModel.share {[unowned self] error in
+            if let error = error {
+                print("DEBUG: Error share new post -", error.localizedDescription)
+                return
+            }
+            delegate?.didFinishNewPost(self)
+        }
     }
 }
 
