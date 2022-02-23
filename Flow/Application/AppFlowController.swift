@@ -48,7 +48,9 @@ extension AppFlowController: MainFlowControllerDelegate {
             try Auth.auth().signOut()
         } catch let error {
             print("DEBUG: Error signing out -", error)
+            return
         }
+        remove(child: flowController)
         startLogin()
     }
 }

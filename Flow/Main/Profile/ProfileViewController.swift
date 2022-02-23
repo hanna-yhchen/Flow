@@ -43,12 +43,9 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(userID: UserID, isCurrentUser: Bool = false) {
-        // TODO: Initiate View Model by user
+    init(userID: UserID) {
         self.viewModel = ProfileViewModel(userID: userID)
-        // TODO: Check currentUser
-        let isCurrentUser = false
-        self.profileHeaderView = ProfileHeaderView(isCurrentUser: isCurrentUser)
+        self.profileHeaderView = ProfileHeaderView(isCurrentUser: viewModel.isCurrentUser)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -171,30 +168,20 @@ class ProfileViewController: UIViewController {
     // MARK: - Methods
 
     private func currentPostSnapshot() -> ProfilePageSnapshot {
-        // TODO: Fetch User's Post List
         viewModel.fetchPosts()
-        let array = Array(0..<100)
-        let posts = array.map { int in
-            Post(id: String(int), authorID: "007", photoURL: nil, caption: "Hello", date: Date(), whoLikes: [], comments: Comments(postID: String(int), count: 3), whoBookmarks: [])
-        }
 
         var snapshot = ProfilePageSnapshot()
         snapshot.appendSections([Section.thumbnail])
-        snapshot.appendItems(posts)
+        snapshot.appendItems(postList)
         return snapshot
     }
 
     private func currentMentionedSnapshot() -> ProfilePageSnapshot {
-        // TODO: Fetch User's Mentioned Post List
         viewModel.fetchMentionedPosts()
-        let array = Array(0..<100)
-        let posts = array.map { int in
-            Post(id: String(int), authorID: "007", photoURL: nil, caption: "Hello", date: Date(), whoLikes: [], comments: Comments(postID: String(int), count: 3), whoBookmarks: [])
-        }
 
         var snapshot = ProfilePageSnapshot()
         snapshot.appendSections([Section.thumbnail])
-        snapshot.appendItems(posts)
+        snapshot.appendItems(mentionedList)
         return snapshot
     }
 

@@ -32,11 +32,11 @@ class ProfileFlowController: UIViewController {
     // MARK: - Private
 
     private func showProfile() {
-        guard let currentUserId = Auth.auth().currentUser?.uid else {
+        guard let currentUserId = UserService.currentUserID() else {
             print("DEBUG: Absent current user")
             return
         }
-        let profileVC = ProfileViewController(userID: currentUserId, isCurrentUser: true)
+        let profileVC = ProfileViewController(userID: currentUserId)
         profileVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: profileVC)
         navigation.show(profileVC, sender: self)

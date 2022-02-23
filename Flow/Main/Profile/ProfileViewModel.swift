@@ -12,6 +12,7 @@ class ProfileViewModel {
     // MARK: - Properties
 
     private let userID: UserID
+    var isCurrentUser: Bool { userID == UserService.currentUserID() }
 
     @Published private(set) var profileImageURL: URL?
     @Published private(set) var username: String?
@@ -26,7 +27,6 @@ class ProfileViewModel {
     }
 
     func fetchUser() {
-        // TODO: Fetch User
         UserService.fetchUser(id: userID) {[unowned self] user, error in
             if let error = error {
                 print("DEBUG: Error fetching current user -", error.localizedDescription)

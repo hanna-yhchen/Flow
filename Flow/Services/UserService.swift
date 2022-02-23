@@ -27,4 +27,8 @@ enum UserService {
             }
         }
     }
+
+    static func currentUserID() -> UserID? {
+        return Auth.auth().currentUser?.uid
+    }
 }

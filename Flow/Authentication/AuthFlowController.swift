@@ -45,7 +45,6 @@ class AuthFlowController: UIViewController {
 
 extension AuthFlowController: SignInViewControllerDelegate {
     func signInDidComplete(_ controller: SignInViewController) {
-        // remove(child: controller)
         delegate?.authFlowControllerDidFinish(self)
     }
 
