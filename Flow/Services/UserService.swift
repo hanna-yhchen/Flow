@@ -16,13 +16,10 @@ enum UserService {
                 completion(nil, error)
                 return
             }
-            let result = Result {
-                try document?.data(as: User.self)
-            }
-            switch result {
-            case .success(let user):
+            do {
+                let user = try document?.data(as: User.self)
                 completion(user, nil)
-            case .failure(let error):
+            } catch {
                 completion(nil, error)
             }
         }

@@ -22,29 +22,34 @@ enum AuthService {
     }
 
     static func register(with credentials: AuthCredentials, completion: @escaping(Error?) -> Void) {
-        ImageService.upload(image: credentials.profileImage) { profileImageURL, error in
+        ImageService.upload(image: credentials.profileImage, to: .profileImages) { profileImageURL, error in
             guard error == nil else {
                 completion(error)
                 return
             }
             Auth.auth().createUser(withEmail: credentials.email, password: credentials.password) { result, error in
-                guard error == nil, let id = result?.user.uid, let url = profileImageURL?.absoluteString else {
+                guard error == nil, let id = result?.user.uid, let imageURL = profileImageURL?.absoluteString else {
                     completion(error)
                     return
                 }
 
-                Firestore.firestore().collection("users").document(id).setData(
-                    [
-                        "id": id,
-                        "username": credentials.username,
-                        "fullName": credentials.fullName,
-                        "profileImageURL": url,
-                        "follows": [],
-                        "followers": [],
-                        "posts": [],
-                        "mentionedPosts": [],
-                    ], completion: completion
+                let newUser = User(
+                    id: id,
+                    username: credentials.username,
+                    profileImageURL: imageURL,
+                    fullName: credentials.fullName,
+                    follows: [],
+                    followers: [],
+                    posts: [],
+                    mentionedPosts: []
                 )
+
+                do {
+                    try Firestore.firestore().collection("users").document(id).setData(from: newUser)
+                    completion(nil)
+                } catch {
+                    completion(error)
+                }
             }
         }
     }

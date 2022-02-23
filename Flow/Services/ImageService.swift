@@ -8,10 +8,22 @@
 import FirebaseStorage
 
 enum ImageService {
-    static func upload(image: UIImage?, completion: @escaping(_ profileImageURL: URL?, Error?) -> Void) {
+    enum StorageCollection {
+        case profileImages
+        case postImages
+    }
+    static func upload(image: UIImage?, to collection: StorageCollection, completion: @escaping(_ imageURL: URL?, Error?) -> Void) {
         guard let imageData = image?.jpegData(compressionQuality: 0.75) else { return }
         let filename = NSUUID().uuidString
-        let imageRef = Storage.storage().reference(withPath: "/profile-images/\(filename).jpeg")
+
+        var rootPath = ""
+        switch collection {
+        case .profileImages:
+            rootPath = "/profile-images/"
+        case .postImages:
+            rootPath = "/post-images/"
+        }
+        let imageRef = Storage.storage().reference(withPath: rootPath + filename + ".jpeg")
         let metadata = StorageMetadata()
         metadata.contentType = "image/jpeg"
 
