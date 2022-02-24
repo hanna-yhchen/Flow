@@ -8,6 +8,11 @@
 import UIKit
 import Combine
 
+struct NewPost {
+    let image: UIImage?
+    let caption: String?
+}
+
 class NewPostViewModel {
     // MARK: - Properties
 

@@ -8,11 +8,6 @@
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-struct NewPost {
-    let image: UIImage?
-    let caption: String?
-}
-
 enum PostService {
     // TODO: CRUD post
     static func create(_ newPost: NewPost, completion: @escaping(Error?) -> Void) {
