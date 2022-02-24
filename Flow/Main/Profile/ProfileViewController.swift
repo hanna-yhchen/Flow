@@ -23,14 +23,14 @@ class ProfileViewController: UIViewController {
 
     // MARK: - Properties
 
-    let viewModel: ProfileViewModel
-    private var postList: [Post] = []
-    private var mentionedList: [Post] = []
+    private let viewModel: ProfileViewModel
+    private var posts: [Post] = []
+    private var bookmarks: [Post] = []
     private var subscriptions = Set<AnyCancellable>()
 
-    let profileHeaderView: ProfileHeaderView
+    private let profileHeaderView: ProfileHeaderView
 
-    var pages: [UIViewController] = []
+    private var pages: [UIViewController] = []
 
     weak var delegate: ProfileViewControllerDelegate?
 
@@ -58,8 +58,8 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         configureHierarchy()
-        configureDataSource()
         configureBindings()
+        configureDataSource()
     }
 
     // MARK: - Configurations
@@ -109,24 +109,23 @@ class ProfileViewController: UIViewController {
         self.postCollectionView = GridCollectionView(withFrame: view.bounds)
         postCollectionView.delegate = self
         postViewController.view = postCollectionView
-        postViewController.view.backgroundColor = .red
         postViewController.title = "Posts"
 
-        let mentionedViewController = UIViewController()
+        let bookmarkViewController = UIViewController()
         self.mentionedCollectionView = GridCollectionView(withFrame: view.bounds)
         mentionedCollectionView.delegate = self
-        mentionedViewController.view = mentionedCollectionView
-        mentionedViewController.view.backgroundColor = .blue
-        mentionedViewController.title = "Mentioned"
+        bookmarkViewController.view = mentionedCollectionView
+        bookmarkViewController.title = "Bookmarks"
 
-        self.pages = [postViewController, mentionedViewController]
+        self.pages = [postViewController, bookmarkViewController]
     }
 
     private func configureDataSource() {
         let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, Post> { cell, _, post in
             cell.backgroundColor = .systemBackground
-            cell.imageView.image = UIImage(named: "scenery")
-            // TODO: Use Static Service to Fetch Image
+            if let url = URL(string: post.imageURL) {
+                cell.imageView.sd_setImage(with: url)
+            }
         }
 
         self.postDataSource = ProfilePageDataSource(collectionView: postCollectionView) {
@@ -155,33 +154,27 @@ class ProfileViewController: UIViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.text, on: profileHeaderView.nameLabel)
             .store(in: &subscriptions)
-        viewModel.$postList
-            .receive(on: RunLoop.main)
-            .assign(to: \.postList, on: self)
+        viewModel.$posts
+            .assign(to: \.posts, on: self)
             .store(in: &subscriptions)
-        viewModel.$mentionedList
-            .receive(on: RunLoop.main)
-            .assign(to: \.mentionedList, on: self)
+        viewModel.$bookmarks
+            .assign(to: \.bookmarks, on: self)
             .store(in: &subscriptions)
     }
 
     // MARK: - Methods
 
     private func currentPostSnapshot() -> ProfilePageSnapshot {
-        viewModel.fetchPosts()
-
         var snapshot = ProfilePageSnapshot()
         snapshot.appendSections([Section.thumbnail])
-        snapshot.appendItems(postList)
+        snapshot.appendItems(posts)
         return snapshot
     }
 
     private func currentMentionedSnapshot() -> ProfilePageSnapshot {
-        viewModel.fetchMentionedPosts()
-
         var snapshot = ProfilePageSnapshot()
         snapshot.appendSections([Section.thumbnail])
-        snapshot.appendItems(mentionedList)
+        snapshot.appendItems(bookmarks)
         return snapshot
     }
 

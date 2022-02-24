@@ -43,4 +43,44 @@ enum PostService {
             }
         }
     }
+
+    static func fetchPost(_ postID: PostID, completion: @escaping(Post?, Error?) -> Void) {
+        Firestore.firestore().collection("posts").document(postID).getDocument { document, error in
+            guard error == nil else {
+                completion(nil, error)
+                return
+            }
+            do {
+                let post = try document?.data(as: Post.self)
+                completion(post, nil)
+            } catch {
+                completion(nil, error)
+            }
+        }
+    }
+
+    static func fetchPosts(of userID: UserID, completion: @escaping([Post], Error?) -> Void) {
+        let postsRef = Firestore.firestore().collection("posts")
+        postsRef.whereField("authorID", isEqualTo: userID)
+            .order(by: "timeIntervalSince1970", descending: true)
+            .limit(to: 30)
+            .getDocuments { snapshot, error in
+                guard error == nil, let snapshot = snapshot else {
+                    completion([], error)
+                    return
+                }
+
+                var posts: [Post] = []
+                for document in snapshot.documents {
+                    do {
+                        guard let post = try document.data(as: Post.self) else { return }
+                        posts.append(post)
+                    } catch {
+                        print("DEBUG: Error fetching post -", error.localizedDescription)
+                    }
+                }
+
+                completion(posts, nil)
+            }
+    }
 }

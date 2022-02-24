@@ -15,5 +15,5 @@ struct User: Codable {
     let follows: [UserID]
     let followers: [UserID]
     let posts: [PostID]
-    let mentionedPosts: [PostID]
+    let bookmarkedPosts: [PostID]
 }

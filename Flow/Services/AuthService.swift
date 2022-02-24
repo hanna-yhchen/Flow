@@ -41,7 +41,7 @@ enum AuthService {
                     follows: [],
                     followers: [],
                     posts: [],
-                    mentionedPosts: []
+                    bookmarkedPosts: []
                 )
 
                 do {
