@@ -29,7 +29,6 @@ class ProfileViewController: UIViewController {
     private var subscriptions = Set<AnyCancellable>()
 
     private let profileHeaderView: ProfileHeaderView
-
     private var pages: [UIViewController] = []
 
     weak var delegate: ProfileViewControllerDelegate?

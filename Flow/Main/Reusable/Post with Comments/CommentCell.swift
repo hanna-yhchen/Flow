@@ -73,7 +73,6 @@ class CommentCell: UICollectionViewListCell {
     let commentLabel: UILabel = {
         let label = UILabel()
 
-        label.text = "Some comment..\nSecond Line.."
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: 16)
         label.isUserInteractionEnabled = true

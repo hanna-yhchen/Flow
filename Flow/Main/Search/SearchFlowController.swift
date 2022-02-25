@@ -39,4 +39,8 @@ class SearchFlowController: UIViewController {
 }
 
 extension SearchFlowController: SearchViewControllerDelegate {
+    func navigateToPost(_ post: Post) {
+        let postVC = PostViewController(post: post)
+        navigation.pushViewController(postVC, animated: true)
+    }
 }

@@ -9,4 +9,19 @@ import Foundation
 import Combine
 
 class SearchViewModel {
+    @Published private(set) var posts: [Post] = []
+
+    init() {
+        fetchPosts()
+    }
+
+    private func fetchPosts() {
+        PostService.fetchAllPosts {[unowned self] posts, error in
+            if let error = error {
+                print("DEBUG: Error fetching posts -", error.localizedDescription)
+                return
+            }
+            self.posts = posts
+        }
+    }
 }

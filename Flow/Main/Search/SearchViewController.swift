@@ -9,25 +9,31 @@ import UIKit
 import Combine
 
 protocol SearchViewControllerDelegate: AnyObject {
+    func navigateToPost(_ post: Post)
 }
 
 class SearchViewController: UIViewController {
-    // MARK: - Properties
-
     enum Section {
-        case main
+        case thumbnail
     }
 
+    private typealias SearchDataSource = UICollectionViewDiffableDataSource<Section, Post>
+    private typealias SearchSnapshot = NSDiffableDataSourceSnapshot<Section, Post>
+
+    // MARK: - Properties
+
     weak var delegate: SearchViewControllerDelegate?
+    private let viewModel = SearchViewModel()
+    private var posts: [Post] = []
+    private var subscriptions = Set<AnyCancellable>()
 
     // swiftlint:disable implicitly_unwrapped_optional
     private var searchController: UISearchController! = nil
     private var collectionView: UICollectionView! = nil
-    private var dataSource: UICollectionViewDiffableDataSource<Section, ImageItem>! = nil
+    private var dataSource: UICollectionViewDiffableDataSource<Section, Post>! = nil
     // swiftlint:enable implicitly_unwrapped_optional
 
     // private let viewModel = SearchViewModel()
-    private var subscriptions = Set<AnyCancellable>()
 
     // MARK: - Lifecycle
 
@@ -37,9 +43,8 @@ class SearchViewController: UIViewController {
         addResignKeyboardTapGesture()
 
         configureHierarchy()
-        configureDataSource()
-        configureTargets()
         configureBindings()
+        configureDataSource()
     }
 
     // MARK: - Configuration
@@ -63,11 +68,14 @@ class SearchViewController: UIViewController {
     }
 
     private func configureDataSource() {
-        let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, ImageItem> { cell, _, item in
-            cell.imageView.image = item.image
+        let cellRegistration = UICollectionView.CellRegistration<ThumbnailCell, Post> { cell, _, post in
+            cell.backgroundColor = .systemBackground
+            if let url = URL(string: post.imageURL) {
+                cell.imageView.sd_setImage(with: url)
+            }
         }
 
-        dataSource = UICollectionViewDiffableDataSource<Section, ImageItem>(collectionView: collectionView) {
+        dataSource = UICollectionViewDiffableDataSource<Section, Post>(collectionView: collectionView) {
             collectionView, indexPath, item -> UICollectionViewCell? in
             let cell = collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
             return cell
@@ -76,10 +84,10 @@ class SearchViewController: UIViewController {
         dataSource.apply(currentSnapshot())
     }
 
-    private func configureTargets() {
-    }
-
     private func configureBindings() {
+        viewModel.$posts
+            .assign(to: \.posts, on: self)
+            .store(in: &subscriptions)
     }
 
     private func addResignKeyboardTapGesture() {
@@ -94,13 +102,10 @@ class SearchViewController: UIViewController {
 
     // MARK: - Methods
 
-    private func currentSnapshot() -> NSDiffableDataSourceSnapshot<Section, ImageItem> {
-        // TODO: Fetch Popular Posts
-        let array = Array(repeating: 0, count: 100)
-        let testItems = array.map { _ in ImageItem(image: UIImage(named: "scenery")) }
-        var snapshot = NSDiffableDataSourceSnapshot<Section, ImageItem>()
-        snapshot.appendSections([Section.main])
-        snapshot.appendItems(testItems)
+    private func currentSnapshot() -> NSDiffableDataSourceSnapshot<Section, Post> {
+        var snapshot = SearchSnapshot()
+        snapshot.appendSections([Section.thumbnail])
+        snapshot.appendItems(posts)
         return snapshot
     }
 }
@@ -116,4 +121,9 @@ extension SearchViewController: UISearchControllerDelegate, UISearchBarDelegate 
 // MARK: - UICollectionViewDelegate
 
 extension SearchViewController: UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if let post = dataSource.itemIdentifier(for: indexPath) {
+            delegate?.navigateToPost(post)
+        }
+    }
 }

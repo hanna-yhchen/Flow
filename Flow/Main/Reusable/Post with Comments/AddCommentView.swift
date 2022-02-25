@@ -12,9 +12,14 @@ class AddCommentView: UIView {
     let profileImageView = UIImageView.filledCircle(length: 35)
     let commentTextView = GrowableTextView(placeholder: "Add a comment...")
 
-    init(profileImage: UIImage?) {
+    var profileImageURL: URL? {
+        didSet {
+            profileImageView.sd_setImage(with: profileImageURL)
+        }
+    }
+
+    init() {
         super.init(frame: .zero)
-        profileImageView.image = profileImage
         configure()
     }
 

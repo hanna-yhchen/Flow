@@ -57,6 +57,7 @@
 		B563B5A327950AA30012E9CB /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A227950AA30012E9CB /* FeedCell.swift */; };
 		B563B5A527952DA20012E9CB /* PostInteractionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A427952DA20012E9CB /* PostInteractionButton.swift */; };
 		B563B5A7279535000012E9CB /* UIImageView+FilledCircleFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */; };
+		B56D135827C8D4F500B4D8E8 /* PostViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56D135727C8D4F500B4D8E8 /* PostViewModel.swift */; };
 		B5C0850027C32D2700DB8DDD /* NewPostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C084FF27C32D2700DB8DDD /* NewPostViewController.swift */; };
 		B5C0850227C3376100DB8DDD /* NewPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0850127C3376100DB8DDD /* NewPostView.swift */; };
 		B5C0850427C362CF00DB8DDD /* CaptionTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5C0850327C362CF00DB8DDD /* CaptionTextView.swift */; };
@@ -132,6 +133,7 @@
 		B563B5A227950AA30012E9CB /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		B563B5A427952DA20012E9CB /* PostInteractionButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostInteractionButton.swift; sourceTree = "<group>"; };
 		B563B5A6279535000012E9CB /* UIImageView+FilledCircleFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImageView+FilledCircleFactory.swift"; sourceTree = "<group>"; };
+		B56D135727C8D4F500B4D8E8 /* PostViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostViewModel.swift; sourceTree = "<group>"; };
 		B5C084FF27C32D2700DB8DDD /* NewPostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewPostViewController.swift; sourceTree = "<group>"; };
 		B5C0850127C3376100DB8DDD /* NewPostView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = NewPostView.swift; path = "/Users/hanna/Dropbox/iOS-Development/Personal/Flow/Flow/Main/New Post/NewPostView.swift"; sourceTree = "<absolute>"; };
 		B5C0850327C362CF00DB8DDD /* CaptionTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CaptionTextView.swift; path = "Flow/Main/New Post/CaptionTextView.swift"; sourceTree = SOURCE_ROOT; };
@@ -188,6 +190,7 @@
 				B507A7CF2798FBE200E8840D /* PostCollectionView.swift */,
 				B507A7D12798FCC000E8840D /* CommentCell.swift */,
 				B507A7D4279912CB00E8840D /* AddCommentView.swift */,
+				B56D135727C8D4F500B4D8E8 /* PostViewModel.swift */,
 			);
 			path = "Post with Comments";
 			sourceTree = "<group>";
@@ -559,6 +562,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B56D135827C8D4F500B4D8E8 /* PostViewModel.swift in Sources */,
 				B53F2F0E279163EF0038B2C3 /* Storybook.swift in Sources */,
 				B54D8F05278923A1008B805E /* HomeFlowController.swift in Sources */,
 				B546129D2782FE7A00C87339 /* MainFlowController.swift in Sources */,

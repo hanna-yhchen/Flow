@@ -7,15 +7,10 @@
 
 import Foundation
 
-struct Comments {
-    let postID: String
-    let count: Int
-}
-
 struct Comment: Hashable {
     let authorID: UserID
     let content: String
-    let date: Date
+    let timeIntervalSince1970: Double
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(authorID)

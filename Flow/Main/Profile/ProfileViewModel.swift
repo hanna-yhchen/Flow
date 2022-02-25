@@ -5,7 +5,7 @@
 //  Created by Hanna Chen on 2022/2/16.
 //
 
-import UIKit
+import Foundation
 import Combine
 
 class ProfileViewModel {

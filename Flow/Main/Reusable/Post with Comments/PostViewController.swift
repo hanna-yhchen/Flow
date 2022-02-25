@@ -19,10 +19,24 @@ class PostViewController: UIViewController {
 
     // MARK: - Properties
 
-    let post: Post
+    private let viewModel: PostViewModel
+
+    private var post: Post
+    private var comments: [Comment] = []
+    private var authorProfileImageURL: URL? {
+        didSet {
+            if authorProfileImageURL != nil {
+                // Is there any better way to tackle this? (the value of url will be received after view did appear...)
+                collectionView.reloadData()
+            }
+        }
+    }
+    private var userProfileImageURL: URL?
+    private var subscriptions = Set<AnyCancellable>()
 
     private let collectionView: UICollectionView
     private var dataSource: PostDataSource?
+    private let addCommentView = AddCommentView()
     private var bottomConstraint: NSLayoutConstraint?
     private var keyboardFrameSubscription: AnyCancellable?
 
@@ -30,11 +44,9 @@ class PostViewController: UIViewController {
 
     init(post: Post) {
         self.post = post
+        self.viewModel = PostViewModel(post: post)
         self.collectionView = PostCollectionView()
         super.init(nibName: nil, bundle: nil)
-
-        collectionView.delegate = self
-        configureDataSource()
     }
 
     required init?(coder: NSCoder) {
@@ -47,6 +59,8 @@ class PostViewController: UIViewController {
         navigationItem.title = "Someone's Post"
 
         configureHierarchy()
+        configureBindings()
+        configureDataSource()
         configureKeyboardBehavior()
     }
 
@@ -54,8 +68,7 @@ class PostViewController: UIViewController {
 
     private func configureHierarchy() {
         view.addSubview(collectionView)
-        // TODO: Fetch Current User's Profile Image
-        let addCommentView = AddCommentView(profileImage: UIImage(named: "keanu"))
+
         addCommentView.commentTextView.delegate = self
 
         [collectionView, addCommentView].forEach { subview in
@@ -85,6 +98,23 @@ class PostViewController: UIViewController {
         bottomConstraint?.isActive = true
     }
 
+    private func configureBindings() {
+        viewModel.$post
+            .assign(to: \.post, on: self)
+            .store(in: &subscriptions)
+        viewModel.$comments
+            .assign(to: \.comments, on: self)
+            .store(in: &subscriptions)
+        viewModel.$authorProfileImageURL
+            .receive(on: RunLoop.main)
+            .assign(to: \.authorProfileImageURL, on: self)
+            .store(in: &subscriptions)
+        viewModel.$userProfileImageURL
+            .receive(on: RunLoop.main)
+            .assign(to: \.profileImageURL, on: addCommentView)
+            .store(in: &subscriptions)
+    }
+
     private func configureKeyboardBehavior() {
         keyboardFrameSubscription = keyboardFrameSubscription()
         view.addResignKeyboardTapGesture()
@@ -93,7 +123,7 @@ class PostViewController: UIViewController {
     // MARK: - Actions
 }
 
-    // MARK: - Data Source
+// MARK: - Data Source
 
 extension PostViewController {
     private func configureDataSource() {
@@ -104,7 +134,7 @@ extension PostViewController {
             return collectionView.dequeueConfiguredReusableCell(using: commentCellRegistration, for: indexPath, item: comment)
         }
 
-        dataSource?.supplementaryViewProvider = { collectionView, kind, indexPath in
+        dataSource?.supplementaryViewProvider = { collectionView, _, indexPath in
             return collectionView.dequeueConfiguredReusableSupplementary(using: postViewRegistration, for: indexPath)
         }
 
@@ -112,10 +142,6 @@ extension PostViewController {
     }
 
     private func currentSnapshot() -> PostSnapshot {
-        // TODO: Fetch Comments by postID
-        let array = Array(0..<20)
-        let comments = array.map { int in Comment(authorID: "\(int)", content: "Hello", date: Date()) }
-
         var snapshot = PostSnapshot()
         snapshot.appendSections([Section.comment])
         snapshot.appendItems(comments)
@@ -125,27 +151,27 @@ extension PostViewController {
     private func makePostViewRegistration() -> UICollectionView.SupplementaryRegistration<PostView> {
         return UICollectionView.SupplementaryRegistration<PostView>(elementKind: PostCollectionView.headerKind) {
             [unowned self] postView, _, _ in
-            // TODO: Use PostViewModel Instead
-            postView.postImageView.image = UIImage(named: "scenery")
+            let imageURL = URL(string: post.imageURL)
+            postView.postImageView.sd_setImage(with: imageURL)
+            postView.profileImageView.sd_setImage(with: self.authorProfileImageURL)
             postView.captionLabel.text = self.post.caption
-            postView.didLike = self.post.whoLikes.contains("myUserID")
-            postView.didBookmark = self.post.whoBookmarks.contains("myUserID")
+
+            if let currentUserID = UserService.currentUserID() {
+                postView.didLike = self.post.whoLikes.contains(currentUserID)
+                postView.didBookmark = self.post.whoBookmarks.contains(currentUserID)
+            }
+
             postView.countOfLike = self.post.whoLikes.count
-            postView.countOfComment = 0
             postView.countOfBookmark = self.post.whoBookmarks.count
+            postView.countOfComment = self.comments.count
         }
     }
 
     private func makeCommentCellRegistration() -> UICollectionView.CellRegistration<CommentCell, Comment> {
-        return UICollectionView.CellRegistration<CommentCell, Comment> { cell, indexPath, comment in
+        return UICollectionView.CellRegistration<CommentCell, Comment> { cell, _, comment in
             cell.nameLabel.text = comment.authorID
         }
     }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension PostViewController: UICollectionViewDelegate {
 }
 
 // MARK: - UITextViewDelegate
