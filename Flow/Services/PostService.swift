@@ -7,8 +7,10 @@
 
 import FirebaseFirestoreSwift
 import FirebaseFirestore
+import UIKit
 
-enum PostService {
+struct PostService {
+    private static let postRef = Firestore.firestore().collection("posts")
     // TODO: CRUD post
     static func create(_ newPost: NewPost, completion: @escaping(Error?) -> Void) {
         ImageService.upload(image: newPost.image, to: .postImages) { imageURL, error in
@@ -17,10 +19,8 @@ enum PostService {
                 return
             }
 
-            let postRef = Firestore.firestore().collection("posts").document()
-
-            let postID = postRef.documentID
-
+            let newDocument = postRef.document()
+            let postID = newDocument.documentID
             let post = Post(
                 id: postID,
                 authorID: userID,
@@ -32,7 +32,7 @@ enum PostService {
             )
 
             do {
-                try postRef.setData(from: post)
+                try newDocument.setData(from: post)
                 /// Update user's post list
                 Firestore.firestore().collection("users").document(userID).updateData([
                     "posts": FieldValue.arrayUnion([postID])
@@ -60,27 +60,53 @@ enum PostService {
     }
 
     static func fetchPosts(of userID: UserID, completion: @escaping([Post], Error?) -> Void) {
-        let postsRef = Firestore.firestore().collection("posts")
-        postsRef.whereField("authorID", isEqualTo: userID)
+        postRef.whereField("authorID", isEqualTo: userID)
             .order(by: "timeIntervalSince1970", descending: true)
             .limit(to: 30)
             .getDocuments { snapshot, error in
-                guard error == nil, let snapshot = snapshot else {
-                    completion([], error)
-                    return
-                }
-
-                var posts: [Post] = []
-                for document in snapshot.documents {
-                    do {
-                        guard let post = try document.data(as: Post.self) else { return }
-                        posts.append(post)
-                    } catch {
-                        print("DEBUG: Error fetching post -", error.localizedDescription)
-                    }
-                }
-
-                completion(posts, nil)
+                completion(posts(in: snapshot), error)
+//                guard error == nil, let snapshot = snapshot else {
+//                    completion([], error)
+//                    return
+//                }
+//
+//                var posts: [Post] = []
+//                for document in snapshot.documents {
+//                    do {
+//                        guard let post = try document.data(as: Post.self) else { continue }
+//                        posts.append(post)
+//                    } catch {
+//                        print("DEBUG: Error fetching post -", error.localizedDescription)
+//                    }
+//                }
+//
+//                completion(posts, nil)
             }
+    }
+
+    static func fetchAllPosts(completion: @escaping([Post], Error?) -> Void) {
+        postRef.order(by: "timeIntervalSince1970", descending: true)
+            .limit(to: 30)
+            .getDocuments { snapshot, error in
+                completion(posts(in: snapshot), error)
+            }
+    }
+
+    private static func posts(in snapshot: QuerySnapshot?) -> [Post] {
+        guard let snapshot = snapshot else {
+            return []
+        }
+
+        var posts: [Post] = []
+        for document in snapshot.documents {
+            do {
+                guard let post = try document.data(as: Post.self) else { continue }
+                posts.append(post)
+            } catch {
+                print("DEBUG: Error fetching post -", error.localizedDescription)
+            }
+        }
+
+        return posts
     }
 }

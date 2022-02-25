@@ -9,7 +9,7 @@ import FirebaseAuth
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-enum UserService {
+struct UserService {
     static func fetchUser(id: UserID, completion: @escaping(User?, Error?) -> Void) {
         Firestore.firestore().collection("users").document(id).getDocument { document, error in
             guard error == nil else {

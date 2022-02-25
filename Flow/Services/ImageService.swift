@@ -7,7 +7,7 @@
 
 import FirebaseStorage
 
-enum ImageService {
+struct ImageService {
     enum StorageCollection {
         case profileImages
         case postImages

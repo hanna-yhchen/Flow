@@ -16,7 +16,7 @@ struct AuthCredentials {
     let profileImage: UIImage
 }
 
-enum AuthService {
+struct AuthService {
     static func signIn(email: String, password: String, completion: AuthDataResultCallback?) {
         Auth.auth().signIn(withEmail: email, password: password, completion: completion)
     }
