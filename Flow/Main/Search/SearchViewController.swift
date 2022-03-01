@@ -30,10 +30,8 @@ class SearchViewController: UIViewController {
     // swiftlint:disable implicitly_unwrapped_optional
     private var searchController: UISearchController! = nil
     private var collectionView: UICollectionView! = nil
-    private var dataSource: UICollectionViewDiffableDataSource<Section, Post>! = nil
+    private var dataSource: SearchDataSource! = nil
     // swiftlint:enable implicitly_unwrapped_optional
-
-    // private let viewModel = SearchViewModel()
 
     // MARK: - Lifecycle
 
@@ -43,8 +41,8 @@ class SearchViewController: UIViewController {
         addResignKeyboardTapGesture()
 
         configureHierarchy()
-        configureBindings()
         configureDataSource()
+        configureBindings()
     }
 
     // MARK: - Configuration
@@ -86,7 +84,12 @@ class SearchViewController: UIViewController {
 
     private func configureBindings() {
         viewModel.$posts
-            .assign(to: \.posts, on: self)
+            .sink(receiveValue: {[unowned self] posts in
+                self.posts = posts
+                if posts != [] {
+                    dataSource.apply(currentSnapshot())
+                }
+            })
             .store(in: &subscriptions)
     }
 

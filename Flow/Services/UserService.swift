@@ -9,16 +9,12 @@ import FirebaseAuth
 import FirebaseFirestoreSwift
 import FirebaseFirestore
 
-struct UserService {
+enum UserService {
     static func fetchUser(id: UserID, completion: @escaping(User?, Error?) -> Void) {
         Firestore.firestore().collection("users").document(id).getDocument { document, error in
-            guard error == nil else {
-                completion(nil, error)
-                return
-            }
             do {
                 let user = try document?.data(as: User.self)
-                completion(user, nil)
+                completion(user, error)
             } catch {
                 completion(nil, error)
             }
@@ -27,5 +23,24 @@ struct UserService {
 
     static func currentUserID() -> UserID? {
         return Auth.auth().currentUser?.uid
+    }
+
+    static func fetchAllUsers(completion: @escaping([User], Error?) -> Void) {
+        Firestore.firestore().collection("users").getDocuments { snapshot, error in
+            var users: [User] = []
+
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    do {
+                        guard let user = try document.data(as: User.self) else { continue }
+                        users.append(user)
+                    } catch {
+                        print("DEBUG: Error decoding user data -", error.localizedDescription)
+                    }
+                }
+            }
+
+            completion(users, error)
+        }
     }
 }

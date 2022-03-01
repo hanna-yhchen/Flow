@@ -12,6 +12,7 @@ class HomeFlowController: UIViewController {
 
     weak var barButtonDelegate: BarButtonDelegate?
     private let navigation: FNavigationController
+    private var homeVC: HomeViewController?
 
     // MARK: - Lifecycle
 
@@ -28,6 +29,12 @@ class HomeFlowController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Methods
+
+    func reload() {
+        homeVC?.reload()
+    }
+
     // MARK: - Private
 
     private func showHome() {
@@ -35,23 +42,16 @@ class HomeFlowController: UIViewController {
         homeVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: homeVC)
         navigation.show(homeVC, sender: self)
+
+        self.homeVC = homeVC
     }
 }
 
-// MARK: - FeedViewControllerDelegate
+// MARK: - HomeViewControllerDelegate
 
-extension HomeFlowController: FeedViewControllerDelegate {
-    func navigateToPost(id: String) {
-        let testPost = Post(
-            id: "123",
-            authorID: "007",
-            imageURL: "",
-            caption: "This is a test Post!",
-            timeIntervalSince1970: Date().timeIntervalSince1970,
-            whoLikes: [],
-            whoBookmarks: []
-        )
-        let postVC = PostViewController(post: testPost)
+extension HomeFlowController: HomeViewControllerDelegate {
+    func navigateToPost(_ post: Post) {
+        let postVC = PostViewController(post: post)
         navigation.pushViewController(postVC, animated: true)
     }
 }

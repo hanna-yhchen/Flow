@@ -8,14 +8,14 @@
 import UIKit
 import Combine
 
-protocol FeedViewControllerDelegate: AnyObject {
-    func navigateToPost(id: String)
+protocol HomeViewControllerDelegate: AnyObject {
+    func navigateToPost(_ post: Post)
 }
 
 class HomeViewController: UIViewController {
     enum Item: Hashable {
-        case story(Storybook)
-        case feed(Post)
+        case storybook(Storybook)
+        case post(Post)
     }
 
     private typealias HomeDataSource = UICollectionViewDiffableDataSource<HomeSection, Item>
@@ -23,7 +23,10 @@ class HomeViewController: UIViewController {
 
     // MARK: - Properties
 
-    weak var delegate: FeedViewControllerDelegate?
+    weak var delegate: HomeViewControllerDelegate?
+    private let viewModel = HomeViewModel()
+    private var posts: [Post] = []
+    private var storybooks: [Storybook] = []
 
     // swiftlint:disable implicitly_unwrapped_optional
     private var collectionView: UICollectionView! = nil
@@ -41,6 +44,7 @@ class HomeViewController: UIViewController {
 
         configureHierarchy()
         configureDataSource()
+        configureBindings()
     }
 
     // MARK: - Configuration
@@ -51,11 +55,23 @@ class HomeViewController: UIViewController {
         view.addSubview(collectionView)
     }
 
-    // MARK: - Actions
+    private func configureBindings() {
+        Publishers
+            .CombineLatest(viewModel.$posts, viewModel.$storybooks)
+            .receive(on: RunLoop.main)
+            .sink {[unowned self] posts, storybooks in
+                self.posts = posts
+                self.storybooks = storybooks
+                dataSource.apply(currentSnapshot())
+                // collectionView.reloadData()
+            }
+            .store(in: &subscriptions)
+    }
 
-    @objc private func postCaptionTapped(sender: UITapGestureRecognizer) {
-        // TODO: Pass id and Post also
-        delegate?.navigateToPost(id: "007")
+    // MARK: - Methods
+
+    func reload() {
+        viewModel.reload()
     }
 }
 
@@ -69,13 +85,13 @@ extension HomeViewController {
         dataSource = HomeDataSource(collectionView: collectionView) {
             collectionView, indexPath, item in
             switch item {
-            case .story(let storybook):
+            case .storybook(let storybook):
                 return collectionView.dequeueConfiguredReusableCell(
                     using: storyCellRegistration,
                     for: indexPath,
                     item: storybook
                 )
-            case .feed(let post):
+            case .post(let post):
                 return collectionView.dequeueConfiguredReusableCell(
                     using: feedCellRegistration,
                     for: indexPath,
@@ -84,57 +100,71 @@ extension HomeViewController {
             }
         }
 
-        dataSource.apply(currentSnapshot(), animatingDifferences: false)
+        dataSource.apply(currentSnapshot())
     }
 
     private func currentSnapshot() -> HomeSnapshot {
-        // TODO: Fetch Popular Posts
-        let array = Array(0..<100)
-        let storybooks = array.map { int in Item.story(Storybook(authorID: "\(int)", whoHasReadAll: [])) }
-        let feeds = array.map { int in
-            Item.feed(
-                Post(
-                    id: String(int),
-                    authorID: "007",
-                    imageURL: "",
-                    caption: "This is a test Post!",
-                    timeIntervalSince1970: Date().timeIntervalSince1970,
-                    whoLikes: [],
-                    whoBookmarks: []
-                )
-            )
-        }
-
         var snapshot = HomeSnapshot()
         snapshot.appendSections(HomeSection.allCases)
-        snapshot.appendItems(storybooks, toSection: .story)
-        snapshot.appendItems(feeds, toSection: .feed)
+
+        let postItems = posts.map { post in
+            Item.post(post)
+        }
+        let storybookItems = storybooks.map { storybook in
+            Item.storybook(storybook)
+        }
+        snapshot.appendItems(storybookItems, toSection: .storybook)
+        snapshot.appendItems(postItems, toSection: .post)
         return snapshot
     }
 
     // MARK: - Cell Registration Factory
 
     private func makeStoryCellRegistration() -> UICollectionView.CellRegistration<StoryCell, Storybook> {
-        return UICollectionView.CellRegistration<StoryCell, Storybook> { cell, _, storybook in
-            // TODO: Fetch author's profile Image and username by storybook.authorID
-            cell.profileImageView.image = UIImage(named: "keanu")
-            cell.usernameLabel.text = "Keanu"
+        return UICollectionView.CellRegistration<StoryCell, Storybook> {[unowned self] cell, _, storybook in
+            UserService.fetchUser(id: storybook.authorID) { author, error in
+                if let error = error {
+                    print("DEBUG: Error fetching user -", error.localizedDescription)
+                }
 
-            cell.isRead = storybook.whoHasReadAll.contains("myUserID")
+                let profileImageURL = URL(string: author?.profileImageURL ?? "")
+                cell.profileImageView.sd_setImage(with: profileImageURL)
+
+                cell.usernameLabel.text = author?.username
+            }
+
+            if let currentUserID = viewModel.currentUserID {
+                cell.isRead = storybook.whoHasReadAll.contains(currentUserID)
+            }
         }
     }
 
     private func makeFeedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, Post> {
-        return UICollectionView.CellRegistration<FeedCell, Post> {cell, _, post in
-            // TODO: Fetch author's profile Image and username by storybook.authorID
-            // TODO: Fetch post's image by post.photoURLs[0]
-            // TODO: Use ViewModel Instead
-            cell.postImageView.image = UIImage(named: "scenery")
+        return UICollectionView.CellRegistration<FeedCell, Post> {[unowned self] cell, _, post in
+            let imageURL = URL(string: post.imageURL)
+            cell.postImageView.sd_setImage(with: imageURL)
+            // Fetch author's profile image URL
+            UserService.fetchUser(id: post.authorID) { author, error in
+                if let error = error {
+                    print("DEBUG: Error fetching user -", error.localizedDescription)
+                }
+
+                let profileImageURL = URL(string: author?.profileImageURL ?? "")
+                cell.profileImageView.sd_setImage(with: profileImageURL)
+
+                cell.nameLabel.text = author?.fullName
+                cell.usernameLabel.text = author?.username
+            }
             cell.captionLabel.text = post.caption
-            cell.didLike = post.whoLikes.contains("myUserID")
-            cell.didBookmark = post.whoBookmarks.contains("myUserID")
+
+            if let currentUserID = viewModel.currentUserID {
+                cell.didLike = post.whoLikes.contains(currentUserID)
+                cell.didBookmark = post.whoBookmarks.contains(currentUserID)
+            }
+
+
             cell.countOfLike = post.whoLikes.count
-            cell.countOfComment = 0
+            cell.countOfComment = post.countOfComment
             cell.countOfBookmark = post.whoBookmarks.count
 
             cell.postID = post.id
@@ -157,8 +187,10 @@ extension HomeViewController {
             )
 
             // TODO: Replace with a button covering caption and date in FeedCell
-            let tapGesture = UITapGestureRecognizer(target: self, action: #selector(self.postCaptionTapped))
-            cell.captionLabel.addGestureRecognizer(tapGesture)
+            let navigateToPost = UIAction {[unowned self] _ in
+                self.delegate?.navigateToPost(post)
+            }
+            cell.coveringButton.addAction(navigateToPost, for: .touchUpInside)
         }
     }
 }

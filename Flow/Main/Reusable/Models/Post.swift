@@ -18,6 +18,7 @@ struct Post: Hashable, Codable {
     let timeIntervalSince1970: Double
     let whoLikes: [UserID]
     let whoBookmarks: [UserID]
+    let countOfComment: Int
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

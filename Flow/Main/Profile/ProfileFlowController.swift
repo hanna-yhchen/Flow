@@ -13,6 +13,7 @@ class ProfileFlowController: UIViewController {
 
     weak var barButtonDelegate: BarButtonDelegate?
     private let navigation: FNavigationController
+    private var profileVC: ProfileViewController?
 
     // MARK: - Lifecycle
 
@@ -29,6 +30,12 @@ class ProfileFlowController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Methods
+
+    func reload() {
+        profileVC?.reload()
+    }
+
     // MARK: - Private
 
     private func showProfile() {
@@ -40,6 +47,8 @@ class ProfileFlowController: UIViewController {
         profileVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: profileVC)
         navigation.show(profileVC, sender: self)
+
+        self.profileVC = profileVC
     }
 }
 

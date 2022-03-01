@@ -19,7 +19,6 @@ class SearchViewModel {
         PostService.fetchAllPosts {[unowned self] posts, error in
             if let error = error {
                 print("DEBUG: Error fetching posts -", error.localizedDescription)
-                return
             }
             self.posts = posts
         }

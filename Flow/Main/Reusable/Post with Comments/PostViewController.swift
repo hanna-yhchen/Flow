@@ -23,20 +23,12 @@ class PostViewController: UIViewController {
 
     private var post: Post
     private var comments: [Comment] = []
-    private var authorProfileImageURL: URL? {
-        didSet {
-            if authorProfileImageURL != nil {
-                // Is there any better way to tackle this? (the value of url will be received after view did appear...)
-                collectionView.reloadData()
-            }
-        }
-    }
-    private var userProfileImageURL: URL?
+    private var authorProfileImageURL: URL?
     private var subscriptions = Set<AnyCancellable>()
 
-    private let collectionView: UICollectionView
+    private let collectionView: PostCollectionView
     private var dataSource: PostDataSource?
-    private let addCommentView = AddCommentView()
+    private let addCommentView: AddCommentView
     private var bottomConstraint: NSLayoutConstraint?
     private var keyboardFrameSubscription: AnyCancellable?
 
@@ -46,6 +38,7 @@ class PostViewController: UIViewController {
         self.post = post
         self.viewModel = PostViewModel(post: post)
         self.collectionView = PostCollectionView()
+        self.addCommentView = AddCommentView()
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -99,19 +92,24 @@ class PostViewController: UIViewController {
     }
 
     private func configureBindings() {
-        viewModel.$post
-            .assign(to: \.post, on: self)
-            .store(in: &subscriptions)
-        viewModel.$comments
-            .assign(to: \.comments, on: self)
-            .store(in: &subscriptions)
-        viewModel.$authorProfileImageURL
+        Publishers
+            .CombineLatest4(
+                viewModel.$post,
+                viewModel.$comments,
+                viewModel.$authorProfileImageURL,
+                viewModel.$userProfileImageURL
+            )
             .receive(on: RunLoop.main)
-            .assign(to: \.authorProfileImageURL, on: self)
-            .store(in: &subscriptions)
-        viewModel.$userProfileImageURL
-            .receive(on: RunLoop.main)
-            .assign(to: \.profileImageURL, on: addCommentView)
+            .sink {[unowned self] post, comments, authorProfileImageURL, userProfileImageURL in
+                self.post = post
+                self.comments = comments
+                self.authorProfileImageURL = authorProfileImageURL
+                self.addCommentView.profileImageURL = userProfileImageURL
+
+                if authorProfileImageURL != nil && userProfileImageURL != nil {
+                    self.collectionView.reloadData()
+                }
+            }
             .store(in: &subscriptions)
     }
 
@@ -131,14 +129,18 @@ extension PostViewController {
         let commentCellRegistration = makeCommentCellRegistration()
 
         dataSource = PostDataSource(collectionView: collectionView) { collectionView, indexPath, comment in
-            return collectionView.dequeueConfiguredReusableCell(using: commentCellRegistration, for: indexPath, item: comment)
+            return collectionView.dequeueConfiguredReusableCell(
+                using: commentCellRegistration,
+                for: indexPath,
+                item: comment
+            )
         }
 
         dataSource?.supplementaryViewProvider = { collectionView, _, indexPath in
             return collectionView.dequeueConfiguredReusableSupplementary(using: postViewRegistration, for: indexPath)
         }
 
-        dataSource?.apply(currentSnapshot(), animatingDifferences: false)
+        dataSource?.apply(currentSnapshot())
     }
 
     private func currentSnapshot() -> PostSnapshot {

@@ -8,7 +8,7 @@
 import UIKit
 
 protocol NewPostFlowControllerDelegate: AnyObject {
-    func newPostFlowControllerDidFinish(_ flowController: UIViewController)
+    func newPostFlowControllerDidFinish(_ flowController: NewPostFlowController)
 }
 
 class NewPostFlowController: UIViewController {
@@ -20,7 +20,8 @@ class NewPostFlowController: UIViewController {
 
     // MARK: - Lifecycle
 
-    init(navigation: FNavigationController = FNavigationController()) {
+    init(navigation: FNavigationController = FNavigationController(), delegate: NewPostFlowControllerDelegate) {
+        self.delegate = delegate
         self.navigation = navigation
 
         super.init(nibName: nil, bundle: nil)

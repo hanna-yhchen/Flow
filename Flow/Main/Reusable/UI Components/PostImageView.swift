@@ -11,6 +11,8 @@ class PostImageView: UIImageView {
     // swiftlint:disable line_length
     lazy var widthConstraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
     lazy var heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+
+    /// Placeholder used in upload screen.
     lazy var placeholderImageView: UIImageView = {
         let placeholder = UIImageView()
         placeholder.image = UIImage(

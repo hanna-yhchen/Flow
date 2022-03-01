@@ -20,6 +20,7 @@ class NewPostViewController: UIViewController {
     private var viewModel = NewPostViewModel()
     private let scrollView = UIScrollView()
     private let contentView = NewPostView()
+    private let textView: CaptionTextView
 
     private var keyboardFrameSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
@@ -33,6 +34,7 @@ class NewPostViewController: UIViewController {
     // MARK: - LifeCycle
 
     init() {
+        self.textView = contentView.captionTextView
         super.init(nibName: nil, bundle: nil)
         navigationItem.title = "New Post"
         let cancelButton = UIBarButtonItem(
@@ -109,10 +111,10 @@ class NewPostViewController: UIViewController {
             .map { $0.image }
             .assign(to: \.postImage, on: viewModel)
             .store(in: &subscriptions)
-        contentView.$captionTextView
-            .map { $0.text }
-            .assign(to: \.caption, on: viewModel)
-            .store(in: &subscriptions)
+//        contentView.$captionTextView
+//            .map { $0.text }
+//            .assign(to: \.caption, on: viewModel)
+//            .store(in: &subscriptions)
 
         viewModel.isInputValid
             .receive(on: RunLoop.main)
@@ -139,7 +141,7 @@ class NewPostViewController: UIViewController {
     }
 
     @objc private func shareTapped() {
-        // TODO: Upload New Post
+        viewModel.caption = textView.text
         viewModel.share {[unowned self] error in
             if let error = error {
                 print("DEBUG: Error share new post -", error.localizedDescription)

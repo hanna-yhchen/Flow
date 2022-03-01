@@ -86,6 +86,8 @@ class FeedCell: UICollectionViewCell {
         return topStack
     }()
 
+    let coveringButton = UIButton(type: .custom)
+
     let profileImageView: UIImageView = {
         let imageView = UIImageView.filledCircle(length: Size.profileImageLength)
         imageView.layer.borderColor = UIColor.tintColor.cgColor
@@ -120,12 +122,7 @@ class FeedCell: UICollectionViewCell {
 
     // MARK: - Middle Components
 
-    let postImageView: UIImageView = {
-        let imageView = PostImageView()
-        imageView.contentMode = .scaleAspectFit
-        imageView.clipsToBounds = true
-        return imageView
-    }()
+    let postImageView = PostImageView()
 
     // MARK: - Bottom Components
 
@@ -173,24 +170,15 @@ class FeedCell: UICollectionViewCell {
     // TODO: Make Caption Expandable
     let captionLabel: UILabel = {
         let label = UILabel()
-
-        label.text = "Some captions.."
         label.numberOfLines = 0
         label.font = .systemFont(ofSize: Size.font)
-        label.isUserInteractionEnabled = true
-
         return label
     }()
 
     let timeLabel: UILabel = {
         let label = UILabel()
-
-        let currentDateString = DateFormatter.localizedString(from: Date(), dateStyle: .medium, timeStyle: .short)
-        label.text = currentDateString
-
         label.font = .systemFont(ofSize: Size.smallFont)
         label.textColor = .secondaryLabel
-
         return label
     }()
 
@@ -199,7 +187,6 @@ class FeedCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .systemBackground
         shareButton.setTitle("", for: .normal)
-        profileImageView.image = UIImage(named: "keanu")
 
         addSubviews()
         addConstraints()
@@ -212,7 +199,7 @@ class FeedCell: UICollectionViewCell {
     // MARK: - Private Configuration
 
     private func addSubviews() {
-        [topStack, postImageView, bottomStack].forEach { view in
+        [topStack, postImageView, bottomStack, coveringButton].forEach { view in
             contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -232,6 +219,11 @@ class FeedCell: UICollectionViewCell {
             bottomStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Size.padding),
             bottomStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Size.padding),
             bottomStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Size.padding),
+
+            coveringButton.topAnchor.constraint(equalTo: postImageView.topAnchor),
+            coveringButton.leadingAnchor.constraint(equalTo: bottomStack.leadingAnchor),
+            coveringButton.trailingAnchor.constraint(equalTo: bottomStack.trailingAnchor),
+            coveringButton.bottomAnchor.constraint(equalTo: bottomStack.bottomAnchor),
         ])
     }
 }

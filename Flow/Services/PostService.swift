@@ -9,7 +9,7 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 import UIKit
 
-struct PostService {
+enum PostService {
     private static let postRef = Firestore.firestore().collection("posts")
     // TODO: CRUD post
     static func create(_ newPost: NewPost, completion: @escaping(Error?) -> Void) {
@@ -28,7 +28,8 @@ struct PostService {
                 caption: newPost.caption ?? "",
                 timeIntervalSince1970: Date().timeIntervalSince1970,
                 whoLikes: [],
-                whoBookmarks: []
+                whoBookmarks: [],
+                countOfComment: 0
             )
 
             do {
@@ -46,13 +47,9 @@ struct PostService {
 
     static func fetchPost(_ postID: PostID, completion: @escaping(Post?, Error?) -> Void) {
         Firestore.firestore().collection("posts").document(postID).getDocument { document, error in
-            guard error == nil else {
-                completion(nil, error)
-                return
-            }
             do {
                 let post = try document?.data(as: Post.self)
-                completion(post, nil)
+                completion(post, error)
             } catch {
                 completion(nil, error)
             }
@@ -65,22 +62,6 @@ struct PostService {
             .limit(to: 30)
             .getDocuments { snapshot, error in
                 completion(posts(in: snapshot), error)
-//                guard error == nil, let snapshot = snapshot else {
-//                    completion([], error)
-//                    return
-//                }
-//
-//                var posts: [Post] = []
-//                for document in snapshot.documents {
-//                    do {
-//                        guard let post = try document.data(as: Post.self) else { continue }
-//                        posts.append(post)
-//                    } catch {
-//                        print("DEBUG: Error fetching post -", error.localizedDescription)
-//                    }
-//                }
-//
-//                completion(posts, nil)
             }
     }
 
@@ -93,17 +74,16 @@ struct PostService {
     }
 
     private static func posts(in snapshot: QuerySnapshot?) -> [Post] {
-        guard let snapshot = snapshot else {
-            return []
-        }
-
         var posts: [Post] = []
-        for document in snapshot.documents {
-            do {
-                guard let post = try document.data(as: Post.self) else { continue }
-                posts.append(post)
-            } catch {
-                print("DEBUG: Error fetching post -", error.localizedDescription)
+
+        if let snapshot = snapshot {
+            for document in snapshot.documents {
+                do {
+                    guard let post = try document.data(as: Post.self) else { continue }
+                    posts.append(post)
+                } catch {
+                    print("DEBUG: Error decoding post data -", error.localizedDescription)
+                }
             }
         }
 

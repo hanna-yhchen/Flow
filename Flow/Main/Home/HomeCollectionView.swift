@@ -8,8 +8,8 @@
 import UIKit
 
 enum HomeSection: Int, CaseIterable {
-    case story
-    case feed
+    case storybook
+    case post
 }
 
 class HomeCollectionView: UICollectionView {
@@ -32,7 +32,7 @@ class HomeCollectionView: UICollectionView {
             var layoutSection: NSCollectionLayoutSection
 
             switch section {
-            case .story:
+            case .storybook:
                 let item = NSCollectionLayoutItem(
                     layoutSize: NSCollectionLayoutSize(
                         widthDimension: .fractionalWidth(1),
@@ -52,7 +52,8 @@ class HomeCollectionView: UICollectionView {
                 layoutSection.interGroupSpacing = 8
                 layoutSection.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 8, trailing: 0)
                 layoutSection.orthogonalScrollingBehavior = .continuous
-            case .feed:
+            case .post:
+                // FIXME: cannot show all posts correctly
                 let layoutSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
                     heightDimension: .estimated(500)

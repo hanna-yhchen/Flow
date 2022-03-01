@@ -19,7 +19,7 @@ class ProfileViewController: UIViewController {
     }
 
     private typealias ProfilePageDataSource = UICollectionViewDiffableDataSource<Section, Post>
-    private typealias ProfilePageSnapshot = NSDiffableDataSourceSnapshot<Section, Post>
+    private typealias PostSnapshot = NSDiffableDataSourceSectionSnapshot<Post>
 
     // MARK: - Properties
 
@@ -35,9 +35,9 @@ class ProfileViewController: UIViewController {
 
     // swiftlint:disable implicitly_unwrapped_optional
     private var postCollectionView: UICollectionView! = nil
-    private var mentionedCollectionView: UICollectionView! = nil
+    private var bookmarkCollectionView: UICollectionView! = nil
     private var postDataSource: ProfilePageDataSource! = nil
-    private var mentionedDataSource: ProfilePageDataSource! = nil
+    private var bookmarkDataSource: ProfilePageDataSource! = nil
     // swiftlint:enable implicitly_unwrapped_optional
 
     // MARK: - Lifecycle
@@ -57,8 +57,8 @@ class ProfileViewController: UIViewController {
         view.backgroundColor = .systemBackground
 
         configureHierarchy()
-        configureBindings()
         configureDataSource()
+        configureBindings()
     }
 
     // MARK: - Configurations
@@ -111,9 +111,9 @@ class ProfileViewController: UIViewController {
         postViewController.title = "Posts"
 
         let bookmarkViewController = UIViewController()
-        self.mentionedCollectionView = GridCollectionView(withFrame: view.bounds)
-        mentionedCollectionView.delegate = self
-        bookmarkViewController.view = mentionedCollectionView
+        self.bookmarkCollectionView = GridCollectionView(withFrame: view.bounds)
+        bookmarkCollectionView.delegate = self
+        bookmarkViewController.view = bookmarkCollectionView
         bookmarkViewController.title = "Bookmarks"
 
         self.pages = [postViewController, bookmarkViewController]
@@ -131,13 +131,10 @@ class ProfileViewController: UIViewController {
             collectionView, indexPath, item in
             return  collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
-        self.mentionedDataSource = ProfilePageDataSource(collectionView: mentionedCollectionView) {
+        self.bookmarkDataSource = ProfilePageDataSource(collectionView: bookmarkCollectionView) {
             collectionView, indexPath, item in
             return  collectionView.dequeueConfiguredReusableCell(using: cellRegistration, for: indexPath, item: item)
         }
-
-        postDataSource.apply(currentPostSnapshot())
-        mentionedDataSource.apply(currentMentionedSnapshot())
     }
 
     private func configureBindings() {
@@ -153,27 +150,36 @@ class ProfileViewController: UIViewController {
             .receive(on: RunLoop.main)
             .assign(to: \.text, on: profileHeaderView.nameLabel)
             .store(in: &subscriptions)
-        viewModel.$posts
-            .assign(to: \.posts, on: self)
-            .store(in: &subscriptions)
-        viewModel.$bookmarks
-            .assign(to: \.bookmarks, on: self)
+
+        Publishers
+            .CombineLatest(viewModel.$posts, viewModel.$bookmarks)
+            .receive(on: RunLoop.main)
+            .sink {[unowned self] posts, bookmarks in
+                self.posts = posts
+                self.bookmarks = bookmarks
+                postDataSource.apply(currentPostSnapshot(), to: .thumbnail)
+                bookmarkDataSource.apply(currentBookmarkSnapshot(), to: .thumbnail)
+            }
             .store(in: &subscriptions)
     }
 
     // MARK: - Methods
 
-    private func currentPostSnapshot() -> ProfilePageSnapshot {
-        var snapshot = ProfilePageSnapshot()
-        snapshot.appendSections([Section.thumbnail])
-        snapshot.appendItems(posts)
+    func reload() {
+        viewModel.reload()
+    }
+
+    // MARK: - Private
+
+    private func currentPostSnapshot() -> PostSnapshot {
+        var snapshot = PostSnapshot()
+        snapshot.append(posts)
         return snapshot
     }
 
-    private func currentMentionedSnapshot() -> ProfilePageSnapshot {
-        var snapshot = ProfilePageSnapshot()
-        snapshot.appendSections([Section.thumbnail])
-        snapshot.appendItems(bookmarks)
+    private func currentBookmarkSnapshot() -> PostSnapshot {
+        var snapshot = PostSnapshot()
+        snapshot.append(bookmarks)
         return snapshot
     }
 
@@ -190,8 +196,8 @@ extension ProfileViewController: UICollectionViewDelegate {
         switch collectionView {
         case postCollectionView:
             dataSource = postDataSource
-        case mentionedCollectionView:
-            dataSource = mentionedDataSource
+        case bookmarkCollectionView:
+            dataSource = bookmarkDataSource
         default:
             fatalError("Unexpected collection view")
         }

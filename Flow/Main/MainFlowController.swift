@@ -17,32 +17,39 @@ protocol BarButtonDelegate: AnyObject {
 
 class MainFlowController: UIViewController {
     weak var delegate: MainFlowControllerDelegate?
-    let mainTabController = UITabBarController()
+    private let mainTabController = UITabBarController()
+
+    // swiftlint:disable implicitly_unwrapped_optional
+    private var homeFlow: UIViewController! = nil
+    private var searchFlow: UIViewController! = nil
+    private var newPostFlow: UIViewController! = nil
+    private var chatFlow: UIViewController! = nil
+    private var profileFlow: UIViewController! = nil
+    // swiftlint:enable implicitly_unwrapped_optional
 
     func start() {
-        let homeFlowController = flowController(
+        homeFlow = flowController(
             HomeFlowController(barButtonDelegate: self),
             withIconName: "house",
             selectedIconName: "house.fill"
         )
-        let searchFlowController = flowController(
+        searchFlow = flowController(
             SearchFlowController(barButtonDelegate: self),
             withIconName: "magnifyingglass",
             selectedIconName: "magnifyingglass"
         )
-        let newPostFlowController = flowController(
-            NewPostFlowController(),
+        newPostFlow = flowController(
+            NewPostFlowController(delegate: self),
             withIconName: "plus.app",
             selectedIconName: "plus.app.fill",
             pointSize: 20
         )
-        newPostFlowController.delegate = self
-        let chatFlowController = flowController(
+        chatFlow = flowController(
             ChatFlowController(),
             withIconName: "ellipsis.bubble",
             selectedIconName: "ellipsis.bubble.fill"
         )
-        let profileFlowController = flowController(
+        profileFlow = flowController(
             ProfileFlowController(barButtonDelegate: self),
             withIconName: "person.crop.circle",
             selectedIconName: "person.crop.circle.fill"
@@ -50,11 +57,11 @@ class MainFlowController: UIViewController {
 
         mainTabController.delegate = self
         mainTabController.viewControllers = [
-            homeFlowController,
-            searchFlowController,
-            newPostFlowController,
-            chatFlowController,
-            profileFlowController,
+            homeFlow,
+            searchFlow,
+            newPostFlow,
+            chatFlow,
+            profileFlow,
         ]
         mainTabController.view.backgroundColor = .systemBackground
 
@@ -112,7 +119,12 @@ extension MainFlowController: BarButtonDelegate {
 // MARK: - NewPostFlowControllerDelegate
 
 extension MainFlowController: NewPostFlowControllerDelegate {
-    func newPostFlowControllerDidFinish(_ flowController: UIViewController) {
+    func newPostFlowControllerDidFinish(_ flowController: NewPostFlowController) {
+        if flowController.didFinish {
+            // reload home & profile screen!
+            (homeFlow as? HomeFlowController)?.reload()
+            (profileFlow as? ProfileFlowController)?.reload()
+        }
         mainTabController.selectedIndex = 0
     }
 }
@@ -121,9 +133,10 @@ extension MainFlowController: NewPostFlowControllerDelegate {
 
 extension MainFlowController: UITabBarControllerDelegate {
     func tabBarController(_ tabBarController: UITabBarController, didSelect viewController: UIViewController) {
-        guard let newPostFlow = viewController as? NewPostFlowController else { return }
-        if newPostFlow.didFinish {
-            newPostFlow.showNewPost()
+        if let newPostFlow = viewController as? NewPostFlowController {
+            if newPostFlow.didFinish {
+                newPostFlow.showNewPost()
+            }
         }
     }
 }
