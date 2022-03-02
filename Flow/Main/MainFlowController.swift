@@ -121,8 +121,8 @@ extension MainFlowController: BarButtonDelegate {
 extension MainFlowController: NewPostFlowControllerDelegate {
     func newPostFlowControllerDidFinish(_ flowController: NewPostFlowController) {
         if flowController.didFinish {
-            // reload home & profile screen!
             (homeFlow as? HomeFlowController)?.reload()
+            (searchFlow as? SearchFlowController)?.reload()
             (profileFlow as? ProfileFlowController)?.reload()
         }
         mainTabController.selectedIndex = 0

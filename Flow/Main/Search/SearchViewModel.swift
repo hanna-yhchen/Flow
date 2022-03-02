@@ -15,6 +15,10 @@ class SearchViewModel {
         fetchPosts()
     }
 
+    func reload() {
+        fetchPosts()
+    }
+
     private func fetchPosts() {
         PostService.fetchAllPosts {[unowned self] posts, error in
             if let error = error {

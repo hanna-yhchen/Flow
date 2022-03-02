@@ -84,12 +84,12 @@ class SearchViewController: UIViewController {
 
     private func configureBindings() {
         viewModel.$posts
-            .sink(receiveValue: {[unowned self] posts in
+            .sink {[unowned self] posts in
                 self.posts = posts
-                if posts != [] {
+                if !posts.isEmpty {
                     dataSource.apply(currentSnapshot())
                 }
-            })
+            }
             .store(in: &subscriptions)
     }
 
@@ -104,6 +104,12 @@ class SearchViewController: UIViewController {
     }
 
     // MARK: - Methods
+
+    func reload() {
+        viewModel.reload()
+    }
+
+    // MARK: - Private
 
     private func currentSnapshot() -> NSDiffableDataSourceSnapshot<Section, Post> {
         var snapshot = SearchSnapshot()

@@ -32,6 +32,12 @@ class SearchCollectionView: UICollectionView {
             widthDimension: .absolute(smallItemLength),
             heightDimension: .absolute(largeItemLength)
         )
+
+        let tripleGroupSize = NSCollectionLayoutSize(
+            widthDimension: .absolute(fullWidth),
+            heightDimension: .absolute(smallItemLength)
+        )
+
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .absolute(fullWidth),
             heightDimension: .absolute(largeItemLength)
@@ -52,12 +58,12 @@ class SearchCollectionView: UICollectionView {
         )
         trailingLargeWithPairGroup.interItemSpacing = .fixed(1)
 
-        let triplePairGroup = NSCollectionLayoutGroup.horizontal(
-            layoutSize: groupSize,
-            subitem: verticalPair,
+        let tripleGroup = NSCollectionLayoutGroup.horizontal(
+            layoutSize: tripleGroupSize,
+            subitem: smallItem,
             count: 3
         )
-        triplePairGroup.interItemSpacing = .fixed(1)
+        tripleGroup.interItemSpacing = .fixed(1)
 
         let leadingLargeWithPairGroup = NSCollectionLayoutGroup.horizontal(
             layoutSize: groupSize,
@@ -72,9 +78,11 @@ class SearchCollectionView: UICollectionView {
             ),
             subitems: [
                 trailingLargeWithPairGroup,
-                triplePairGroup,
+                tripleGroup,
+                tripleGroup,
                 leadingLargeWithPairGroup,
-                triplePairGroup,
+                tripleGroup,
+                tripleGroup,
             ]
         )
         nestedGroup.interItemSpacing = .fixed(1)

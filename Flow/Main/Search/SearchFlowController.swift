@@ -12,6 +12,7 @@ class SearchFlowController: UIViewController {
 
     weak var barButtonDelegate: BarButtonDelegate?
     private let navigation: FNavigationController
+    private var searchVC: SearchViewController?
 
     // MARK: - Lifecycle
 
@@ -28,6 +29,12 @@ class SearchFlowController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Methods
+
+    func reload() {
+        searchVC?.reload()
+    }
+
     // MARK: - Private
 
     private func showSearch() {
@@ -35,6 +42,7 @@ class SearchFlowController: UIViewController {
         searchVC.delegate = self
         barButtonDelegate?.configureBarButtons(in: searchVC)
         navigation.show(searchVC, sender: self)
+        self.searchVC = searchVC
     }
 }
 

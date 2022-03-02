@@ -68,6 +68,10 @@ class ProfileViewController: UIViewController {
         addPages()
 
         let pagingViewController = PagingViewController(viewControllers: pages)
+        pagingViewController.backgroundColor = .systemBackground
+        pagingViewController.selectedBackgroundColor = .systemBackground
+        pagingViewController.menuBackgroundColor = .systemBackground
+        pagingViewController.borderColor = .systemBackground
         pagingViewController.menuInteraction = .swipe
         pagingViewController.indicatorOptions = .visible(
             height: 1,
