@@ -49,7 +49,6 @@ class PostViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.title = "Someone's Post"
 
         configureHierarchy()
         configureBindings()
