@@ -15,7 +15,7 @@ class PostViewController: UIViewController {
 
     typealias PostDataSource = UICollectionViewDiffableDataSource<Section, Comment>
     typealias PostSnapshot = NSDiffableDataSourceSnapshot<Section, Comment>
-    typealias PostView = FeedCell
+    typealias PostView = PostCell
 
     // MARK: - Properties
 
@@ -129,7 +129,7 @@ extension PostViewController {
         let commentCellRegistration = makeCommentCellRegistration()
 
         dataSource = PostDataSource(collectionView: collectionView) { collectionView, indexPath, comment in
-            return collectionView.dequeueConfiguredReusableCell(
+            collectionView.dequeueConfiguredReusableCell(
                 using: commentCellRegistration,
                 for: indexPath,
                 item: comment
@@ -137,7 +137,7 @@ extension PostViewController {
         }
 
         dataSource?.supplementaryViewProvider = { collectionView, _, indexPath in
-            return collectionView.dequeueConfiguredReusableSupplementary(using: postViewRegistration, for: indexPath)
+            collectionView.dequeueConfiguredReusableSupplementary(using: postViewRegistration, for: indexPath)
         }
 
         dataSource?.apply(currentSnapshot())
@@ -150,27 +150,18 @@ extension PostViewController {
         return snapshot
     }
 
+    // MARK: - Cell Registration Factory
+
     private func makePostViewRegistration() -> UICollectionView.SupplementaryRegistration<PostView> {
-        return UICollectionView.SupplementaryRegistration<PostView>(elementKind: PostCollectionView.headerKind) {
+        UICollectionView.SupplementaryRegistration<PostView>(elementKind: PostCollectionView.headerKind) {
             [unowned self] postView, _, _ in
-            let imageURL = URL(string: post.imageURL)
-            postView.postImageView.sd_setImage(with: imageURL)
-            postView.profileImageView.sd_setImage(with: self.authorProfileImageURL)
-            postView.captionLabel.text = self.post.caption
-
-            if let currentUserID = UserService.currentUserID() {
-                postView.didLike = self.post.whoLikes.contains(currentUserID)
-                postView.didBookmark = self.post.whoBookmarks.contains(currentUserID)
-            }
-
-            postView.countOfLike = self.post.whoLikes.count
-            postView.countOfBookmark = self.post.whoBookmarks.count
-            postView.countOfComment = self.comments.count
+            postView.post = self.post
+            // add target
         }
     }
 
     private func makeCommentCellRegistration() -> UICollectionView.CellRegistration<CommentCell, Comment> {
-        return UICollectionView.CellRegistration<CommentCell, Comment> { cell, _, comment in
+        UICollectionView.CellRegistration<CommentCell, Comment> { cell, _, comment in
             cell.nameLabel.text = comment.authorID
         }
     }

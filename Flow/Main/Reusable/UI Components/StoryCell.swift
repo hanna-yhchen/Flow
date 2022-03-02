@@ -8,6 +8,26 @@
 import UIKit
 
 class StoryCell: UICollectionViewCell {
+    var storybook: Storybook? {
+        didSet {
+            guard let storybook = storybook else { return }
+            UserService.fetchUser(id: storybook.authorID) { author, error in
+                if let error = error {
+                    print("DEBUG: Error fetching user -", error.localizedDescription)
+                }
+
+                let profileImageURL = URL(string: author?.profileImageURL ?? "")
+                self.profileImageView.sd_setImage(with: profileImageURL)
+
+                self.usernameLabel.text = author?.username
+            }
+
+            if let currentUserID = UserService.currentUserID() {
+                self.isRead = storybook.whoHasReadAll.contains(currentUserID)
+            }
+        }
+    }
+
     var isRead = false {
         didSet {
             if isRead {

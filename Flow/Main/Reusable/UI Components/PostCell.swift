@@ -1,5 +1,5 @@
 //
-//  FeedCell.swift
+//  PostCell.swift
 //  Flow
 //
 //  Created by Hanna Chen on 2022/1/17.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class FeedCell: UICollectionViewCell {
+class PostCell: UICollectionViewCell {
     enum Size {
         static let padding = CGFloat(10)
         static let profileImageLength = CGFloat(40)
@@ -16,7 +16,40 @@ class FeedCell: UICollectionViewCell {
     }
 
     // MARK: - Properties
-    var postID = ""
+
+    var post: Post? {
+        didSet {
+            guard let post = post else { return }
+
+            let postImageURL = URL(string: post.imageURL)
+            self.postImageView.sd_setImage(with: postImageURL)
+
+            UserService.fetchUser(id: post.authorID) { author, error in
+                if let error = error {
+                    print("DEBUG: Error fetching user -", error.localizedDescription)
+                }
+
+                let profileImageURL = URL(string: author?.profileImageURL ?? "")
+                self.profileImageView.sd_setImage(with: profileImageURL)
+
+                self.nameLabel.text = author?.fullName
+                self.usernameLabel.text = author?.username
+            }
+
+            if let currentUserID = UserService.currentUserID() {
+                didLike = post.whoLikes.contains(currentUserID)
+                didBookmark = post.whoBookmarks.contains(currentUserID)
+            }
+
+            self.captionLabel.text = post.caption
+            self.countOfLike = post.whoLikes.count
+            self.countOfComment = post.countOfComment
+            self.countOfBookmark = post.whoBookmarks.count
+
+            let date = Date(timeIntervalSince1970: post.timeIntervalSince1970)
+            self.timeLabel.text = date.formatted(date: .abbreviated, time: .shortened)
+        }
+    }
 
     var countOfLike = 0 {
         didSet {
@@ -86,12 +119,11 @@ class FeedCell: UICollectionViewCell {
         return topStack
     }()
 
-    let coveringButton = UIButton(type: .custom)
-
     let profileImageView: UIImageView = {
         let imageView = UIImageView.filledCircle(length: Size.profileImageLength)
         imageView.layer.borderColor = UIColor.tintColor.cgColor
         imageView.layer.borderWidth = 2.5
+        imageView.isUserInteractionEnabled = true
         return imageView
     }()
 
@@ -127,16 +159,6 @@ class FeedCell: UICollectionViewCell {
     // MARK: - Bottom Components
 
     lazy var bottomStack: UIStackView = {
-        let interactionStack = UIStackView(arrangedSubviews: [
-            likeButton,
-            commentButton,
-            bookmarkButton,
-            shareButton,
-        ])
-        interactionStack.axis = .horizontal
-        interactionStack.distribution = .fillEqually
-        interactionStack.alignment = .center
-
         let bottomStack = UIStackView(arrangedSubviews: [
             interactionStack,
             captionLabel,
@@ -146,6 +168,19 @@ class FeedCell: UICollectionViewCell {
         bottomStack.spacing = 3
 
         return bottomStack
+    }()
+
+    lazy var interactionStack: UIStackView = {
+        let stack = UIStackView(arrangedSubviews: [
+            likeButton,
+            commentButton,
+            bookmarkButton,
+            shareButton,
+        ])
+        stack.axis = .horizontal
+        stack.distribution = .fillEqually
+        stack.alignment = .center
+        return stack
     }()
 
     let likeButton = PostInteractionButton(
@@ -167,7 +202,7 @@ class FeedCell: UICollectionViewCell {
         pointSize: Size.smallFont
     )
 
-    // TODO: Make Caption Expandable
+    // TODO: Limit Caption Height
     let captionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -181,6 +216,10 @@ class FeedCell: UICollectionViewCell {
         label.textColor = .secondaryLabel
         return label
     }()
+
+    let authorCoveringButton = UIButton(type: .custom)
+    let middleCoveringButton = UIButton(type: .custom)
+    let bottomCoveringButton = UIButton(type: .custom)
 
     // MARK: - Lifecycle
     override init(frame: CGRect) {
@@ -199,7 +238,14 @@ class FeedCell: UICollectionViewCell {
     // MARK: - Private Configuration
 
     private func addSubviews() {
-        [topStack, postImageView, bottomStack, coveringButton].forEach { view in
+        [
+            topStack,
+            postImageView,
+            bottomStack,
+            authorCoveringButton,
+            middleCoveringButton,
+            bottomCoveringButton,
+        ].forEach { view in
             contentView.addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -220,10 +266,20 @@ class FeedCell: UICollectionViewCell {
             bottomStack.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -Size.padding),
             bottomStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -Size.padding),
 
-            coveringButton.topAnchor.constraint(equalTo: postImageView.topAnchor),
-            coveringButton.leadingAnchor.constraint(equalTo: bottomStack.leadingAnchor),
-            coveringButton.trailingAnchor.constraint(equalTo: bottomStack.trailingAnchor),
-            coveringButton.bottomAnchor.constraint(equalTo: bottomStack.bottomAnchor),
+            authorCoveringButton.topAnchor.constraint(equalTo: topStack.topAnchor),
+            authorCoveringButton.leadingAnchor.constraint(equalTo: topStack.leadingAnchor),
+            authorCoveringButton.bottomAnchor.constraint(equalTo: topStack.bottomAnchor),
+            authorCoveringButton.trailingAnchor.constraint(equalTo: nameLabel.trailingAnchor),
+
+            middleCoveringButton.topAnchor.constraint(equalTo: postImageView.topAnchor),
+            middleCoveringButton.leadingAnchor.constraint(equalTo: bottomStack.leadingAnchor),
+            middleCoveringButton.bottomAnchor.constraint(equalTo: bottomStack.topAnchor),
+            middleCoveringButton.trailingAnchor.constraint(equalTo: bottomStack.trailingAnchor),
+
+            bottomCoveringButton.topAnchor.constraint(equalTo: interactionStack.bottomAnchor),
+            bottomCoveringButton.leadingAnchor.constraint(equalTo: bottomStack.leadingAnchor),
+            bottomCoveringButton.bottomAnchor.constraint(equalTo: bottomStack.bottomAnchor),
+            bottomCoveringButton.trailingAnchor.constraint(equalTo: bottomStack.trailingAnchor),
         ])
     }
 }

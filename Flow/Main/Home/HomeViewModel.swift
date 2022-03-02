@@ -10,12 +10,11 @@ import Combine
 
 class HomeViewModel {
     // MARK: - Properties
-    var currentUserID: UserID?
+
     @Published private(set) var posts: [Post] = []
     @Published private(set) var storybooks: [Storybook] = []
 
     init() {
-        fetchCurrentUserID()
         fetchPosts()
         fetchStorybooks()
     }
@@ -28,10 +27,6 @@ class HomeViewModel {
     }
 
     // MARK: - Private
-
-    private func fetchCurrentUserID() {
-        self.currentUserID = UserService.currentUserID()
-    }
 
     private func fetchPosts() {
         PostService.fetchAllPosts {[unowned self] posts, error in

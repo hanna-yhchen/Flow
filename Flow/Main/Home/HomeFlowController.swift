@@ -54,4 +54,8 @@ extension HomeFlowController: HomeViewControllerDelegate {
         let postVC = PostViewController(post: post)
         navigation.pushViewController(postVC, animated: true)
     }
+    func navigateToProfile(_ authorID: UserID) {
+        let profileVC = ProfileViewController(userID: authorID)
+        navigation.pushViewController(profileVC, animated: true)
+    }
 }

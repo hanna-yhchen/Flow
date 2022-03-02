@@ -10,6 +10,7 @@ import Combine
 
 protocol HomeViewControllerDelegate: AnyObject {
     func navigateToPost(_ post: Post)
+    func navigateToProfile(_ authorID: UserID)
 }
 
 class HomeViewController: UIViewController {
@@ -63,7 +64,6 @@ class HomeViewController: UIViewController {
                 self.posts = posts
                 self.storybooks = storybooks
                 dataSource.apply(currentSnapshot())
-                // collectionView.reloadData()
             }
             .store(in: &subscriptions)
     }
@@ -73,6 +73,24 @@ class HomeViewController: UIViewController {
     func reload() {
         viewModel.reload()
     }
+
+    // MARK: - Actions
+
+    @objc private func navigateToPost(_ sender: UIButton) {
+        if let contentView = sender.superview,
+            let cell = contentView.superview as? PostCell,
+            let post = cell.post {
+            delegate?.navigateToPost(post)
+        }
+    }
+
+    @objc private func navigateToProfile(_ sender: UIButton) {
+        if let contentView = sender.superview,
+            let cell = contentView.superview as? PostCell,
+            let authorID = cell.post?.authorID {
+            delegate?.navigateToProfile(authorID)
+        }
+    }
 }
 
 // MARK: - Data Source
@@ -80,7 +98,7 @@ class HomeViewController: UIViewController {
 extension HomeViewController {
     private func configureDataSource() {
         let storyCellRegistration = makeStoryCellRegistration()
-        let feedCellRegistration = makeFeedCellRegistration()
+        let feedCellRegistration = makePostCellRegistration()
 
         dataSource = HomeDataSource(collectionView: collectionView) {
             collectionView, indexPath, item in
@@ -121,55 +139,16 @@ extension HomeViewController {
     // MARK: - Cell Registration Factory
 
     private func makeStoryCellRegistration() -> UICollectionView.CellRegistration<StoryCell, Storybook> {
-        return UICollectionView.CellRegistration<StoryCell, Storybook> {[unowned self] cell, _, storybook in
-            UserService.fetchUser(id: storybook.authorID) { author, error in
-                if let error = error {
-                    print("DEBUG: Error fetching user -", error.localizedDescription)
-                }
-
-                let profileImageURL = URL(string: author?.profileImageURL ?? "")
-                cell.profileImageView.sd_setImage(with: profileImageURL)
-
-                cell.usernameLabel.text = author?.username
-            }
-
-            if let currentUserID = viewModel.currentUserID {
-                cell.isRead = storybook.whoHasReadAll.contains(currentUserID)
-            }
+        UICollectionView.CellRegistration<StoryCell, Storybook> { cell, _, storybook in
+            cell.storybook = storybook
+            // add target
         }
     }
 
-    private func makeFeedCellRegistration() -> UICollectionView.CellRegistration<FeedCell, Post> {
-        return UICollectionView.CellRegistration<FeedCell, Post> {[unowned self] cell, _, post in
-            let imageURL = URL(string: post.imageURL)
-            cell.postImageView.sd_setImage(with: imageURL)
-            // Fetch author's profile image URL
-            UserService.fetchUser(id: post.authorID) { author, error in
-                if let error = error {
-                    print("DEBUG: Error fetching user -", error.localizedDescription)
-                }
+    private func makePostCellRegistration() -> UICollectionView.CellRegistration<PostCell, Post> {
+        UICollectionView.CellRegistration<PostCell, Post> { cell, _, post in
+            cell.post = post
 
-                let profileImageURL = URL(string: author?.profileImageURL ?? "")
-                cell.profileImageView.sd_setImage(with: profileImageURL)
-
-                cell.nameLabel.text = author?.fullName
-                cell.usernameLabel.text = author?.username
-            }
-            cell.captionLabel.text = post.caption
-
-            if let currentUserID = viewModel.currentUserID {
-                cell.didLike = post.whoLikes.contains(currentUserID)
-                cell.didBookmark = post.whoBookmarks.contains(currentUserID)
-            }
-
-
-            cell.countOfLike = post.whoLikes.count
-            cell.countOfComment = post.countOfComment
-            cell.countOfBookmark = post.whoBookmarks.count
-
-            cell.postID = post.id
-
-            // Configure cell actions
             cell.likeButton.addAction(
                 UIAction {_ in
                     cell.didLike.toggle()
@@ -186,11 +165,9 @@ extension HomeViewController {
                 for: .touchUpInside
             )
 
-            // TODO: Replace with a button covering caption and date in FeedCell
-            let navigateToPost = UIAction {[unowned self] _ in
-                self.delegate?.navigateToPost(post)
-            }
-            cell.coveringButton.addAction(navigateToPost, for: .touchUpInside)
+            cell.authorCoveringButton.addTarget(self, action: #selector(self.navigateToProfile), for: .touchUpInside)
+            cell.middleCoveringButton.addTarget(self, action: #selector(self.navigateToPost), for: .touchUpInside)
+            cell.bottomCoveringButton.addTarget(self, action: #selector(self.navigateToPost), for: .touchUpInside)
         }
     }
 }
