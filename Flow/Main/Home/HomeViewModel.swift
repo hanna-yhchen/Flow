@@ -28,6 +28,11 @@ class HomeViewModel {
         fetchStorybooks()
     }
 
+    func update(_ post: Post) {
+        guard let index = posts.firstIndex(where:{ $0.id == post.id }) else { return }
+        posts[index] = post
+    }
+
     // MARK: - Private
 
     private func fetchPosts() {

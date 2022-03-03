@@ -60,4 +60,7 @@ extension HomeFlowController: HomeViewControllerDelegate, PostViewControllerDele
         profileVC.delegate = self
         navigation.pushViewController(profileVC, animated: true)
     }
+    func postNeedUpdate(_ post: Post) {
+        homeVC?.update(post)
+    }
 }

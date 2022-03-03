@@ -36,6 +36,8 @@ class HomeViewController: UIViewController {
 
     private var subscriptions = Set<AnyCancellable>()
 
+    private var needUpdatePost = false
+
     // MARK: - Lifecycle
 
     override func viewDidLoad() {
@@ -63,7 +65,12 @@ class HomeViewController: UIViewController {
             .sink {[unowned self] posts, storybooks in
                 self.posts = posts
                 self.storybooks = storybooks
-                dataSource.apply(currentSnapshot())
+                if needUpdatePost {
+                    dataSource.applySnapshotUsingReloadData(currentSnapshot(), completion: nil)
+                    needUpdatePost = false
+                } else {
+                    dataSource.apply(currentSnapshot())
+                }
             }
             .store(in: &subscriptions)
     }
@@ -72,6 +79,11 @@ class HomeViewController: UIViewController {
 
     func reload() {
         viewModel.reload()
+    }
+
+    func update(_ post: Post) {
+        self.needUpdatePost = true
+        viewModel.update(post)
     }
 
     // MARK: - Actions

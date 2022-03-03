@@ -10,6 +10,11 @@ import Combine
 
 protocol PostViewControllerDelegate: AnyObject {
     func navigateToProfile(_ authorID: UserID)
+    func postNeedUpdate(_ post: Post)
+}
+
+extension PostViewControllerDelegate {
+    func postNeedUpdate(_ post: Post) {} // Only implemented by Home Flow Controller
 }
 
 class PostViewController: UIViewController {
@@ -154,6 +159,7 @@ class PostViewController: UIViewController {
             }
 
             PostService.update(post)
+            delegate?.postNeedUpdate(post)
         }
     }
 
@@ -180,6 +186,7 @@ class PostViewController: UIViewController {
 
             cell.post = post
             PostService.update(post)
+            delegate?.postNeedUpdate(post)
 
             UserService.fetchCurrentUser { user, error in
                 guard var user = user else { return }
@@ -192,7 +199,6 @@ class PostViewController: UIViewController {
                     user.bookmarkedPosts.removeAll { $0 == post.id }
                 }
                 UserService.update(user)
-                // TODO: Reload User Profile's Bookmarks
             }
         }
     }
