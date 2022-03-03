@@ -178,7 +178,22 @@ class PostViewController: UIViewController {
                 post.whoBookmarks.removeAll { $0 == currentUserID }
             }
 
+            cell.post = post
             PostService.update(post)
+
+            UserService.fetchCurrentUser { user, error in
+                guard var user = user else { return }
+                if let error = error {
+                    print("DEBUG: error fetching current user -", error.localizedDescription)
+                }
+                if cell.didBookmark {
+                    user.bookmarkedPosts.append(post.id)
+                } else {
+                    user.bookmarkedPosts.removeAll { $0 == post.id }
+                }
+                UserService.update(user)
+                // TODO: Reload User Profile's Bookmarks
+            }
         }
     }
 }

@@ -10,6 +10,8 @@ import FirebaseFirestoreSwift
 import FirebaseFirestore
 
 enum UserService {
+    private static let userRef = Firestore.firestore().collection("users")
+
     static func fetchUser(id: UserID, completion: @escaping(User?, Error?) -> Void) {
         Firestore.firestore().collection("users").document(id).getDocument { document, error in
             do {
@@ -25,8 +27,25 @@ enum UserService {
         return Auth.auth().currentUser?.uid
     }
 
+    static func fetchCurrentUser(completion: @escaping(User?, Error?) -> Void) {
+        guard let id = currentUserID() else {
+            print("DEBUG: Missing current user id")
+            return
+        }
+        fetchUser(id: id, completion: completion)
+    }
+
+    static func update(_ user: User) {
+        let document = userRef.document(user.id)
+        do {
+            try document.setData(from: user)
+        } catch {
+            print("DEBUG: Error updating user -", error.localizedDescription)
+        }
+    }
+
     static func fetchAllUsers(completion: @escaping([User], Error?) -> Void) {
-        Firestore.firestore().collection("users").getDocuments { snapshot, error in
+        userRef.getDocuments { snapshot, error in
             var users: [User] = []
 
             if let snapshot = snapshot {

@@ -28,6 +28,8 @@ class ProfileViewModel {
     }
 
     func reload() {
+        posts = []
+        bookmarks = []
         fetchPosts()
         fetchBookmarks()
     }
@@ -45,10 +47,11 @@ class ProfileViewModel {
             profileImageURL = URL(string: user.profileImageURL)
             username = "@" + user.username
             fullName = user.fullName
-        }
 
-        fetchPosts()
-        fetchBookmarks()
+            self.user = user
+            fetchBookmarks()
+            fetchPosts()
+        }
     }
 
     private func fetchPosts() {
@@ -64,7 +67,6 @@ class ProfileViewModel {
     private func fetchBookmarks() {
         guard let bookmarkIDs = user?.bookmarkedPosts else { return }
 
-        var bookmarks: [Post] = []
         for id in bookmarkIDs {
             PostService.fetchPost(id) { bookmark, error in
                 if let error = error {
@@ -75,10 +77,8 @@ class ProfileViewModel {
                     print("DEBUG: Fetched empty post document")
                     return
                 }
-                bookmarks.append(bookmark)
+                self.bookmarks.append(bookmark)
             }
         }
-
-        self.bookmarks = bookmarks
     }
 }

@@ -46,7 +46,7 @@ enum PostService {
     }
 
     static func fetchPost(_ postID: PostID, completion: @escaping(Post?, Error?) -> Void) {
-        Firestore.firestore().collection("posts").document(postID).getDocument { document, error in
+        postRef.document(postID).getDocument { document, error in
             do {
                 let post = try document?.data(as: Post.self)
                 completion(post, error)
