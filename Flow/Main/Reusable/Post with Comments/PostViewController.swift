@@ -72,6 +72,7 @@ class PostViewController: UIViewController {
         view.addSubview(collectionView)
 
         addCommentView.commentTextView.delegate = self
+        addCommentView.sendButton.addTarget(self, action: #selector(sendTapped), for: .touchUpInside)
 
         [collectionView, addCommentView].forEach { subview in
             view.addSubview(subview)
@@ -116,6 +117,7 @@ class PostViewController: UIViewController {
                 self.addCommentView.profileImageURL = userProfileImageURL
 
                 if authorProfileImageURL != nil && userProfileImageURL != nil {
+                    self.dataSource?.apply(currentSnapshot())
                     self.collectionView.reloadData()
                 }
             }
@@ -128,6 +130,31 @@ class PostViewController: UIViewController {
     }
 
     // MARK: - Actions
+    @objc private func sendTapped() {
+        guard let userID = viewModel.currentUserID, let content = addCommentView.commentTextView.text else {
+            print("DEBUG: Missing information for new comment")
+            return
+        }
+
+        let comment = Comment(authorID: userID, content: content, timeIntervalSince1970: Date().timeIntervalSince1970)
+        PostService.create(comment, of: post) {[unowned self] error in
+            if let error = error {
+                print("DEBUG: Error adding new comment -", error.localizedDescription)
+            }
+            self.addCommentView.commentTextView.text.removeAll()
+            self.addCommentView.commentTextView.placeholderLabel.isHidden = false
+            self.addCommentView.sendButton.isEnabled = false
+            // TODO: Scroll to bottom
+
+            var updatedPost = post
+            updatedPost.countOfComment += 1
+            self.viewModel.reload(with: updatedPost)
+
+            PostService.update(updatedPost)
+            delegate?.postNeedUpdate(updatedPost)
+        }
+    }
+
     @objc private func navigateToProfile(_ sender: UIButton) {
         if let contentView = sender.superview,
             let cell = contentView.superview as? PostCell,
@@ -199,6 +226,7 @@ class PostViewController: UIViewController {
                     user.bookmarkedPosts.removeAll { $0 == post.id }
                 }
                 UserService.update(user)
+                // TODO: Update Profile Screen
             }
         }
     }
@@ -249,7 +277,22 @@ extension PostViewController {
 
     private func makeCommentCellRegistration() -> UICollectionView.CellRegistration<CommentCell, Comment> {
         UICollectionView.CellRegistration<CommentCell, Comment> { cell, _, comment in
+            UserService.fetchUser(id: comment.authorID) { author, error in
+                if let error = error {
+                    print("DEBUG: Error fetching author -", error.localizedDescription)
+                }
+
+                if let author = author {
+                    cell.usernameLabel.text = "@" + author.username
+                    cell.nameLabel.text = author.fullName
+                    let imageURL = URL(string: author.profileImageURL)
+                    cell.profileImageView.sd_setImage(with: imageURL)
+                }
+            }
             cell.nameLabel.text = comment.authorID
+            cell.commentLabel.text = comment.content
+            let date = Date(timeIntervalSince1970: comment.timeIntervalSince1970)
+            cell.timeLabel.text = date.formatted(date: .abbreviated, time: .shortened)
         }
     }
 }
@@ -260,6 +303,7 @@ extension PostViewController: UITextViewDelegate {
     func textViewDidChange(_ textView: UITextView) {
         guard let textView = textView as? GrowableTextView else { return }
         textView.placeholderLabel.isHidden = !textView.text.isEmpty
+        addCommentView.sendButton.isEnabled = !textView.text.isEmpty
 
         let isOversized = textView.contentSize.height >= textView.maxHeight
         textView.isScrollEnabled = isOversized

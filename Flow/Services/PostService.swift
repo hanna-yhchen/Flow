@@ -11,6 +11,7 @@ import UIKit
 
 enum PostService {
     private static let postRef = Firestore.firestore().collection("posts")
+    private static let commentRef = Firestore.firestore().collection("comments")
 
     static func create(_ newPost: NewPost, completion: @escaping(Error?) -> Void) {
         ImageService.upload(image: newPost.image, to: .postImages) { imageURL, error in
@@ -79,6 +80,36 @@ enum PostService {
             try document.setData(from: post)
         } catch {
             print("DEBUG: Error updating post -", error.localizedDescription)
+        }
+    }
+
+    static func create(_ comment: Comment, of post: Post, completion: @escaping(Error?) -> Void) {
+        let newDocument = commentRef.document(post.id).collection("comments").document()
+        do {
+            try newDocument.setData(from: comment)
+            completion(nil)
+        } catch {
+            completion(error)
+        }
+    }
+
+    static func fetchComments(of postID: PostID, completion: @escaping([Comment], Error?) -> Void) {
+        let ref = commentRef.document(postID).collection("comments")
+        ref.order(by: "timeIntervalSince1970", descending: false).getDocuments { snapshot, error in
+            var comments: [Comment] = []
+
+            if let snapshot = snapshot {
+                for document in snapshot.documents {
+                    do {
+                        guard let comment = try document.data(as: Comment.self) else { continue }
+                        comments.append(comment)
+                    } catch {
+                        print("DEBUG: Error decoding comment data -", error.localizedDescription)
+                    }
+                }
+            }
+
+            completion(comments, error)
         }
     }
 

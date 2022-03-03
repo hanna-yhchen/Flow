@@ -22,7 +22,8 @@ class PostViewModel {
         fetchComments()
     }
 
-    func reload() {
+    func reload(with post: Post) {
+        self.post = post
         fetchPost()
         fetchComments()
     }
@@ -64,7 +65,6 @@ class PostViewModel {
         PostService.fetchPost(post.id) {[unowned self] post, error in
             if let error = error {
                 print("DEBUG: Error fetching posts -", error.localizedDescription)
-                return
             }
             if let post = post {
                 self.post = post
@@ -73,6 +73,11 @@ class PostViewModel {
     }
 
     private func fetchComments() {
-        // TODO: Fetch Comments
+        PostService.fetchComments(of: post.id) {[unowned self] comments, error in
+            if let error = error {
+                print("DEBUG: Error fetching comments -", error.localizedDescription)
+            }
+            self.comments = comments
+        }
     }
 }

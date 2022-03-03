@@ -7,16 +7,16 @@
 
 import Foundation
 
-struct Comment: Hashable {
+struct Comment: Hashable, Codable {
     let authorID: UserID
     let content: String
     let timeIntervalSince1970: Double
 
     func hash(into hasher: inout Hasher) {
-        hasher.combine(authorID)
+        hasher.combine(timeIntervalSince1970)
     }
 
     static func == (lhs: Comment, rhs: Comment) -> Bool {
-        return lhs.authorID == rhs.authorID
+        return lhs.timeIntervalSince1970 == rhs.timeIntervalSince1970
     }
 }

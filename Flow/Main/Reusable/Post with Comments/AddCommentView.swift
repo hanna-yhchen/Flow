@@ -11,6 +11,13 @@ class AddCommentView: UIView {
     let separator = UIView()
     let profileImageView = UIImageView.filledCircle(length: 35)
     let commentTextView = GrowableTextView(placeholder: "Add a comment...")
+    let sendButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.isEnabled = false
+        let image = UIImage(systemName: "paperplane")
+        button.setImage(image, for: .normal)
+        return button
+    }()
 
     var profileImageURL: URL? {
         didSet {
@@ -31,7 +38,7 @@ class AddCommentView: UIView {
         self.backgroundColor = .systemBackground
         separator.backgroundColor = .separator
 
-        [separator, profileImageView, commentTextView].forEach { view in
+        [separator, profileImageView, commentTextView, sendButton].forEach { view in
             view.translatesAutoresizingMaskIntoConstraints = false
             addSubview(view)
         }
@@ -49,8 +56,12 @@ class AddCommentView: UIView {
             commentTextView.topAnchor.constraint(equalTo: profileImageView.topAnchor),
             commentTextView.leadingAnchor.constraint(equalTo: profileImageView.trailingAnchor, constant: 5),
             commentTextView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -5),
-            commentTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
             commentTextView.heightAnchor.constraint(lessThanOrEqualToConstant: commentTextView.maxHeight),
+
+            sendButton.centerYAnchor.constraint(equalTo: profileImageView.centerYAnchor),
+            sendButton.leadingAnchor.constraint(equalTo: commentTextView.trailingAnchor, constant: 5),
+            sendButton.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -5),
+            sendButton.widthAnchor.constraint(equalToConstant: 30),
         ])
     }
 }
