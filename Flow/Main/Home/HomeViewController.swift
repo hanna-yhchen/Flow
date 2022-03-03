@@ -91,6 +91,57 @@ class HomeViewController: UIViewController {
             delegate?.navigateToProfile(authorID)
         }
     }
+
+    @objc private func likeTapped(_ button: PostInteractionButton) {
+        // TODO: Refactor in a more concise way
+        if let contentView = button.superview?.superview?.superview,
+            let cell = contentView.superview as? PostCell,
+            var post = cell.post {
+            cell.didLike.toggle()
+            if cell.didLike {
+                cell.countOfLike += 1
+            } else {
+                cell.countOfLike -= 1
+            }
+
+            guard let currentUserID = viewModel.currentUserID else {
+                print("DEBUG: Missing current user id")
+                return
+            }
+            if cell.didLike {
+                post.whoLikes.append(currentUserID)
+            } else {
+                post.whoLikes.removeAll { $0 == currentUserID }
+            }
+
+            PostService.update(post)
+        }
+    }
+
+    @objc private func bookmarkTapped(_ button: PostInteractionButton) {
+        if let contentView = button.superview?.superview?.superview,
+            let cell = contentView.superview as? PostCell,
+            var post = cell.post {
+            cell.didBookmark.toggle()
+            if cell.didBookmark {
+                cell.countOfBookmark += 1
+            } else {
+                cell.countOfBookmark -= 1
+            }
+
+            guard let currentUserID = viewModel.currentUserID else {
+                print("DEBUG: Missing current user id")
+                return
+            }
+            if cell.didBookmark {
+                post.whoBookmarks.append(currentUserID)
+            } else {
+                post.whoBookmarks.removeAll { $0 == currentUserID }
+            }
+
+            PostService.update(post)
+        }
+    }
 }
 
 // MARK: - Data Source
@@ -146,28 +197,15 @@ extension HomeViewController {
     }
 
     private func makePostCellRegistration() -> UICollectionView.CellRegistration<PostCell, Post> {
-        UICollectionView.CellRegistration<PostCell, Post> { cell, _, post in
+        UICollectionView.CellRegistration<PostCell, Post> {[unowned self] cell, _, post in
+            cell.currentUserID = viewModel.currentUserID
             cell.post = post
 
-            cell.likeButton.addAction(
-                UIAction {_ in
-                    cell.didLike.toggle()
-                    // Update whoLikes and count
-                },
-                for: .touchUpInside
-            )
-
-            cell.bookmarkButton.addAction(
-                UIAction {_ in
-                    cell.didBookmark.toggle()
-                    // Update whoBookmarks and count
-                },
-                for: .touchUpInside
-            )
-
-            cell.authorCoveringButton.addTarget(self, action: #selector(self.navigateToProfile), for: .touchUpInside)
-            cell.middleCoveringButton.addTarget(self, action: #selector(self.navigateToPost), for: .touchUpInside)
-            cell.bottomCoveringButton.addTarget(self, action: #selector(self.navigateToPost), for: .touchUpInside)
+            cell.likeButton.addTarget(self, action: #selector(likeTapped(_:)), for: .touchUpInside)
+            cell.bookmarkButton.addTarget(self, action: #selector(bookmarkTapped(_:)), for: .touchUpInside)
+            cell.authorCoveringButton.addTarget(self, action: #selector(navigateToProfile(_:)), for: .touchUpInside)
+            cell.middleCoveringButton.addTarget(self, action: #selector(navigateToPost(_:)), for: .touchUpInside)
+            cell.bottomCoveringButton.addTarget(self, action: #selector(navigateToPost(_:)), for: .touchUpInside)
         }
     }
 }

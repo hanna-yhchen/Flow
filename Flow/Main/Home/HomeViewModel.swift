@@ -13,8 +13,10 @@ class HomeViewModel {
 
     @Published private(set) var posts: [Post] = []
     @Published private(set) var storybooks: [Storybook] = []
+    private(set) var currentUserID: UserID?
 
     init() {
+        currentUserID = UserService.currentUserID()
         fetchPosts()
         fetchStorybooks()
     }

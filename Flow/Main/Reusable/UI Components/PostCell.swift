@@ -36,7 +36,7 @@ class PostCell: UICollectionViewCell {
                 self.usernameLabel.text = author?.username
             }
 
-            if let currentUserID = UserService.currentUserID() {
+            if let currentUserID = currentUserID {
                 didLike = post.whoLikes.contains(currentUserID)
                 didBookmark = post.whoBookmarks.contains(currentUserID)
             }
@@ -50,6 +50,8 @@ class PostCell: UICollectionViewCell {
             self.timeLabel.text = date.formatted(date: .abbreviated, time: .shortened)
         }
     }
+
+    var currentUserID: UserID?
 
     var countOfLike = 0 {
         didSet {

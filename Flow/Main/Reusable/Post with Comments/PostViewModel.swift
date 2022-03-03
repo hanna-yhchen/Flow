@@ -13,6 +13,7 @@ class PostViewModel {
     @Published private(set) var comments: [Comment] = []
     @Published private(set) var authorProfileImageURL: URL?
     @Published private(set) var userProfileImageURL: URL?
+    private(set) var currentUserID: UserID?
 
     init(post: Post) {
         self.post = post
@@ -44,6 +45,8 @@ class PostViewModel {
             print("DEBUG: Failed to fetch current user ID")
             return
         }
+        self.currentUserID = currentUserID
+
         UserService.fetchUser(id: currentUserID) {[unowned self] user, error in
             if let error = error {
                 print("DEBUG: Error fetching current user -", error.localizedDescription)

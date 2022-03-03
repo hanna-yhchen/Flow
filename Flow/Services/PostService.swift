@@ -11,7 +11,7 @@ import UIKit
 
 enum PostService {
     private static let postRef = Firestore.firestore().collection("posts")
-    // TODO: CRUD post
+
     static func create(_ newPost: NewPost, completion: @escaping(Error?) -> Void) {
         ImageService.upload(image: newPost.image, to: .postImages) { imageURL, error in
             guard error == nil, let imageURL = imageURL?.absoluteString, let userID = UserService.currentUserID() else {
@@ -71,6 +71,15 @@ enum PostService {
             .getDocuments { snapshot, error in
                 completion(posts(in: snapshot), error)
             }
+    }
+
+    static func update(_ post: Post) {
+        let document = postRef.document(post.id)
+        do {
+            try document.setData(from: post)
+        } catch {
+            print("DEBUG: Error updating post -", error.localizedDescription)
+        }
     }
 
     private static func posts(in snapshot: QuerySnapshot?) -> [Post] {

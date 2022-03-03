@@ -52,9 +52,16 @@ class ProfileFlowController: UIViewController {
     }
 }
 
-extension ProfileFlowController: ProfileViewControllerDelegate {
+extension ProfileFlowController: ProfileViewControllerDelegate, PostViewControllerDelegate {
     func navigateToPost(_ post: Post) {
         let postVC = PostViewController(post: post)
+        postVC.delegate = self
         navigation.pushViewController(postVC, animated: true)
+    }
+
+    func navigateToProfile(_ authorID: UserID) {
+        let profileVC = ProfileViewController(userID: authorID)
+        profileVC.delegate = self
+        navigation.pushViewController(profileVC, animated: true)
     }
 }

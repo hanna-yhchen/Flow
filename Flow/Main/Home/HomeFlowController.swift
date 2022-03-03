@@ -49,13 +49,15 @@ class HomeFlowController: UIViewController {
 
 // MARK: - HomeViewControllerDelegate
 
-extension HomeFlowController: HomeViewControllerDelegate {
+extension HomeFlowController: HomeViewControllerDelegate, PostViewControllerDelegate, ProfileViewControllerDelegate {
     func navigateToPost(_ post: Post) {
         let postVC = PostViewController(post: post)
+        postVC.delegate = self
         navigation.pushViewController(postVC, animated: true)
     }
     func navigateToProfile(_ authorID: UserID) {
         let profileVC = ProfileViewController(userID: authorID)
+        profileVC.delegate = self
         navigation.pushViewController(profileVC, animated: true)
     }
 }

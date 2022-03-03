@@ -14,11 +14,11 @@ struct Post: Hashable, Codable {
     let id: PostID
     let authorID: UserID
     let imageURL: String
-    let caption: String
+    var caption: String
     let timeIntervalSince1970: Double
-    let whoLikes: [UserID]
-    let whoBookmarks: [UserID]
-    let countOfComment: Int
+    var whoLikes: [UserID]
+    var whoBookmarks: [UserID]
+    var countOfComment: Int
 
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)

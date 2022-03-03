@@ -8,6 +8,10 @@
 import UIKit
 import Combine
 
+protocol PostViewControllerDelegate: AnyObject {
+    func navigateToProfile(_ authorID: UserID)
+}
+
 class PostViewController: UIViewController {
     enum Section {
         case comment
@@ -19,6 +23,7 @@ class PostViewController: UIViewController {
 
     // MARK: - Properties
 
+    weak var delegate: PostViewControllerDelegate?
     private let viewModel: PostViewModel
 
     private var post: Post
@@ -118,6 +123,64 @@ class PostViewController: UIViewController {
     }
 
     // MARK: - Actions
+    @objc private func navigateToProfile(_ sender: UIButton) {
+        if let contentView = sender.superview,
+            let cell = contentView.superview as? PostCell,
+            let authorID = cell.post?.authorID {
+            delegate?.navigateToProfile(authorID)
+        }
+    }
+
+    @objc private func likeTapped(_ button: PostInteractionButton) {
+        // TODO: Refactor in a more concise way
+        if let contentView = button.superview?.superview?.superview,
+            let cell = contentView.superview as? PostCell,
+            var post = cell.post {
+            cell.didLike.toggle()
+            if cell.didLike {
+                cell.countOfLike += 1
+            } else {
+                cell.countOfLike -= 1
+            }
+
+            guard let currentUserID = viewModel.currentUserID else {
+                print("DEBUG: Missing current user id")
+                return
+            }
+            if cell.didLike {
+                post.whoLikes.append(currentUserID)
+            } else {
+                post.whoLikes.removeAll { $0 == currentUserID }
+            }
+
+            PostService.update(post)
+        }
+    }
+
+    @objc private func bookmarkTapped(_ button: PostInteractionButton) {
+        if let contentView = button.superview?.superview?.superview,
+            let cell = contentView.superview as? PostCell,
+            var post = cell.post {
+            cell.didBookmark.toggle()
+            if cell.didBookmark {
+                cell.countOfBookmark += 1
+            } else {
+                cell.countOfBookmark -= 1
+            }
+
+            guard let currentUserID = viewModel.currentUserID else {
+                print("DEBUG: Missing current user id")
+                return
+            }
+            if cell.didBookmark {
+                post.whoBookmarks.append(currentUserID)
+            } else {
+                post.whoBookmarks.removeAll { $0 == currentUserID }
+            }
+
+            PostService.update(post)
+        }
+    }
 }
 
 // MARK: - Data Source
@@ -154,8 +217,12 @@ extension PostViewController {
     private func makePostViewRegistration() -> UICollectionView.SupplementaryRegistration<PostView> {
         UICollectionView.SupplementaryRegistration<PostView>(elementKind: PostCollectionView.headerKind) {
             [unowned self] postView, _, _ in
-            postView.post = self.post
-            // add target
+            postView.currentUserID = viewModel.currentUserID
+            postView.post = post
+
+            postView.likeButton.addTarget(self, action: #selector(likeTapped(_:)), for: .touchUpInside)
+            postView.bookmarkButton.addTarget(self, action: #selector(bookmarkTapped(_:)), for: .touchUpInside)
+            postView.authorCoveringButton.addTarget(self, action: #selector(navigateToProfile(_:)), for: .touchUpInside)
         }
     }
 

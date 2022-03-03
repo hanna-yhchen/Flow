@@ -56,7 +56,7 @@ class HomeCollectionView: UICollectionView {
                 // FIXME: cannot show all posts correctly
                 let layoutSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(500)
+                    heightDimension: .estimated(1)
                 )
 
                 let item = NSCollectionLayoutItem(layoutSize: layoutSize)
