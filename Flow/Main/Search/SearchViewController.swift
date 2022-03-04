@@ -119,14 +119,6 @@ class SearchViewController: UIViewController {
     }
 }
 
-// MARK: - UISearchControllerDelegate & UISearchBarDelegate
-
-extension SearchViewController: UISearchControllerDelegate, UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        // TODO: Add animation
-    }
-}
-
 // MARK: - UICollectionViewDelegate
 
 extension SearchViewController: UICollectionViewDelegate {

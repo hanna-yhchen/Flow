@@ -24,6 +24,8 @@ class SignInView: AuthView {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Configuration
+
     private func configureStackView() {
         [emailTextField, passwordTextField, authButton].forEach { view in
             inputStack.addArrangedSubview(view)

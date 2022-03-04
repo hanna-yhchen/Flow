@@ -53,7 +53,7 @@ class HomeCollectionView: UICollectionView {
                 layoutSection.contentInsets = NSDirectionalEdgeInsets(top: 5, leading: 10, bottom: 8, trailing: 0)
                 layoutSection.orthogonalScrollingBehavior = .continuous
             case .post:
-                // FIXME: cannot show all posts correctly
+                // FIXME: Occasionally layout cells with wrong height
                 let layoutSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
                     heightDimension: .estimated(1)

@@ -10,6 +10,7 @@ import SDWebImage
 
 class ProfileHeaderView: UIView {
     // MARK: - Properties
+
     let isCurrentUser: Bool
 
     var storyIsRead = false {
@@ -35,6 +36,7 @@ class ProfileHeaderView: UIView {
     }
 
     // MARK: - Components
+
     let profileImageView: UIImageView = {
         let imageView = UIImageView.filledCircle(length: 120)
         imageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
@@ -116,10 +118,11 @@ class ProfileHeaderView: UIView {
     let messageButton = BorderedButton(title: "Message")
 
     // MARK: - Lifecycle
+
     init(isCurrentUser: Bool) {
         self.isCurrentUser = isCurrentUser
         super.init(frame: .zero)
-        configure()
+
         addSubviews()
         addConstraints()
     }
@@ -127,9 +130,8 @@ class ProfileHeaderView: UIView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     // MARK: - Private Configuration
-    private func configure() {
-    }
 
     private func addSubviews() {
         [profileImageView, nameLabel, bioLabel, statStack, interactionStack].forEach { view in

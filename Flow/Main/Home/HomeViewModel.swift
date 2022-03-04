@@ -29,7 +29,7 @@ class HomeViewModel {
     }
 
     func update(_ post: Post) {
-        guard let index = posts.firstIndex(where:{ $0.id == post.id }) else { return }
+        guard let index = posts.firstIndex(where: { $0.id == post.id }) else { return }
         posts[index] = post
     }
 
@@ -53,8 +53,12 @@ class HomeViewModel {
                 print("DEBUG: Error fetching users -", error.localizedDescription)
             }
             for user in users {
-                let storybook = Storybook(authorID: user.id, whoHasReadAll: [])
-                storybooks.append(storybook)
+                let storybook = Storybook(authorID: user.id, whoHasReadAll: [user.id])
+                if storybook.authorID == self.currentUserID {
+                    storybooks.insert(storybook, at: 0)
+                } else {
+                    storybooks.append(storybook)
+                }
             }
 
             self.storybooks = storybooks

@@ -152,7 +152,6 @@ class PostCell: UICollectionViewCell {
         let button = UIButton(type: .custom)
         let icon = UIImage(systemName: "ellipsis", withConfiguration: UIImage.SymbolConfiguration(pointSize: Size.font))
         button.setImage(icon, for: .normal)
-        // TODO: Add Action to Show Menu
         return button
     }()
 
@@ -206,7 +205,7 @@ class PostCell: UICollectionViewCell {
         pointSize: Size.smallFont
     )
 
-    // TODO: Limit Caption Height
+    // TODO: Limit caption height and show 'more' if needed
     let captionLabel: UILabel = {
         let label = UILabel()
         label.numberOfLines = 0
@@ -226,6 +225,7 @@ class PostCell: UICollectionViewCell {
     let bottomCoveringButton = UIButton(type: .custom)
 
     // MARK: - Lifecycle
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .systemBackground

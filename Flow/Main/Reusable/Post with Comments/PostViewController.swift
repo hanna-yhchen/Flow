@@ -130,6 +130,7 @@ class PostViewController: UIViewController {
     }
 
     // MARK: - Actions
+
     @objc private func sendTapped() {
         guard let userID = viewModel.currentUserID, let content = addCommentView.commentTextView.text else {
             print("DEBUG: Missing information for new comment")
@@ -164,7 +165,7 @@ class PostViewController: UIViewController {
     }
 
     @objc private func likeTapped(_ button: PostInteractionButton) {
-        // TODO: Refactor in a more concise way
+        // TODO: Make the value passed in a more concise way
         if let contentView = button.superview?.superview?.superview,
             let cell = contentView.superview as? PostCell,
             var post = cell.post {

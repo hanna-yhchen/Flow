@@ -105,7 +105,7 @@ class HomeViewController: UIViewController {
     }
 
     @objc private func likeTapped(_ button: PostInteractionButton) {
-        // TODO: Refactor in a more concise way
+        // TODO: Make the value passed in a more concise way
         if let contentView = button.superview?.superview?.superview,
             let cell = contentView.superview as? PostCell,
             var post = cell.post {

@@ -42,7 +42,7 @@ extension AppFlowController: AuthFlowControllerDelegate {
 }
 
 extension AppFlowController: MainFlowControllerDelegate {
-    /// Get called when the user logs out
+    /// Call this function when the user logs out
     func mainFlowControllerDidFinish(_ flowController: UIViewController) {
         do {
             try Auth.auth().signOut()

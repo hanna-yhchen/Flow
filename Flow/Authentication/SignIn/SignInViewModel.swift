@@ -13,11 +13,11 @@ class SignInViewModel {
     @Published var password: String = ""
 
     private(set) lazy var isInputValid = Publishers.CombineLatest($email, $password)
-        .map { $0.count > 2 && $1.count > 2 } // TODO: Check Format
+        .map { $0.count > 2 && $1.count > 2 }
         .eraseToAnyPublisher()
 
-    // TODO: Validate Credentials
     func signIn(completion: AuthDataResultCallback?) {
+        // TODO: Validate credentials first
         AuthService.signIn(email: email, password: password, completion: completion)
     }
 }

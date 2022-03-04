@@ -80,25 +80,19 @@ class RegisterViewController: UIViewController {
         contentView.$profileImage
             .assign(to: \.profileImage, on: viewModel)
             .store(in: &subscriptions)
-        /// Q: Do I need to receive these on main thread?
         contentView.emailTextField.textPublisher
-            .receive(on: RunLoop.main)
             .assign(to: \.email, on: viewModel)
             .store(in: &subscriptions)
         contentView.passwordTextField.textPublisher
-            .receive(on: RunLoop.main)
             .assign(to: \.password, on: viewModel)
             .store(in: &subscriptions)
         contentView.confirmPasswordTextField.textPublisher
-            .receive(on: RunLoop.main)
             .assign(to: \.confirmPassword, on: viewModel)
             .store(in: &subscriptions)
         contentView.nameTextField.textPublisher
-            .receive(on: RunLoop.main)
             .assign(to: \.fullName, on: viewModel)
             .store(in: &subscriptions)
         contentView.usernameTextField.textPublisher
-            .receive(on: RunLoop.main)
             .assign(to: \.username, on: viewModel)
             .store(in: &subscriptions)
 
@@ -195,7 +189,7 @@ extension RegisterViewController: UITextFieldDelegate {
 
 extension RegisterViewController: KeyboardHandler {
     func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions) {
-        // TODO: Make the scrollView moves simultaneously as the keyboard moves
+        // FIXME: The scrollView doesn't move simultaneously as the keyboard moves
         let contentInsets = UIEdgeInsets(top: 0, left: 0, bottom: -yOffset, right: 0)
         scrollView.contentInset = contentInsets
         scrollView.scrollIndicatorInsets = contentInsets

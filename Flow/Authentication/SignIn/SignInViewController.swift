@@ -11,7 +11,6 @@ import Combine
 protocol SignInViewControllerDelegate: AnyObject {
     func signInDidComplete(_ controller: SignInViewController)
     func navigateToRegister()
-    func navigateToHelp()
 }
 
 class SignInViewController: UIViewController {
@@ -84,7 +83,7 @@ class SignInViewController: UIViewController {
     }
 
     @objc private func forgotPasswordTapped() {
-        delegate?.navigateToHelp()
+        // TODO: Navigate to help page
     }
 }
 

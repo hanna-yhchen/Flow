@@ -46,7 +46,9 @@ class SearchFlowController: UIViewController {
     }
 }
 
-extension SearchFlowController: SearchViewControllerDelegate, PostViewControllerDelegate, ProfileViewControllerDelegate {
+extension SearchFlowController: SearchViewControllerDelegate,
+    PostViewControllerDelegate,
+    ProfileViewControllerDelegate {
     func navigateToPost(_ post: Post) {
         let postVC = PostViewController(post: post)
         postVC.delegate = self

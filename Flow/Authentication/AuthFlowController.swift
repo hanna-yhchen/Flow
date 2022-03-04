@@ -53,9 +53,6 @@ extension AuthFlowController: SignInViewControllerDelegate {
         registerVC.delegate = self
         navigation.pushViewController(registerVC, animated: true)
     }
-
-    func navigateToHelp() {
-    }
 }
 
 extension AuthFlowController: RegisterViewControllerDelegate {

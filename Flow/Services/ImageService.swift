@@ -12,8 +12,9 @@ enum ImageService {
         case profileImages
         case postImages
     }
+
     static func upload(image: UIImage?, to collection: StorageCollection, completion: @escaping(_ imageURL: URL?, Error?) -> Void) {
-        guard let imageData = image?.jpegData(compressionQuality: 0.75) else { return }
+        guard let imageData = image?.jpegData(compressionQuality: 0.6) else { return }
         let filename = NSUUID().uuidString
 
         var rootPath = ""
