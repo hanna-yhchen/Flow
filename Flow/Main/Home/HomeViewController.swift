@@ -126,6 +126,11 @@ class HomeViewController: UIViewController {
                 post.whoLikes.removeAll { $0 == currentUserID }
             }
 
+            if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                posts[index] = post
+            }
+            cell.post = post
+            dataSource.apply(currentSnapshot())
             PostService.update(post)
         }
     }
@@ -151,7 +156,11 @@ class HomeViewController: UIViewController {
                 post.whoBookmarks.removeAll { $0 == currentUserID }
             }
 
+            if let index = posts.firstIndex(where: { $0.id == post.id }) {
+                posts[index] = post
+            }
             cell.post = post
+            dataSource.apply(currentSnapshot())
             PostService.update(post)
 
             UserService.fetchCurrentUser { user, error in
