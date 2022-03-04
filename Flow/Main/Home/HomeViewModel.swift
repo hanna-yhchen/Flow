@@ -53,7 +53,7 @@ class HomeViewModel {
                 print("DEBUG: Error fetching users -", error.localizedDescription)
             }
             for user in users {
-                let storybook = Storybook(authorID: user.id, whoHasReadAll: [user.id])
+                let storybook = Storybook(authorID: user.id, whoHasReadAll: [])
                 if storybook.authorID == self.currentUserID {
                     storybooks.insert(storybook, at: 0)
                 } else {

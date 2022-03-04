@@ -161,6 +161,11 @@ class ProfileViewController: UIViewController {
             .sink {[unowned self] posts, bookmarks in
                 self.posts = posts
                 self.bookmarks = bookmarks
+                // TODO: Show real bio
+                profileHeaderView.postStatButton.count = posts.count
+                // TODO: Add follow functionality and show real stat
+                profileHeaderView.followerStatButton.count = 17
+                profileHeaderView.followingStatButton.count = 21
                 postDataSource.apply(currentPostSnapshot(), to: .thumbnail)
                 bookmarkDataSource.apply(currentBookmarkSnapshot(), to: .thumbnail)
             }

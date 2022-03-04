@@ -55,7 +55,7 @@ class ProfileHeaderView: UIView {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16)
         label.textColor = .secondaryLabel
-        label.text = "Here is a long description about this user to be displayed more than one line..."
+        label.text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras consequat porttitor."
         label.textAlignment = .center
         label.numberOfLines = 3
         return label

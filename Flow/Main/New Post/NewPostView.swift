@@ -14,6 +14,7 @@ class NewPostView: UIView {
         let imageView = PostImageView()
         imageView.reset()
         imageView.isUserInteractionEnabled = true
+        imageView.sd_imageIndicator = nil
         return imageView
     }()
     var captionTextView = CaptionTextView(placeholder: "Write a caption...")
