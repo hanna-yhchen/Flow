@@ -1,9 +1,9 @@
 # Flow
 A sample Instagram-like social app using Combine, Firebase and MVVM pattern.
 
-<img src="/Demo/home-screen.png" width="240">   <img src="/Demo/search-screen.png" width="240">   <img src="/Demo/profile-screen.png" width="240">
+<img src="/Demo/demo.gif" width="240">   <img src="/Demo/home-screen.png" width="240">   <img src="/Demo/search-screen.png" width="240">
 
-<img src="/Demo/login-screen.png" width="240">   <img src="/Demo/register-screen.png" width="240">   <img src="/Demo/demo.gif" width="240">
+<img src="/Demo/profile-screen.png" width="240">   <img src="/Demo/login-screen.png" width="240">   <img src="/Demo/register-screen.png" width="240">   
 
 ## Technologies
 - Combine framework (iOS 13+)
@@ -14,3 +14,4 @@ A sample Instagram-like social app using Combine, Firebase and MVVM pattern.
 - MVVM design pattern
 - Coordinator(flow controller) design pattern
 - Custom UI without storyboard
+- Dark mode
