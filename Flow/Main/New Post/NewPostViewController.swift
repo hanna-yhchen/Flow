@@ -30,6 +30,15 @@ class NewPostViewController: UIViewController {
             navigationItem.rightBarButtonItem?.isEnabled = isInputValid
         }
     }
+    private var isLoading = false {
+        didSet {
+            if isLoading {
+                contentView.activityIndicator.startAnimating()
+            } else {
+                contentView.activityIndicator.stopAnimating()
+            }
+        }
+    }
 
     // MARK: - LifeCycle
 
@@ -111,11 +120,6 @@ class NewPostViewController: UIViewController {
             .map { $0.image }
             .assign(to: \.postImage, on: viewModel)
             .store(in: &subscriptions)
-//        contentView.$captionTextView
-//            .map { $0.text }
-//            .assign(to: \.caption, on: viewModel)
-//            .store(in: &subscriptions)
-
         viewModel.isInputValid
             .receive(on: RunLoop.main)
             .assign(to: \.isInputValid, on: self)
@@ -141,6 +145,7 @@ class NewPostViewController: UIViewController {
     }
 
     @objc private func shareTapped() {
+        isLoading = true
         viewModel.caption = textView.text
         viewModel.share {[unowned self] error in
             if let error = error {
@@ -148,6 +153,7 @@ class NewPostViewController: UIViewController {
                 return
             }
             delegate?.didFinishNewPost(self)
+            isLoading = false
         }
     }
 }

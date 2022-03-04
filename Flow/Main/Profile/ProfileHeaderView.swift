@@ -37,6 +37,7 @@ class ProfileHeaderView: UIView {
     // MARK: - Components
     let profileImageView: UIImageView = {
         let imageView = UIImageView.filledCircle(length: 120)
+        imageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
         imageView.layer.borderWidth = 3
         imageView.layer.borderColor = UIColor.tintColor.cgColor
         return imageView

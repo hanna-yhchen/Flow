@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PostCell: UICollectionViewCell {
     enum Size {
@@ -126,6 +127,7 @@ class PostCell: UICollectionViewCell {
         imageView.layer.borderColor = UIColor.tintColor.cgColor
         imageView.layer.borderWidth = 2.5
         imageView.isUserInteractionEnabled = true
+        imageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
         return imageView
     }()
 

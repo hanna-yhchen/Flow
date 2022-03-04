@@ -16,7 +16,8 @@ class NewPostView: UIView {
         imageView.isUserInteractionEnabled = true
         return imageView
     }()
-    @Published var captionTextView = CaptionTextView(placeholder: "Write a caption...")
+    var captionTextView = CaptionTextView(placeholder: "Write a caption...")
+    let activityIndicator = UIActivityIndicatorView(style: .large)
 
     // MARK: - Lifecycle
 
@@ -35,7 +36,7 @@ class NewPostView: UIView {
     // MARK: - Private Configuration
 
     private func addSubviews() {
-        [postImageView, captionTextView].forEach { view in
+        [postImageView, captionTextView, activityIndicator].forEach { view in
             addSubview(view)
             view.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -51,6 +52,9 @@ class NewPostView: UIView {
             captionTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
             captionTextView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -10),
             captionTextView.bottomAnchor.constraint(equalTo: safeAreaLayoutGuide.bottomAnchor, constant: -10),
+
+            activityIndicator.centerXAnchor.constraint(equalTo: centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
 }

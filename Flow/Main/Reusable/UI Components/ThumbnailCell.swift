@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class ThumbnailCell: UICollectionViewCell {
     let imageView = UIImageView()
@@ -20,6 +21,7 @@ class ThumbnailCell: UICollectionViewCell {
     }
 
     private func configure() {
+        imageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
         imageView.clipsToBounds = true
         imageView.contentMode = .scaleAspectFill
         imageView.translatesAutoresizingMaskIntoConstraints = false

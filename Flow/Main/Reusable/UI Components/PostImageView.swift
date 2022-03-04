@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PostImageView: UIImageView {
     // swiftlint:disable line_length
@@ -57,6 +58,7 @@ class PostImageView: UIImageView {
 
     init() {
         super.init(frame: .zero)
+        self.sd_imageIndicator = SDWebImageActivityIndicator.medium
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
     }

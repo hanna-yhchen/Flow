@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class StoryCell: UICollectionViewCell {
     var storybook: Storybook? {
@@ -51,6 +52,7 @@ class StoryCell: UICollectionViewCell {
     }
 
     private func configure() {
+        profileImageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
         profileImageView.layer.borderWidth = 3
         profileImageView.layer.borderColor = UIColor.tintColor.cgColor
 
