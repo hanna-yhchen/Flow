@@ -50,13 +50,11 @@ class SearchViewController: UIViewController {
     private func configureHierarchy() {
         let searchController = UISearchController(searchResultsController: nil)
         // TODO: Add Results TableView Controller
-        searchController.delegate = self
         searchController.hidesNavigationBarDuringPresentation = false
         self.searchController = searchController
 
         // FIXME: SearchBar Increase the Height of Navigation Bar
         let searchBar = searchController.searchBar
-        searchBar.delegate = self
         searchBar.showsCancelButton = false
         self.navigationItem.titleView = searchBar
 
