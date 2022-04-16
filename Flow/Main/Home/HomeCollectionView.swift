@@ -56,7 +56,7 @@ class HomeCollectionView: UICollectionView {
                 // FIXME: Occasionally layout cells with wrong height
                 let layoutSize = NSCollectionLayoutSize(
                     widthDimension: .fractionalWidth(1),
-                    heightDimension: .estimated(1)
+                    heightDimension: .estimated(500)
                 )
 
                 let item = NSCollectionLayoutItem(layoutSize: layoutSize)

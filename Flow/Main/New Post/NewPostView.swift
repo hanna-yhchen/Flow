@@ -47,7 +47,7 @@ class NewPostView: UIView {
         NSLayoutConstraint.activate([
             postImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             postImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            /// postImageView's dimension will be set whenever the image is set
+            /// postImageView's dimension will be configured whenever the image is set
 
             captionTextView.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 20),
             captionTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),

@@ -10,8 +10,8 @@ import SDWebImage
 
 class PostImageView: UIImageView {
     // swiftlint:disable line_length
-    lazy var widthConstraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
-    lazy var heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 0)
+    lazy var widthConstraint = NSLayoutConstraint(item: self, attribute: .width, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200)
+    lazy var heightConstraint = NSLayoutConstraint(item: self, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: 200)
 
     /// Placeholder used in upload screen.
     lazy var placeholderImageView: UIImageView = {
@@ -50,8 +50,6 @@ class PostImageView: UIImageView {
                 heightConstraint.constant = estimatedHeight
             }
 
-            widthConstraint.isActive = true
-            heightConstraint.isActive = true
             layoutIfNeeded()
         }
     }
@@ -61,20 +59,22 @@ class PostImageView: UIImageView {
         self.sd_imageIndicator = SDWebImageActivityIndicator.medium
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
+
+        widthConstraint.isActive = true
+        heightConstraint.isActive = true
     }
 
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    /// Only used for the upload screen.
     func reset() {
         image = nil
         placeholderImageView.isHidden = false
         let fullWidth = UIScreen.main.bounds.width
         heightConstraint.constant = fullWidth * 0.8
         widthConstraint.constant = fullWidth * 0.8
-        widthConstraint.isActive = true
-        heightConstraint.isActive = true
         layoutIfNeeded()
     }
 }

@@ -48,6 +48,8 @@ class HomeViewController: UIViewController {
         configureHierarchy()
         configureDataSource()
         configureBindings()
+
+        collectionView.collectionViewLayout.invalidateLayout()
     }
 
     // MARK: - Configuration
