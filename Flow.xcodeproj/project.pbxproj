@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8926E2F86343155E05D7C07F /* Pods_Flow.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5687395407506201B764472F /* Pods_Flow.framework */; };
-		B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7C927959E3F00E8840D /* PostImageView.swift */; };
+		B507A7CA27959E3F00E8840D /* UploadImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7C927959E3F00E8840D /* UploadImageView.swift */; };
 		B507A7CE27983ECE00E8840D /* PostViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7CD27983ECE00E8840D /* PostViewController.swift */; };
 		B507A7D02798FBE200E8840D /* PostCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7CF2798FBE200E8840D /* PostCollectionView.swift */; };
 		B507A7D22798FCC000E8840D /* CommentCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B507A7D12798FCC000E8840D /* CommentCell.swift */; };
@@ -81,7 +81,7 @@
 		3E13BED908C77FC79562E2F0 /* Pods-Flow.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flow.release.xcconfig"; path = "Target Support Files/Pods-Flow/Pods-Flow.release.xcconfig"; sourceTree = "<group>"; };
 		5687395407506201B764472F /* Pods_Flow.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Flow.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		57EB9EF7A2E4DAB7EEC9D206 /* Pods-Flow.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Flow.debug.xcconfig"; path = "Target Support Files/Pods-Flow/Pods-Flow.debug.xcconfig"; sourceTree = "<group>"; };
-		B507A7C927959E3F00E8840D /* PostImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostImageView.swift; sourceTree = "<group>"; };
+		B507A7C927959E3F00E8840D /* UploadImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadImageView.swift; sourceTree = "<group>"; };
 		B507A7CD27983ECE00E8840D /* PostViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostViewController.swift; sourceTree = "<group>"; };
 		B507A7CF2798FBE200E8840D /* PostCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PostCollectionView.swift; sourceTree = "<group>"; };
 		B507A7D12798FCC000E8840D /* CommentCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommentCell.swift; sourceTree = "<group>"; };
@@ -232,7 +232,7 @@
 				B52DAEC3278DD3470002D930 /* ThumbnailCell.swift */,
 				B563B5A227950AA30012E9CB /* PostCell.swift */,
 				B563B5A427952DA20012E9CB /* PostInteractionButton.swift */,
-				B507A7C927959E3F00E8840D /* PostImageView.swift */,
+				B507A7C927959E3F00E8840D /* UploadImageView.swift */,
 				B5CDB9F827B5F4FB007DF203 /* ProfileStatButton.swift */,
 				B54C2D7427A049A800B447CC /* GrowableTextView.swift */,
 				B5C0850327C362CF00DB8DDD /* CaptionTextView.swift */,
@@ -619,7 +619,7 @@
 				B54AC8CE27B24B9C00F3875C /* SearchCollectionView.swift in Sources */,
 				B54D8F09278923C9008B805E /* NewPostFlowController.swift in Sources */,
 				B54D8F07278923B6008B805E /* SearchFlowController.swift in Sources */,
-				B507A7CA27959E3F00E8840D /* PostImageView.swift in Sources */,
+				B507A7CA27959E3F00E8840D /* UploadImageView.swift in Sources */,
 				B546129F27832C6100C87339 /* SignInViewController.swift in Sources */,
 				B5D38E7927A3D263005E7108 /* KeyboardHandler.swift in Sources */,
 				B53F2EF9278EBDE90038B2C3 /* User.swift in Sources */,

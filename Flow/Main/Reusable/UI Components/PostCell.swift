@@ -157,7 +157,13 @@ class PostCell: UICollectionViewCell {
 
     // MARK: - Middle Components
 
-    let postImageView = PostImageView()
+    let postImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        return imageView
+    }()
 
     // MARK: - Bottom Components
 
@@ -263,7 +269,8 @@ class PostCell: UICollectionViewCell {
 
             postImageView.topAnchor.constraint(equalTo: topStack.bottomAnchor, constant: Size.padding / 2),
             postImageView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            /// postImageView's dimension will be set whenever the image is set
+            postImageView.widthAnchor.constraint(equalTo: contentView.widthAnchor),
+            postImageView.heightAnchor.constraint(equalTo: contentView.widthAnchor, multiplier: 3 / 4),
 
             bottomStack.topAnchor.constraint(equalTo: postImageView.bottomAnchor),
             bottomStack.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: Size.padding),

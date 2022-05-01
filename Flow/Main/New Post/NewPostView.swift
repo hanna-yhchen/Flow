@@ -10,11 +10,9 @@ import UIKit
 class NewPostView: UIView {
     // MARK: - Components
 
-    @Published var postImageView: PostImageView = {
-        let imageView = PostImageView()
-        imageView.reset()
+    @Published var postImageView: UploadImageView = {
+        let imageView = UploadImageView()
         imageView.isUserInteractionEnabled = true
-        imageView.sd_imageIndicator = nil
         return imageView
     }()
     var captionTextView = CaptionTextView(placeholder: "Write a caption...")
@@ -47,7 +45,8 @@ class NewPostView: UIView {
         NSLayoutConstraint.activate([
             postImageView.topAnchor.constraint(equalTo: safeAreaLayoutGuide.topAnchor),
             postImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
-            /// postImageView's dimension will be configured whenever the image is set
+            postImageView.widthAnchor.constraint(equalTo: widthAnchor),
+            postImageView.heightAnchor.constraint(equalTo: widthAnchor, multiplier: 3 / 4),
 
             captionTextView.topAnchor.constraint(equalTo: postImageView.bottomAnchor, constant: 20),
             captionTextView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 10),
