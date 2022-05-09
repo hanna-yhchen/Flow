@@ -8,6 +8,8 @@
 import FirebaseAuth
 import FirebaseFirestore
 
+typealias AuthDataResultCallback = (AuthDataResult?, Error?) -> Void
+
 struct AuthCredentials {
     let email: String
     let password: String

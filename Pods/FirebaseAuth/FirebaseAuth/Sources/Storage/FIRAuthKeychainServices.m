@@ -18,8 +18,9 @@
 
 #import <Security/Security.h>
 
-#import "FirebaseCore/Sources/Private/FirebaseCoreInternal.h"
+#import "FirebaseCore/Extension/FirebaseCoreInternal.h"
 
+#import "FirebaseAuth/Sources/Auth/FIRAuth_Internal.h"
 #import "FirebaseAuth/Sources/Storage/FIRAuthUserDefaults.h"
 #import "FirebaseAuth/Sources/Utilities/FIRAuthErrorUtils.h"
 

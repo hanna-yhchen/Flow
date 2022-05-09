@@ -101,7 +101,7 @@ enum PostService {
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     do {
-                        guard let comment = try document.data(as: Comment.self) else { continue }
+                        let comment = try document.data(as: Comment.self)
                         comments.append(comment)
                     } catch {
                         print("DEBUG: Error decoding comment data -", error.localizedDescription)
@@ -119,7 +119,7 @@ enum PostService {
         if let snapshot = snapshot {
             for document in snapshot.documents {
                 do {
-                    guard let post = try document.data(as: Post.self) else { continue }
+                    let post = try document.data(as: Post.self)
                     posts.append(post)
                 } catch {
                     print("DEBUG: Error decoding post data -", error.localizedDescription)

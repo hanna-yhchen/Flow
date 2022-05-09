@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Google
+ * Copyright 2017 Google LLC
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,17 +19,17 @@
 NS_ASSUME_NONNULL_BEGIN
 
 /** Used to set on-disk cache size to unlimited. Garbage collection will not run. */
-FOUNDATION_EXTERN const int64_t kFIRFirestoreCacheSizeUnlimited
-    NS_SWIFT_NAME(FirestoreCacheSizeUnlimited);
+FOUNDATION_EXTERN const int64_t
+    kFIRFirestoreCacheSizeUnlimited NS_SWIFT_NAME(FirestoreCacheSizeUnlimited);
 
-/** Settings used to configure a `FIRFirestore` instance. */
+/** Settings used to configure a `Firestore` instance. */
 NS_SWIFT_NAME(FirestoreSettings)
 @interface FIRFirestoreSettings : NSObject <NSCopying>
 
 /**
- * Creates and returns an empty `FIRFirestoreSettings` object.
+ * Creates and returns an empty `FirestoreSettings` object.
  *
- * @return The created `FIRFirestoreSettings` object.
+ * @return The created `FirestoreSettings` object.
  */
 - (instancetype)init NS_DESIGNATED_INITIALIZER;
 
@@ -49,31 +49,11 @@ NS_SWIFT_NAME(FirestoreSettings)
 @property(nonatomic, getter=isPersistenceEnabled) BOOL persistenceEnabled;
 
 /**
- * Specifies whether to use FIRTimestamps for timestamp fields in FIRDocumentSnapshots. This is
- * now enabled by default and should not be disabled.
- *
- * Previously, Firestore returned timestamp fields as NSDate but NSDate is implemented as a double
- * which loses precision and causes unexpected behavior when using a timestamp from a snapshot as a
- * part of a subsequent query.
- *
- * So now Firestore returns FIRTimestamp values instead of NSDate, avoiding this kind of problem.
- *
- * To opt into the old behavior of returning NSDate objects, you can temporarily set
- * areTimestampsInSnapshotsEnabled to false.
- *
- * @deprecated This setting now defaults to true and will be removed in a future release. If you are
- * already setting it to true, just remove the setting. If you are setting it to false, you should
- * update your code to expect FIRTimestamp objects instead of NSDate and then remove the setting.
- */
-@property(nonatomic, getter=areTimestampsInSnapshotsEnabled) BOOL timestampsInSnapshotsEnabled
-    __attribute__((deprecated));
-
-/**
  * Sets the cache size threshold above which the SDK will attempt to collect least-recently-used
  * documents. The size is not a guarantee that the cache will stay below that size, only that if
  * the cache exceeds the given size, cleanup will be attempted. Cannot be set lower than 1MB.
  *
- * Set to kFIRFirestoreCacheSizeUnlimited to disable garbage collection entirely.
+ * Set to `FirestoreCacheSizeUnlimited` to disable garbage collection entirely.
  */
 @property(nonatomic, assign) int64_t cacheSizeBytes;
 

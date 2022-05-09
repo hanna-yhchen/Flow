@@ -51,7 +51,7 @@ enum UserService {
             if let snapshot = snapshot {
                 for document in snapshot.documents {
                     do {
-                        guard let user = try document.data(as: User.self) else { continue }
+                        let user = try document.data(as: User.self)
                         users.append(user)
                     } catch {
                         print("DEBUG: Error decoding user data -", error.localizedDescription)

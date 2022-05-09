@@ -17,9 +17,11 @@
 #ifndef FIRESTORE_CORE_SRC_NANOPB_FIELDS_ARRAY_H_
 #define FIRESTORE_CORE_SRC_NANOPB_FIELDS_ARRAY_H_
 
+#include "Firestore/Protos/nanopb/firestore/bundle.nanopb.h"
 #include "Firestore/Protos/nanopb/firestore/local/maybe_document.nanopb.h"
 #include "Firestore/Protos/nanopb/firestore/local/mutation.nanopb.h"
 #include "Firestore/Protos/nanopb/firestore/local/target.nanopb.h"
+#include "Firestore/Protos/nanopb/google/firestore/admin/index.nanopb.h"
 #include "Firestore/Protos/nanopb/google/firestore/v1/document.nanopb.h"
 #include "Firestore/Protos/nanopb/google/firestore/v1/firestore.nanopb.h"
 #include "Firestore/Protos/nanopb/google/type/latlng.nanopb.h"
@@ -133,6 +135,22 @@ inline const pb_field_t* FieldsArray<google_firestore_v1_Value>() {
 }
 
 template <>
+inline const pb_field_t* FieldsArray<google_firestore_v1_ArrayValue>() {
+  return google_firestore_v1_ArrayValue_fields;
+}
+
+template <>
+inline const pb_field_t* FieldsArray<google_firestore_v1_MapValue>() {
+  return google_firestore_v1_MapValue_fields;
+}
+
+template <>
+inline const pb_field_t*
+FieldsArray<google_firestore_v1_MapValue_FieldsEntry>() {
+  return google_firestore_v1_MapValue_FieldsEntry_fields;
+}
+
+template <>
 inline const pb_field_t* FieldsArray<google_firestore_v1_Write>() {
   return google_firestore_v1_Write_fields;
 }
@@ -150,6 +168,21 @@ inline const pb_field_t* FieldsArray<google_firestore_v1_WriteResponse>() {
 template <>
 inline const pb_field_t* FieldsArray<google_firestore_v1_WriteResult>() {
   return google_firestore_v1_WriteResult_fields;
+}
+
+template <>
+inline const pb_field_t* FieldsArray<firestore_BundleMetadata>() {
+  return firestore_BundleMetadata_fields;
+}
+
+template <>
+inline const pb_field_t* FieldsArray<firestore_NamedQuery>() {
+  return firestore_NamedQuery_fields;
+}
+
+template <>
+inline const pb_field_t* FieldsArray<google_firestore_admin_v1_Index>() {
+  return google_firestore_admin_v1_Index_fields;
 }
 
 template <>

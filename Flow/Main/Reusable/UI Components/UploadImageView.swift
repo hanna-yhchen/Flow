@@ -22,7 +22,6 @@ class UploadImageView: UIImageView {
             placeholder.widthAnchor.constraint(equalTo: heightAnchor, multiplier: 0.8),
             placeholder.heightAnchor.constraint(equalTo: placeholder.widthAnchor),
         ])
-        placeholder.isHidden = true
         return placeholder
     }()
 
@@ -30,6 +29,7 @@ class UploadImageView: UIImageView {
         super.init(frame: .zero)
         self.contentMode = .scaleAspectFill
         self.clipsToBounds = true
+        reset()
     }
 
     required init?(coder: NSCoder) {

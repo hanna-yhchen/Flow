@@ -17,10 +17,11 @@
 #import <TargetConditionals.h>
 #if !TARGET_OS_OSX && !TARGET_OS_WATCH
 
-#import "FirebaseCore/Sources/Private/FirebaseCoreInternal.h"
-#import "GoogleUtilities/Environment/Private/GULAppEnvironmentUtil.h"
+#import <GoogleUtilities/GULAppEnvironmentUtil.h>
+#import "FirebaseCore/Extension/FirebaseCoreInternal.h"
 
 #import "FirebaseAuth/Sources/Auth/FIRAuthGlobalWorkQueue.h"
+#import "FirebaseAuth/Sources/Auth/FIRAuth_Internal.h"
 #import "FirebaseAuth/Sources/SystemService/FIRAuthAPNSToken.h"
 #import "FirebaseAuth/Sources/SystemService/FIRAuthAPNSTokenManager.h"
 
@@ -135,7 +136,6 @@ static const NSTimeInterval kLegacyRegistrationTimeout = 30;
 
 /** @fn isProductionApp
     @brief Whether or not the app has production (versus sandbox) provisioning profile.
-    @remarks This method is adapted from @c FIRInstanceID .
  */
 + (BOOL)isProductionApp {
   const BOOL defaultAppTypeProd = YES;

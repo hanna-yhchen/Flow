@@ -16,7 +16,7 @@ class SignInViewModel {
         .map { $0.count > 2 && $1.count > 2 }
         .eraseToAnyPublisher()
 
-    func signIn(completion: AuthDataResultCallback?) {
+    func signIn(completion: @escaping AuthDataResultCallback) {
         // TODO: Validate credentials first
         AuthService.signIn(email: email, password: password, completion: completion)
     }
