@@ -48,7 +48,14 @@ class ProfileViewModel {
 
     private func fetchPosts() {
         PostService.fetchPosts(of: userID) {[unowned self] posts in
-            self.posts = posts
+            var updatedPosts: [Post] = []
+
+            guard let author = user else { return }
+            for post in posts {
+                updatedPosts.append(post.withAuthorInfo(author))
+            }
+
+            self.posts = updatedPosts
         }
     }
 

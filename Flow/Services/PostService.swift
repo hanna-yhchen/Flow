@@ -69,7 +69,8 @@ enum PostService {
                     return
                 }
 
-                fetchAuthors(for: posts(in: snapshot), completion: completion)
+                completion(posts(in: snapshot))
+                //fetchAuthors(for: posts(in: snapshot), completion: completion)
             }
     }
 
