@@ -95,13 +95,8 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 iOSInjectionProject/
 
-### SwiftLint ###
-.swiftlint.yml
-
 ### Firebase ###
 GoogleService-Info.plist
-.idea
-**/node_modules/*
 **/.firebaserc
 
 ### Firebase Patch ###
