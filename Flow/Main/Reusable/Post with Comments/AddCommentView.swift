@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class AddCommentView: UIView {
     let separator = UIView()
@@ -21,6 +22,7 @@ class AddCommentView: UIView {
 
     var profileImageURL: URL? {
         didSet {
+            profileImageView.sd_imageIndicator = SDWebImageActivityIndicator.medium
             profileImageView.sd_setImage(with: profileImageURL)
         }
     }

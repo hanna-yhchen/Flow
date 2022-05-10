@@ -8,6 +8,7 @@
 import UIKit
 import Parchment
 import Combine
+import SDWebImage
 
 protocol ProfileViewControllerDelegate: AnyObject {
     func navigateToPost(_ post: Post)

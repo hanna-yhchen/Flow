@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SDWebImage
 
 protocol PostViewControllerDelegate: AnyObject {
     func navigateToProfile(_ authorID: UserID)
@@ -33,7 +34,6 @@ class PostViewController: UIViewController {
 
     private var post: Post
     private var comments: [Comment] = []
-    private var authorProfileImageURL: URL?
     private var subscriptions = Set<AnyCancellable>()
 
     private let collectionView: PostCollectionView
@@ -103,20 +103,18 @@ class PostViewController: UIViewController {
 
     private func configureBindings() {
         Publishers
-            .CombineLatest4(
+            .CombineLatest3(
                 viewModel.$post,
                 viewModel.$comments,
-                viewModel.$authorProfileImageURL,
                 viewModel.$userProfileImageURL
             )
             .receive(on: RunLoop.main)
-            .sink {[unowned self] post, comments, authorProfileImageURL, userProfileImageURL in
+            .sink {[unowned self] post, comments, userProfileImageURL in
                 self.post = post
                 self.comments = comments
-                self.authorProfileImageURL = authorProfileImageURL
                 self.addCommentView.profileImageURL = userProfileImageURL
 
-                if authorProfileImageURL != nil && userProfileImageURL != nil {
+                if userProfileImageURL != nil {
                     self.dataSource?.apply(currentSnapshot())
                     self.collectionView.reloadData()
                 }
@@ -149,7 +147,7 @@ class PostViewController: UIViewController {
 
             var updatedPost = post
             updatedPost.countOfComment += 1
-            self.viewModel.reload(with: updatedPost)
+            self.viewModel.reload()
 
             PostService.update(updatedPost)
             delegate?.postNeedUpdate(updatedPost)
@@ -216,16 +214,15 @@ class PostViewController: UIViewController {
             PostService.update(post)
             delegate?.postNeedUpdate(post)
 
-            UserService.fetchCurrentUser { user, error in
-                guard var user = user else { return }
-                if let error = error {
-                    print("DEBUG: error fetching current user -", error.localizedDescription)
-                }
+            UserService.fetchCurrentUser { user in
+                var user = user
+
                 if cell.didBookmark {
                     user.bookmarkedPosts.append(post.id)
                 } else {
                     user.bookmarkedPosts.removeAll { $0 == post.id }
                 }
+
                 UserService.update(user)
                 // TODO: Update Profile Screen
             }
@@ -278,17 +275,11 @@ extension PostViewController {
 
     private func makeCommentCellRegistration() -> UICollectionView.CellRegistration<CommentCell, Comment> {
         UICollectionView.CellRegistration<CommentCell, Comment> { cell, _, comment in
-            UserService.fetchUser(id: comment.authorID) { author, error in
-                if let error = error {
-                    print("DEBUG: Error fetching author -", error.localizedDescription)
-                }
-
-                if let author = author {
-                    cell.usernameLabel.text = "@" + author.username
-                    cell.nameLabel.text = author.fullName
-                    let imageURL = URL(string: author.profileImageURL)
-                    cell.profileImageView.sd_setImage(with: imageURL)
-                }
+            UserService.fetchUser(id: comment.authorID) { author in
+                cell.usernameLabel.text = "@" + author.username
+                cell.nameLabel.text = author.fullName
+                let imageURL = URL(string: author.profileImageURL)
+                cell.profileImageView.sd_setImage(with: imageURL)
             }
             cell.nameLabel.text = comment.authorID
             cell.commentLabel.text = comment.content

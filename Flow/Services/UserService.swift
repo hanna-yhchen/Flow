@@ -12,13 +12,14 @@ import FirebaseFirestore
 enum UserService {
     private static let userRef = Firestore.firestore().collection("users")
 
-    static func fetchUser(id: UserID, completion: @escaping(User?, Error?) -> Void) {
-        Firestore.firestore().collection("users").document(id).getDocument { document, error in
-            do {
-                let user = try document?.data(as: User.self)
-                completion(user, error)
-            } catch {
-                completion(nil, error)
+    static func fetchUser(id: UserID, completion: @escaping (User) -> Void) {
+        userRef.document(id).getDocument(as: User.self) { result in
+            switch result {
+            case .success(let user):
+                completion(user)
+            case .failure(let error):
+                print("DEBUG: Error decoding user -", error.localizedDescription)
+                return
             }
         }
     }
@@ -27,7 +28,7 @@ enum UserService {
         return Auth.auth().currentUser?.uid
     }
 
-    static func fetchCurrentUser(completion: @escaping(User?, Error?) -> Void) {
+    static func fetchCurrentUser(completion: @escaping (User) -> Void) {
         guard let id = currentUserID() else {
             print("DEBUG: Missing current user id")
             return
@@ -44,8 +45,13 @@ enum UserService {
         }
     }
 
-    static func fetchAllUsers(completion: @escaping([User], Error?) -> Void) {
+    static func fetchAllUsers(completion: @escaping ([User]) -> Void) {
         userRef.getDocuments { snapshot, error in
+            if let error = error {
+                print("DEBUG: Error getting user documents -", error.localizedDescription)
+                return
+            }
+
             var users: [User] = []
 
             if let snapshot = snapshot {
@@ -59,7 +65,7 @@ enum UserService {
                 }
             }
 
-            completion(users, error)
+            completion(users)
         }
     }
 }

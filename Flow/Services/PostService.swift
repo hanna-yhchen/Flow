@@ -14,9 +14,8 @@ enum PostService {
     private static let commentRef = Firestore.firestore().collection("comments")
 
     static func create(_ newPost: NewPost, completion: @escaping(Error?) -> Void) {
-        ImageService.upload(image: newPost.image, to: .postImages) { imageURL, error in
-            guard error == nil, let imageURL = imageURL?.absoluteString, let userID = UserService.currentUserID() else {
-                completion(error)
+        ImageService.upload(image: newPost.image, to: .postImages) { imageURL in
+            guard let userID = UserService.currentUserID() else {
                 return
             }
 
@@ -46,31 +45,45 @@ enum PostService {
         }
     }
 
-    static func fetchPost(_ postID: PostID, completion: @escaping(Post?, Error?) -> Void) {
-        postRef.document(postID).getDocument { document, error in
-            do {
-                let post = try document?.data(as: Post.self)
-                completion(post, error)
-            } catch {
-                completion(nil, error)
+    static func fetchPost(_ postID: PostID, completion: @escaping (Post) -> Void) {
+        postRef.document(postID).getDocument(as: Post.self) { result in
+            switch result {
+            case .success(let post):
+                UserService.fetchUser(id: post.authorID) { author in
+                    completion(post.withAuthorInfo(author))
+                }
+            case .failure(let error):
+                print("DEBUG: Error decoding post -", error.localizedDescription)
+                return
             }
         }
     }
 
-    static func fetchPosts(of userID: UserID, completion: @escaping([Post], Error?) -> Void) {
+    static func fetchPosts(of userID: UserID, completion: @escaping ([Post]) -> Void) {
         postRef.whereField("authorID", isEqualTo: userID)
             .order(by: "timeIntervalSince1970", descending: true)
             .limit(to: 30)
             .getDocuments { snapshot, error in
-                completion(posts(in: snapshot), error)
+                if let error = error {
+                    print("DEBUG: Error getting post documents -", error.localizedDescription)
+                    return
+                }
+
+                fetchAuthors(for: posts(in: snapshot), completion: completion)
             }
     }
 
-    static func fetchAllPosts(completion: @escaping([Post], Error?) -> Void) {
+    static func fetchAllPosts(completion: @escaping ([Post]) -> Void) {
         postRef.order(by: "timeIntervalSince1970", descending: true)
             .limit(to: 30)
             .getDocuments { snapshot, error in
-                completion(posts(in: snapshot), error)
+                if let error = error {
+                    print("DEBUG: Error getting post documents -", error.localizedDescription)
+                    return
+                }
+
+                completion(posts(in: snapshot))
+                // fetchAuthors(for: posts(in: snapshot), completion: completion)
             }
     }
 
@@ -93,9 +106,14 @@ enum PostService {
         }
     }
 
-    static func fetchComments(of postID: PostID, completion: @escaping([Comment], Error?) -> Void) {
+    static func fetchComments(of postID: PostID, completion: @escaping ([Comment]) -> Void) {
         let ref = commentRef.document(postID).collection("comments")
         ref.order(by: "timeIntervalSince1970", descending: false).getDocuments { snapshot, error in
+            if let error = error {
+                print("DEBUG: Error getting comment documents -", error.localizedDescription)
+                return
+            }
+
             var comments: [Comment] = []
 
             if let snapshot = snapshot {
@@ -109,10 +127,11 @@ enum PostService {
                 }
             }
 
-            completion(comments, error)
+            completion(comments)
         }
     }
 
+    /// Return an array of post from the given query snapshot.
     private static func posts(in snapshot: QuerySnapshot?) -> [Post] {
         var posts: [Post] = []
 
@@ -128,5 +147,24 @@ enum PostService {
         }
 
         return posts
+    }
+
+    private static func fetchAuthors(for posts: [Post], completion: @escaping ([Post]) -> Void) {
+        let semaphore = DispatchSemaphore(value: 0)
+
+        DispatchQueue.global().async {
+            var updatedPosts: [Post] = []
+
+            for post in posts {
+                UserService.fetchUser(id: post.authorID) { author in
+                    updatedPosts.append(post.withAuthorInfo(author))
+
+                    semaphore.signal()
+                }
+                semaphore.wait()
+            }
+
+            completion(updatedPosts)
+        }
     }
 }

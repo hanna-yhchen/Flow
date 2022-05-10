@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SDWebImage
 
 protocol HomeViewControllerDelegate: AnyObject {
     func navigateToPost(_ post: Post)
@@ -56,7 +57,6 @@ class HomeViewController: UIViewController {
 
     private func configureHierarchy() {
         self.collectionView = HomeCollectionView(withFrame: view.bounds)
-        collectionView.delegate = self
         view.addSubview(collectionView)
     }
 
@@ -165,16 +165,15 @@ class HomeViewController: UIViewController {
             dataSource.apply(currentSnapshot())
             PostService.update(post)
 
-            UserService.fetchCurrentUser { user, error in
-                guard var user = user else { return }
-                if let error = error {
-                    print("DEBUG: error fetching current user -", error.localizedDescription)
-                }
+            UserService.fetchCurrentUser { user in
+                var user = user
+
                 if cell.didBookmark {
                     user.bookmarkedPosts.append(post.id)
                 } else {
                     user.bookmarkedPosts.removeAll { $0 == post.id }
                 }
+
                 UserService.update(user)
                 // TODO: Reload User Profile's Bookmarks
             }
@@ -246,9 +245,4 @@ extension HomeViewController {
             cell.bottomCoveringButton.addTarget(self, action: #selector(navigateToPost(_:)), for: .touchUpInside)
         }
     }
-}
-
-// MARK: - UICollectionViewDelegate
-
-extension HomeViewController: UICollectionViewDelegate {
 }

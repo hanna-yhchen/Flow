@@ -7,6 +7,7 @@
 
 import UIKit
 import Combine
+import SDWebImage
 
 protocol SearchViewControllerDelegate: AnyObject {
     func navigateToPost(_ post: Post)

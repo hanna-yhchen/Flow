@@ -150,6 +150,7 @@ class NewPostViewController: UIViewController {
         viewModel.share {[unowned self] error in
             if let error = error {
                 print("DEBUG: Error share new post -", error.localizedDescription)
+                // TODO: Show error alert
                 return
             }
             delegate?.didFinishNewPost(self)

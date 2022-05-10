@@ -7,10 +7,10 @@ target 'Flow' do
 
   # Pods for Flow
   pod 'Parchment', '~> 3.2'
-  pod 'Firebase/Auth'
-  pod 'Firebase/Firestore'
+  pod 'FirebaseAuth'
+  pod 'FirebaseFirestore'
   pod 'FirebaseFirestoreSwift'
-  pod 'Firebase/Storage'
-  pod 'SDWebImage', '~> 5.0'
+  pod 'FirebaseStorage'
+  pod 'SDWebImage', '~> 5.12'
 
 end

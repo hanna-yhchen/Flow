@@ -11,34 +11,18 @@ import Combine
 class PostViewModel {
     @Published private(set) var post: Post
     @Published private(set) var comments: [Comment] = []
-    @Published private(set) var authorProfileImageURL: URL?
     @Published private(set) var userProfileImageURL: URL?
     private(set) var currentUserID: UserID?
 
     init(post: Post) {
         self.post = post
-        fetchAuthor()
         fetchCurrentUser()
         fetchComments()
     }
 
-    func reload(with post: Post) {
-        self.post = post
+    func reload() {
         fetchPost()
         fetchComments()
-    }
-
-    private func fetchAuthor() {
-        UserService.fetchUser(id: post.authorID) {[unowned self] user, error in
-            if let error = error {
-                print("DEBUG: Error fetching current user -", error.localizedDescription)
-            }
-            guard let user = user else {
-                print("DEBUG: Fetched empty user document")
-                return
-            }
-            self.authorProfileImageURL = URL(string: user.profileImageURL)
-        }
     }
 
     private func fetchCurrentUser() {
@@ -48,35 +32,19 @@ class PostViewModel {
         }
         self.currentUserID = currentUserID
 
-        UserService.fetchUser(id: currentUserID) {[unowned self] user, error in
-            if let error = error {
-                print("DEBUG: Error fetching current user -", error.localizedDescription)
-                return
-            }
-            guard let user = user else {
-                print("DEBUG: Fetched empty user document")
-                return
-            }
+        UserService.fetchUser(id: currentUserID) {[unowned self] user in
             self.userProfileImageURL = URL(string: user.profileImageURL)
         }
     }
 
     private func fetchPost() {
-        PostService.fetchPost(post.id) {[unowned self] post, error in
-            if let error = error {
-                print("DEBUG: Error fetching posts -", error.localizedDescription)
-            }
-            if let post = post {
-                self.post = post
-            }
+        PostService.fetchPost(post.id) {[unowned self] post in
+            self.post = post
         }
     }
 
     private func fetchComments() {
-        PostService.fetchComments(of: post.id) {[unowned self] comments, error in
-            if let error = error {
-                print("DEBUG: Error fetching comments -", error.localizedDescription)
-            }
+        PostService.fetchComments(of: post.id) {[unowned self] comments in
             self.comments = comments
         }
     }

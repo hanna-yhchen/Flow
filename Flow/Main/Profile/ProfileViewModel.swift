@@ -35,15 +35,7 @@ class ProfileViewModel {
     }
 
     func fetchUser() {
-        UserService.fetchUser(id: userID) {[unowned self] user, error in
-            if let error = error {
-                print("DEBUG: Error fetching current user -", error.localizedDescription)
-                return
-            }
-            guard let user = user else {
-                print("DEBUG: Fetched empty user document")
-                return
-            }
+        UserService.fetchUser(id: userID) {[unowned self] user in
             profileImageURL = URL(string: user.profileImageURL)
             username = "@" + user.username
             fullName = user.fullName
@@ -55,11 +47,7 @@ class ProfileViewModel {
     }
 
     private func fetchPosts() {
-        PostService.fetchPosts(of: userID) {[unowned self] posts, error in
-            if let error = error {
-                print("DEBUG: Error fetching posts -", error.localizedDescription)
-                return
-            }
+        PostService.fetchPosts(of: userID) {[unowned self] posts in
             self.posts = posts
         }
     }
@@ -68,15 +56,7 @@ class ProfileViewModel {
         guard let bookmarkIDs = user?.bookmarkedPosts else { return }
 
         for id in bookmarkIDs {
-            PostService.fetchPost(id) { bookmark, error in
-                if let error = error {
-                    print("DEBUG: Error fetching bookmark -", error.localizedDescription)
-                    return
-                }
-                guard let bookmark = bookmark else {
-                    print("DEBUG: Fetched empty post document")
-                    return
-                }
+            PostService.fetchPost(id) { bookmark in
                 self.bookmarks.append(bookmark)
             }
         }

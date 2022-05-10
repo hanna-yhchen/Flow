@@ -12,15 +12,11 @@ class StoryCell: UICollectionViewCell {
     var storybook: Storybook? {
         didSet {
             guard let storybook = storybook else { return }
-            UserService.fetchUser(id: storybook.authorID) { author, error in
-                if let error = error {
-                    print("DEBUG: Error fetching user -", error.localizedDescription)
-                }
-
-                let profileImageURL = URL(string: author?.profileImageURL ?? "")
+            UserService.fetchUser(id: storybook.authorID) { author in
+                let profileImageURL = URL(string: author.profileImageURL)
                 self.profileImageView.sd_setImage(with: profileImageURL)
 
-                self.usernameLabel.text = author?.username
+                self.usernameLabel.text = author.username
             }
 
             if let currentUserID = UserService.currentUserID() {

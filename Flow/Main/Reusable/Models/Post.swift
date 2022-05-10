@@ -20,11 +20,25 @@ struct Post: Hashable, Codable {
     var whoBookmarks: [UserID]
     var countOfComment: Int
 
+    var authorName: String?
+    var authorUserName: String?
+    var authorImageURL: String?
+
     func hash(into hasher: inout Hasher) {
         hasher.combine(id)
     }
 
     static func == (lhs: Post, rhs: Post) -> Bool {
         return lhs.id == rhs.id
+    }
+
+    func withAuthorInfo(_ author: User) -> Post {
+        var post = self
+
+        post.authorImageURL = author.profileImageURL
+        post.authorName = author.fullName
+        post.authorUserName = author.username
+
+        return post
     }
 }

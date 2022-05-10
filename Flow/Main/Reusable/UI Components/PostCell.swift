@@ -20,21 +20,17 @@ class PostCell: UICollectionViewCell {
 
     var post: Post? {
         didSet {
-            guard let post = post else { return }
+            guard var post = post else { return }
 
-            let postImageURL = URL(string: post.imageURL)
-            self.postImageView.sd_setImage(with: postImageURL)
-
-            UserService.fetchUser(id: post.authorID) { author, error in
-                if let error = error {
-                    print("DEBUG: Error fetching user -", error.localizedDescription)
+            UserService.fetchUser(id: post.authorID) { author in
+                post = post.withAuthorInfo(author)
+                self.postImageView.sd_setImage(with: URL(string: post.imageURL))
+                if let urlString = post.authorImageURL {
+                    self.profileImageView.sd_setImage(with: URL(string: urlString))
                 }
 
-                let profileImageURL = URL(string: author?.profileImageURL ?? "")
-                self.profileImageView.sd_setImage(with: profileImageURL)
-
-                self.nameLabel.text = author?.fullName
-                self.usernameLabel.text = author?.username
+                self.nameLabel.text = post.authorName
+                self.usernameLabel.text = post.authorUserName
             }
 
             if let currentUserID = currentUserID {

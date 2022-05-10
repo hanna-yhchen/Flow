@@ -36,11 +36,7 @@ class HomeViewModel {
     // MARK: - Private
 
     private func fetchPosts() {
-        PostService.fetchAllPosts {[unowned self] posts, error in
-            if let error = error {
-                print("DEBUG: Error fetching posts -", error.localizedDescription)
-                return
-            }
+        PostService.fetchAllPosts {[unowned self] posts in
             self.posts = posts
         }
     }
@@ -48,10 +44,7 @@ class HomeViewModel {
     private func fetchStorybooks() {
         var storybooks: [Storybook] = []
 
-        UserService.fetchAllUsers { users, error in
-            if let error = error {
-                print("DEBUG: Error fetching users -", error.localizedDescription)
-            }
+        UserService.fetchAllUsers { users in
             for user in users {
                 let storybook = Storybook(authorID: user.id, whoHasReadAll: [])
                 if storybook.authorID == self.currentUserID {

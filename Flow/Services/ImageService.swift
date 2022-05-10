@@ -13,7 +13,7 @@ enum ImageService {
         case postImages
     }
 
-    static func upload(image: UIImage?, to collection: StorageCollection, completion: @escaping(_ imageURL: URL?, Error?) -> Void) {
+    static func upload(image: UIImage?, to collection: StorageCollection, completion: @escaping(_ imageURL: String) -> Void) {
         guard let imageData = image?.jpegData(compressionQuality: 0.6) else { return }
         let filename = NSUUID().uuidString
 
@@ -29,13 +29,12 @@ enum ImageService {
         metadata.contentType = "image/jpeg"
 
         imageRef.putData(imageData, metadata: metadata) { _, error in
-            guard error == nil else {
-                completion(nil, error)
+            if let error = error {
+                print("DEBUG: Error updating image to storage -", error.localizedDescription)
                 return
             }
-            imageRef.downloadURL { url, error in
-                completion(url, error)
-            }
+            let url = "https://storage.googleapis.com/flow-807ea.appspot.com/" + imageRef.fullPath
+            completion(url)
         }
     }
 }

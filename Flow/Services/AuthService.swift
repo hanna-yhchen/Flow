@@ -24,13 +24,9 @@ enum AuthService {
     }
 
     static func register(with credentials: AuthCredentials, completion: @escaping(Error?) -> Void) {
-        ImageService.upload(image: credentials.profileImage, to: .profileImages) { profileImageURL, error in
-            guard error == nil else {
-                completion(error)
-                return
-            }
+        ImageService.upload(image: credentials.profileImage, to: .profileImages) { imageURL in
             Auth.auth().createUser(withEmail: credentials.email, password: credentials.password) { result, error in
-                guard error == nil, let id = result?.user.uid, let imageURL = profileImageURL?.absoluteString else {
+                guard error == nil, let id = result?.user.uid else {
                     completion(error)
                     return
                 }

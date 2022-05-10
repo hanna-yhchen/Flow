@@ -602,17 +602,6 @@ PODS:
   - BoringSSL-GRPC/Implementation (0.0.24):
     - BoringSSL-GRPC/Interface (= 0.0.24)
   - BoringSSL-GRPC/Interface (0.0.24)
-  - Firebase/Auth (9.0.0):
-    - Firebase/CoreOnly
-    - FirebaseAuth (~> 9.0.0)
-  - Firebase/CoreOnly (9.0.0):
-    - FirebaseCore (= 9.0.0)
-  - Firebase/Firestore (9.0.0):
-    - Firebase/CoreOnly
-    - FirebaseFirestore (~> 9.0.0)
-  - Firebase/Storage (9.0.0):
-    - Firebase/CoreOnly
-    - FirebaseStorage (~> 9.0.0)
   - FirebaseAppCheckInterop (9.0.0)
   - FirebaseAuth (9.0.0):
     - FirebaseCore (~> 9.0)
@@ -748,18 +737,17 @@ PODS:
   - SDWebImage/Core (5.12.5)
 
 DEPENDENCIES:
-  - Firebase/Auth
-  - Firebase/Firestore
-  - Firebase/Storage
+  - FirebaseAuth
+  - FirebaseFirestore
   - FirebaseFirestoreSwift
+  - FirebaseStorage
   - Parchment (~> 3.2)
-  - SDWebImage (~> 5.0)
+  - SDWebImage (~> 5.12)
 
 SPEC REPOS:
   trunk:
     - abseil
     - BoringSSL-GRPC
-    - Firebase
     - FirebaseAppCheckInterop
     - FirebaseAuth
     - FirebaseAuthInterop
@@ -786,7 +774,6 @@ SPEC REPOS:
 SPEC CHECKSUMS:
   abseil: ebe5b5529fb05d93a8bdb7951607be08b7fa71bc
   BoringSSL-GRPC: 3175b25143e648463a56daeaaa499c6cb86dad33
-  Firebase: a876fadc5ea653a377693376fd4f885c62704512
   FirebaseAppCheckInterop: 0da214236777e71d8535c5f3b9cb5174f636a9eb
   FirebaseAuth: eae56c13e1161da89be202b1fae3ca60b4b8d689
   FirebaseAuthInterop: eaf74707f31a2a38cc133832d2c6410233569cbf
@@ -810,6 +797,6 @@ SPEC CHECKSUMS:
   PromisesObjC: 99b6f43f9e1044bd87a95a60beff28c2c44ddb72
   SDWebImage: 0905f1b7760fc8ac4198cae0036600d67478751e
 
-PODFILE CHECKSUM: be5fba80b028d4f616ae96bc5d5ac8db69abcf75
+PODFILE CHECKSUM: ff289a9cc8cdb80996a582fea12f2a904603edf2
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.11.3
