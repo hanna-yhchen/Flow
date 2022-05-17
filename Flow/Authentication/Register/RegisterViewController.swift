@@ -97,7 +97,7 @@ class RegisterViewController: UIViewController {
             .store(in: &subscriptions)
 
         viewModel.isInputValid
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.isInputValid, on: contentView.authButton)
             .store(in: &subscriptions)
     }

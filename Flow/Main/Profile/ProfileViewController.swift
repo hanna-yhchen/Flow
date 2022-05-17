@@ -144,21 +144,21 @@ class ProfileViewController: UIViewController {
 
     private func configureBindings() {
         viewModel.$profileImageURL
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.profileImageURL, on: profileHeaderView)
             .store(in: &subscriptions)
         viewModel.$username
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.title, on: navigationItem)
             .store(in: &subscriptions)
         viewModel.$fullName
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.text, on: profileHeaderView.nameLabel)
             .store(in: &subscriptions)
 
         Publishers
             .CombineLatest(viewModel.$posts, viewModel.$bookmarks)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink {[unowned self] posts, bookmarks in
                 self.posts = posts
                 self.bookmarks = bookmarks

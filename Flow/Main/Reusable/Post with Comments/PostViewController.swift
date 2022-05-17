@@ -108,7 +108,7 @@ class PostViewController: UIViewController {
                 viewModel.$comments,
                 viewModel.$userProfileImageURL
             )
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink {[unowned self] post, comments, userProfileImageURL in
                 self.post = post
                 self.comments = comments

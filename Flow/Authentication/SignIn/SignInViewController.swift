@@ -50,16 +50,16 @@ class SignInViewController: UIViewController {
 
     private func configureBindings() {
         contentView.emailTextField.textPublisher
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.email, on: viewModel)
             .store(in: &subscriptions)
         contentView.passwordTextField.textPublisher
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.password, on: viewModel)
             .store(in: &subscriptions)
 
         viewModel.isInputValid
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.isInputValid, on: contentView.authButton)
             .store(in: &subscriptions)
     }

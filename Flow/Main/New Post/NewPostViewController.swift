@@ -121,7 +121,7 @@ class NewPostViewController: UIViewController {
             .assign(to: \.postImage, on: viewModel)
             .store(in: &subscriptions)
         viewModel.isInputValid
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .assign(to: \.isInputValid, on: self)
             .store(in: &subscriptions)
     }

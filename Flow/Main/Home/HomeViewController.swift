@@ -63,7 +63,7 @@ class HomeViewController: UIViewController {
     private func configureBindings() {
         Publishers
             .CombineLatest(viewModel.$posts, viewModel.$storybooks)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink {[unowned self] posts, storybooks in
                 self.posts = posts
                 self.storybooks = storybooks

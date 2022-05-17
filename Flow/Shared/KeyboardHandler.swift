@@ -19,7 +19,7 @@ extension KeyboardHandler where Self: UIViewController {
         return NotificationCenter.default
             .publisher(for: UIResponder.keyboardWillChangeFrameNotification)
             .compactMap(\.userInfo)
-            .receive(on: RunLoop.main)
+            .receive(on: DispatchQueue.main)
             .sink {[weak self] userInfo in
                 self?.keyboardWillChangeFrame(with: userInfo)
             }
