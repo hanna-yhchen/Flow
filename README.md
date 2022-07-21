@@ -5,7 +5,7 @@ An Instagram-like sample app using Combine, Firebase and MVVM pattern.
 
 <img src="/Demo/profile-screen.png" width="240">   <img src="/Demo/login-screen.png" width="240">   <img src="/Demo/register-screen.png" width="240">   
 
-See [Instructions](/README.md#instructions) below if you'd like to run the app for testing.
+See [Instructions](#instructions) below if you'd like to run the app for testing.
 
 ## Features
 - Register and log in with email and password
