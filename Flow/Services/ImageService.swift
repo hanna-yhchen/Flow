@@ -33,8 +33,20 @@ enum ImageService {
                 print("DEBUG: Error updating image to storage -", error.localizedDescription)
                 return
             }
-            let url = "https://storage.googleapis.com/flow-807ea.appspot.com/" + imageRef.fullPath
-            completion(url)
+
+            imageRef.downloadURL { url, error in
+                if let error = error {
+                    print("DEBUG: Error downloading image url -", error.localizedDescription)
+                    return
+                }
+
+                if let imageURL = url?.absoluteString {
+                    completion(imageURL)
+                }
+            }
+
+             // let url = "https://storage.googleapis.com/flow-807ea.appspot.com/" + imageRef.fullPath
+             // completion(url)
         }
     }
 }
