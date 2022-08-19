@@ -10,7 +10,7 @@ import UIKit
 class NewPostView: UIView {
     // MARK: - Components
 
-    @Published var postImageView: UploadImageView = {
+    var postImageView: UploadImageView = {
         let imageView = UploadImageView()
         imageView.isUserInteractionEnabled = true
         return imageView

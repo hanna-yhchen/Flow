@@ -33,9 +33,7 @@ class RegisterViewModel {
     init() {
         Publishers.CombineLatest($password, $confirmPassword)
             .map { $0.count >= 6 && $0 == $1 }
-            .eraseToAnyPublisher()
-            .assign(to: \.isPasswordConfirmed, on: self)
-            .store(in: &subscriptions)
+            .assign(to: &$isPasswordConfirmed)
     }
 
     // MARK: - Methods

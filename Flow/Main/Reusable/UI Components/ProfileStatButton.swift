@@ -25,9 +25,9 @@ class ProfileStatButton: UIButton {
         config.titleAlignment = .center
         config.titlePadding = 5
 
-        let attributesTransformer = UIConfigurationTextAttributesTransformer { incoming in
+        let attributesTransformer = UIConfigurationTextAttributesTransformer {[weak self] incoming in
             var outgoing = incoming
-            if self.state == .normal {
+            if self?.state == .normal {
                 outgoing.foregroundColor = .label
             } else {
                 outgoing.foregroundColor = .label.withAlphaComponent(0.3)

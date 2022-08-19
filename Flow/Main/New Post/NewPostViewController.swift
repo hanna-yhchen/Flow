@@ -25,11 +25,6 @@ class NewPostViewController: UIViewController {
     private var keyboardFrameSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
 
-    private var isInputValid = false {
-        didSet {
-            navigationItem.rightBarButtonItem?.isEnabled = isInputValid
-        }
-    }
     private var isLoading = false {
         didSet {
             if isLoading {
@@ -116,13 +111,11 @@ class NewPostViewController: UIViewController {
     }
 
     private func configureBindings() {
-        contentView.$postImageView
-            .map { $0.image }
-            .assign(to: \.postImage, on: viewModel)
-            .store(in: &subscriptions)
         viewModel.isInputValid
             .receive(on: DispatchQueue.main)
-            .assign(to: \.isInputValid, on: self)
+            .sink(receiveValue: {[unowned self] isValid in
+                self.navigationItem.rightBarButtonItem?.isEnabled = isValid
+            })
             .store(in: &subscriptions)
     }
 
@@ -168,11 +161,12 @@ extension NewPostViewController: PHPickerViewControllerDelegate {
         guard let provider = results.first?.itemProvider else { return }
 
         if provider.canLoadObject(ofClass: UIImage.self) {
-            provider.loadObject(ofClass: UIImage.self) { image, _ in
+            provider.loadObject(ofClass: UIImage.self) {[unowned self] image, _ in
                 guard let image = image as? UIImage else { return }
                 DispatchQueue.main.async {
                     self.contentView.postImageView.placeholderImageView.isHidden = true
                     self.contentView.postImageView.image = image
+                    self.viewModel.postImage = image
                     self.contentView.layoutIfNeeded()
                 }
             }

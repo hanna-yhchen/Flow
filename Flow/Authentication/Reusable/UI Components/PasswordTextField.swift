@@ -38,9 +38,11 @@ class PasswordTextField: AuthTextField {
         let toggleVisibilityButton = UIButton(configuration: config)
         toggleVisibilityButton.setImage(invisibleIcon, for: .normal)
         toggleVisibilityButton.addAction(
-            UIAction {_ in
-                self.isSecureTextEntry.toggle()
-                toggleVisibilityButton.setNeedsUpdateConfiguration()
+            UIAction {[weak self] _ in
+                if let self = self {
+                    self.isSecureTextEntry.toggle()
+                    toggleVisibilityButton.setNeedsUpdateConfiguration()
+                }
             },
             for: .touchUpInside
         )
