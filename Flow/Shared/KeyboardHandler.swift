@@ -9,8 +9,6 @@ import UIKit
 import Combine
 
 protocol KeyboardHandler: AnyObject {
-    var keyboardFrameSubscription: AnyCancellable { get }
-    var bottomInset: CGFloat { get }
     func keyboardWillChangeFrame(yOffset: CGFloat, duration: TimeInterval, animationCurve: UIView.AnimationOptions)
 }
 
