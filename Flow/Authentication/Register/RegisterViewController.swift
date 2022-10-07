@@ -66,7 +66,7 @@ class RegisterViewController: UIViewController {
     }
 
     private func configureKeyboardBehavior() {
-        keyboardFrameSubscription().store(in: &subscriptions)
+        keyboardFrameSubscription.store(in: &subscriptions)
         view.addResignKeyboardTapGesture()
     }
 

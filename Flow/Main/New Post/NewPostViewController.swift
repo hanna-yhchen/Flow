@@ -22,7 +22,6 @@ class NewPostViewController: UIViewController {
     private let contentView = NewPostView()
     private let textView: CaptionTextView
 
-    private var keyboardFrameSubscription: AnyCancellable?
     private var subscriptions = Set<AnyCancellable>()
 
     private var isLoading = false {

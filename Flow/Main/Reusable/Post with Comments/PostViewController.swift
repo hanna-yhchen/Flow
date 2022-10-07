@@ -40,7 +40,6 @@ class PostViewController: UIViewController {
     private var dataSource: PostDataSource?
     private let addCommentView: AddCommentView
     private var bottomConstraint: NSLayoutConstraint?
-    private var keyboardFrameSubscription: AnyCancellable?
 
     // MARK: - Lifecycle
 
@@ -123,8 +122,8 @@ class PostViewController: UIViewController {
     }
 
     private func configureKeyboardBehavior() {
-        keyboardFrameSubscription = keyboardFrameSubscription()
         view.addResignKeyboardTapGesture()
+        keyboardFrameSubscription.store(in: &subscriptions)
     }
 
     // MARK: - Actions
