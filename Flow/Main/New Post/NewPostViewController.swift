@@ -105,7 +105,7 @@ class NewPostViewController: UIViewController {
     }
 
     private func configureKeyboardBehavior() {
-        keyboardFrameSubscription = keyboardFrameSubscription()
+        keyboardFrameSubscription.store(in: &subscriptions)
         view.addResignKeyboardTapGesture()
     }
 
@@ -139,14 +139,17 @@ class NewPostViewController: UIViewController {
     @objc private func shareTapped() {
         isLoading = true
         viewModel.caption = textView.text
-        viewModel.share {[unowned self] error in
+        viewModel.share {[weak self] error in
             if let error = error {
                 print("DEBUG: Error share new post -", error.localizedDescription)
                 // TODO: Show error alert
                 return
             }
-            delegate?.didFinishNewPost(self)
-            isLoading = false
+
+            if let `self` = self {
+                self.delegate?.didFinishNewPost(self)
+                self.isLoading = false
+            }
         }
     }
 }
